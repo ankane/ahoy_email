@@ -11,10 +11,11 @@ module AhoyEmail
       # add user
       track_user(message, ahoy_message)
 
+      # add UTM parameters
+      track_utm_parameters(message, ahoy_message)
+
       # track open
       track_open(message, ahoy_message)
-
-      # TODO add UTM parameters
 
       # track click
       track_click(message, ahoy_message)
@@ -37,6 +38,24 @@ module AhoyEmail
       # remove headers
       message["Ahoy-User-Id"] = nil
       message["Ahoy-User-Type"] = nil
+    end
+
+    def self.track_utm_parameters(message, ahoy_message)
+      if html_part?(message)
+        body = (message.html_part || message).body
+
+        doc = Nokogiri::HTML(body.raw_source)
+        doc.css("a").each do |link|
+          uri = Addressable::URI.parse(link["href"])
+          params = uri.query_values || {}
+          params["utm_medium"] ||= "email"
+          uri.query_values = params
+          link["href"] = uri.to_s
+        end
+
+        # hacky
+        body.raw_source.sub!(body.raw_source, doc.to_s)
+      end
     end
 
     def self.track_open(message, ahoy_message)
