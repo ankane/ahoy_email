@@ -3,7 +3,10 @@ Rails.application.routes.draw do
 end
 
 AhoyEmail::Engine.routes.draw do
-  resources :messages, only: [] do
-    get :open, on: :collection
+  scope module: "ahoy" do
+    resources :messages, only: [] do
+      get :open, on: :collection
+      get :click, on: :collection
+    end
   end
 end
