@@ -35,7 +35,7 @@ module AhoyEmail
       ahoy_message.user_id = message["Ahoy-User-Id"].to_s.presence
       ahoy_message.user_type = message["Ahoy-User-Type"].to_s.presence
 
-      # remove headers
+      # TODO remove headers properly
       message["Ahoy-User-Id"] = nil
       message["Ahoy-User-Type"] = nil
     end

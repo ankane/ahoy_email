@@ -33,6 +33,12 @@ Ahoy creates an `Ahoy::Message` record when an email is sent. It also adds:
 - click tracking
 - UTM parameters
 
+To specify the user, use:
+
+```ruby
+mail user: user, subject: "Awesome!", to: "..."
+```
+
 ## TODO
 
 - Subscription management (lists, opt-outs)
