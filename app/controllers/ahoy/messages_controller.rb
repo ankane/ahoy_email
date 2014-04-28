@@ -11,7 +11,12 @@ module Ahoy
     end
 
     def click
-      # redirect
+      if @message and !@message.clicked_at
+        @message.clicked_at = Time.now
+        @message.save!
+      end
+      # TODO no open redirect
+      redirect_to params[:url]
     end
 
     protected

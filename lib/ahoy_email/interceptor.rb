@@ -14,6 +14,7 @@ module AhoyEmail
       track_open(message, ahoy_message)
 
       # track click
+      track_click(message, ahoy_message)
 
       # save
       ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
@@ -27,8 +28,7 @@ module AhoyEmail
     end
 
     def self.track_open(message, ahoy_message)
-      content_type = (message.html_part || message).content_type
-      if content_type =~ /html/
+      if html_part?(message)
         raw_source = (message.html_part || message).body.raw_source
         regex = /<\/body>/i
         url =
@@ -41,6 +41,7 @@ module AhoyEmail
             )
           )
         pixel = image_tag(url)
+
         # try to add before body tag
         if raw_source.match(regex)
           raw_source.gsub!(regex, "#{pixel}\\0")
@@ -48,6 +49,34 @@ module AhoyEmail
           raw_source << pixel
         end
       end
+    end
+
+    def self.track_click(message, ahoy_message)
+      if html_part?(message)
+        body = (message.html_part || message).body
+
+        doc = Nokogiri::HTML(body.raw_source)
+        doc.css("a").each do |link|
+          url =
+            AhoyEmail::Engine.routes.url_helpers.url_for(
+              Rails.application.config.action_mailer.default_url_options.merge(
+                controller: "ahoy/messages",
+                action: "click",
+                token: ahoy_message.token,
+                url: link["href"]
+              )
+            )
+
+          link["href"] = url
+        end
+
+        # hacky
+        body.raw_source.sub!(body.raw_source, doc.to_s)
+      end
+    end
+
+    def self.html_part?(message)
+      (message.html_part || message).content_type =~ /html/
     end
 
   end
