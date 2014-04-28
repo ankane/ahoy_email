@@ -9,9 +9,12 @@ module AhoyEmail
       ahoy_message.token = generate_token
 
       # add user
+      track_user(message, ahoy_message)
 
       # track open
       track_open(message, ahoy_message)
+
+      # TODO add UTM parameters
 
       # track click
       track_click(message, ahoy_message)
@@ -25,6 +28,15 @@ module AhoyEmail
 
     def self.generate_token
       SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+    end
+
+    def self.track_user(message, ahoy_message)
+      ahoy_message.user_id = message["Ahoy-User-Id"].to_s.presence
+      ahoy_message.user_type = message["Ahoy-User-Type"].to_s.presence
+
+      # remove headers
+      message["Ahoy-User-Id"] = nil
+      message["Ahoy-User-Type"] = nil
     end
 
     def self.track_open(message, ahoy_message)
