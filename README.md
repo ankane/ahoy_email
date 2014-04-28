@@ -39,6 +39,8 @@ To specify the user, use:
 mail user: user, subject: "Awesome!", to: "..."
 ```
 
+User is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
+
 ## TODO
 
 - Subscription management (lists, opt-outs)
