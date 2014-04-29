@@ -75,6 +75,20 @@ end
 
 User is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
 
+To get all messages sent to a user, add an association:
+
+```ruby
+class User < ActiveRecord::Base
+  has_many :messages, class_name: "Ahoy::Message"
+end
+```
+
+And run:
+
+```ruby
+user.messages
+```
+
 ## Customize
 
 There are 3 places to set options.
