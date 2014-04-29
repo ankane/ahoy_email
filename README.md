@@ -62,10 +62,55 @@ By default, `utm_medium` is set to `email`.
 To specify the user, use:
 
 ```ruby
-mail user: user, subject: "Awesome!", to: "..."
+class UserMailer < ActionMailer::Base
+  def welcome_email(user)
+    # ...
+    mail ahoy: {user: user}, to: user.email
+  end
+end
 ```
 
 User is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
+
+## Customize
+
+There are 3 places to set options.
+
+### Global
+
+The defaults are listed below.
+
+```ruby
+AhoyEmail.options = {
+  create_message: true,
+  track_open: true,
+  track_click: true,
+  utm_source: nil,
+  utm_medium: "email",
+  utm_term: nil,
+  utm_content: nil,
+  utm_campaign: nil
+}
+```
+
+### Mailers
+
+```ruby
+class UserMailer < ActionMailer::Base
+  defaults ahoy: {utm_campaign: "boom"}
+end
+```
+
+### Action
+
+``` ruby
+class UserMailer < ActionMailer::Base
+  def welcome_email(user)
+    # ...
+    mail ahoy: {user: user}, to: user.email
+  end
+end
+```
 
 ## TODO
 
