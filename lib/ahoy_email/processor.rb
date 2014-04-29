@@ -22,7 +22,6 @@ module AhoyEmail
         # save
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
         ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
-        ahoy_message.sent_at = Time.now
         ahoy_message.save
       end
     rescue => e

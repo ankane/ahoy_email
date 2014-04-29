@@ -4,11 +4,11 @@
 
 :envelope: Simple, powerful email tracking for Rails
 
-Keep track of emails:
+You get:
 
-- sent
-- opened
-- clicked
+- A history of emails sent to each user
+- Open and click tracking
+- Easy UTM tagging
 
 ## Installation
 
@@ -98,7 +98,7 @@ There are 3 places to set options.
 The defaults are listed below.
 
 ```ruby
-AhoyEmail.options = {
+AhoyEmail.track(
   message: true,
   open: true,
   click: true,
@@ -107,7 +107,7 @@ AhoyEmail.options = {
   utm_term: nil,
   utm_content: nil,
   utm_campaign: nil
-}
+)
 ```
 
 ### Mailers
