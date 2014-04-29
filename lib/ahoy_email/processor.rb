@@ -7,17 +7,17 @@ module AhoyEmail
     def initialize(message, options = {})
       @message = message
       @options = options
-      @ahoy_message = Ahoy::Message.new
     end
 
     def process!
-      if options[:create_message]
+      if options[:message]
+        @ahoy_message = Ahoy::Message.new
         ahoy_message.token = generate_token
         ahoy_message.user = options[:user]
 
         track_utm_parameters!
-        track_open! if options[:track_open]
-        track_click! if options[:track_click]
+        track_open! if options[:open]
+        track_click! if options[:click]
 
         # save
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)

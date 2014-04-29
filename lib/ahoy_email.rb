@@ -13,9 +13,9 @@ module AhoyEmail
   mattr_accessor :secret_token, :options
 
   self.options = {
-    create_message: true,
-    track_open: true,
-    track_click: true,
+    message: true,
+    open: true,
+    click: true,
     utm_source: nil,
     utm_medium: "email",
     utm_term: nil,
