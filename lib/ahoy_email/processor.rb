@@ -94,19 +94,24 @@ module AhoyEmail
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a").each do |link|
-          signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
-          url =
-            AhoyEmail::Engine.routes.url_helpers.url_for(
-              Rails.application.config.action_mailer.default_url_options.merge(
-                controller: "ahoy/messages",
-                action: "click",
-                id: ahoy_message.token,
-                url: link["href"],
-                signature: signature
+          if link["data-no-track"]
+            # remove attribute
+            link.remove_attribute("data-no-track")
+          else
+            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
+            url =
+              AhoyEmail::Engine.routes.url_helpers.url_for(
+                Rails.application.config.action_mailer.default_url_options.merge(
+                  controller: "ahoy/messages",
+                  action: "click",
+                  id: ahoy_message.token,
+                  url: link["href"],
+                  signature: signature
+                )
               )
-            )
 
-          link["href"] = url
+            link["href"] = url
+          end
         end
 
         # hacky
