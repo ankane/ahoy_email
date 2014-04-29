@@ -26,23 +26,23 @@ end
 
 module ActionMailer
   class Base
+    class_attribute :ahoy_options
+    self.ahoy_options = {}
+
+    class << self
+      def ahoy(options)
+        self.ahoy_options = ahoy_options.merge(options)
+      end
+    end
+
+    def ahoy(options)
+      @ahoy_options = (@ahoy_options || {}).merge(options)
+    end
 
     def mail_with_ahoy(headers = {}, &block)
-      # https://github.com/rails/rails/blob/master/actionmailer/lib/action_mailer/base.rb#L754
-      default_values = {}
-      self.class.default.each do |k,v|
-        default_values[k] = v.is_a?(Proc) ? instance_eval(&v) : v
-      end
-
-      options = headers[:ahoy] || {}
-      options = options.reverse_merge(default_values[:ahoy] || {})
-      options = options.reverse_merge(AhoyEmail.options)
-
       message =  mail_without_ahoy(headers, &block)
 
-      # remove ahoy header
-      message[:ahoy] = nil
-
+      options = AhoyEmail.options.merge(self.class.ahoy_options).merge(@ahoy_options || {})
       AhoyEmail::Processor.new(message, options).process!
 
       message
