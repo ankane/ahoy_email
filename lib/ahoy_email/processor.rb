@@ -25,6 +25,8 @@ module AhoyEmail
         ahoy_message.sent_at = Time.now
         ahoy_message.save
       end
+    rescue => e
+      report_error(e)
     end
 
     def mark_sent!
@@ -36,6 +38,8 @@ module AhoyEmail
         end
         message["Ahoy-Message-Id"] = nil
       end
+    rescue => e
+      report_error(e)
     end
 
     protected
@@ -121,6 +125,17 @@ module AhoyEmail
 
     def html_part?
       (message.html_part || message).content_type =~ /html/
+    end
+
+    # not a fan of quiet errors
+    # but tracking should *not* break
+    # email delivery in production
+    def report_error(e)
+      if Rails.env.production?
+        $stderr.puts e
+      else
+        raise e
+      end
     end
 
   end

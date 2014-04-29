@@ -40,7 +40,7 @@ module ActionMailer
     end
 
     def mail_with_ahoy(headers = {}, &block)
-      message =  mail_without_ahoy(headers, &block)
+      message = mail_without_ahoy(headers, &block)
 
       options = AhoyEmail.options.merge(self.class.ahoy_options).merge(@ahoy_options || {})
       AhoyEmail::Processor.new(message, options).process!
