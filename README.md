@@ -67,7 +67,7 @@ To specify the user, use:
 class UserMailer < ActionMailer::Base
   def welcome_email(user)
     # ...
-    ahoy user: user
+    track user: user
     mail to: user.email
   end
 end
@@ -114,7 +114,7 @@ AhoyEmail.options = {
 
 ```ruby
 class UserMailer < ActionMailer::Base
-  ahoy utm_campaign: "boom"
+  track utm_campaign: "boom"
 end
 ```
 
@@ -124,7 +124,7 @@ end
 class UserMailer < ActionMailer::Base
   def welcome_email(user)
     # ...
-    ahoy user: user
+    track user: user
     mail to: user.email
   end
 end

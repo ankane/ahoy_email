@@ -30,12 +30,12 @@ module ActionMailer
     self.ahoy_options = {}
 
     class << self
-      def ahoy(options)
+      def track(options)
         self.ahoy_options = ahoy_options.merge(options)
       end
     end
 
-    def ahoy(options)
+    def track(options)
       @ahoy_options = (@ahoy_options || {}).merge(options)
     end
 
