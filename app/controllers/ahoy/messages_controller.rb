@@ -15,14 +15,19 @@ module Ahoy
         @message.clicked_at = Time.now
         @message.save!
       end
-      # TODO no open redirect
-      redirect_to params[:url]
+      url = params[:url]
+      signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, url)
+      if params[:signature] == signature
+        redirect_to url
+      else
+        redirect_to main_app.root_url
+      end
     end
 
     protected
 
     def set_message
-      @message = Ahoy::Message.where(token: params[:token]).first
+      @message = Ahoy::Message.where(token: params[:id]).first
     end
 
   end

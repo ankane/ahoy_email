@@ -7,7 +7,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       t.integer :user_id
       t.string :user_type
 
-      # message
+      # optional
       t.text :subject
       t.text :content
 
@@ -17,6 +17,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       t.timestamp :clicked_at
     end
 
+    add_index :ahoy_messages, [:token]
     add_index :ahoy_messages, [:user_id, :user_type]
   end
 end

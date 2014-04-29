@@ -2,10 +2,17 @@ require "ahoy_email/version"
 require "action_mailer"
 require "nokogiri"
 require "addressable/uri"
+require "openssl"
 require "ahoy_email/interceptor"
 require "ahoy_email/engine"
 
 ActionMailer::Base.register_interceptor AhoyEmail::Interceptor
+
+module AhoyEmail
+  class << self
+    attr_accessor :secret_token
+  end
+end
 
 module ActionMailer
   class Base

@@ -27,11 +27,37 @@ rake db:migrate
 
 ## How It Works
 
-Ahoy creates an `Ahoy::Message` record when an email is sent. It also adds:
+Ahoy creates an `Ahoy::Message` record when an email is sent.
 
-- open tracking
-- click tracking
-- UTM parameters
+### Open
+
+An invisible pixel is added right before the closing `</body>` tag to HTML emails.
+
+If a recipient has images enabled in his / her email client, the pixel is loaded and an open is recorded.
+
+### Click
+
+Links in HTML emails are rewritten to pass through your server.
+
+````
+http://chartkick.com
+```
+
+becomes
+
+```
+http://www.yourdomain.com/ahoy/messages/rAnDoMtOken/click?url=http%3A%2F%2Fchartkick.com&signature=...
+```
+
+A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
+
+### UTM Parameters
+
+UTM parameters are added to each link if they don’t already exist.
+
+By default, `utm_medium` is set to `email`.
+
+### User
 
 To specify the user, use:
 

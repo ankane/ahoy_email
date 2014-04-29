@@ -66,7 +66,7 @@ module AhoyEmail
               Rails.application.config.action_mailer.default_url_options.merge(
                 controller: "ahoy/messages",
                 action: "open",
-                token: ahoy_message.token,
+                id: ahoy_message.token,
                 format: "gif"
               )
             )
@@ -87,13 +87,15 @@ module AhoyEmail
 
           doc = Nokogiri::HTML(body.raw_source)
           doc.css("a").each do |link|
+            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
             url =
               AhoyEmail::Engine.routes.url_helpers.url_for(
                 Rails.application.config.action_mailer.default_url_options.merge(
                   controller: "ahoy/messages",
                   action: "click",
-                  token: ahoy_message.token,
-                  url: link["href"]
+                  id: ahoy_message.token,
+                  url: link["href"],
+                  signature: signature
                 )
               )
 
