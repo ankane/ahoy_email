@@ -77,7 +77,7 @@ module AhoyEmail
               format: "gif"
             )
           )
-        pixel = image_tag(url)
+        pixel = image_tag(url, size: "1x1", alt: nil)
 
         # try to add before body tag
         if raw_source.match(regex)
