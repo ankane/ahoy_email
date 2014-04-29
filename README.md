@@ -51,7 +51,7 @@ http://www.yourdomain.com/ahoy/messages/rAnDoMtOken/click?url=http%3A%2F%2Fchart
 
 A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
 
-Keep specific links from being tracked with `<a data-no-track="true" href=...`.
+Keep specific links from being tracked with `<a data-disable-tracking="true" href="..."></a>`.
 
 ### UTM Parameters
 

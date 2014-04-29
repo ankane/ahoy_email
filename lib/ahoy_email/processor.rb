@@ -98,9 +98,10 @@ module AhoyEmail
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a").each do |link|
-          if link["data-no-track"]
+          key = "data-disable-tracking"
+          if link[key]
             # remove attribute
-            link.remove_attribute("data-no-track")
+            link.remove_attribute(key)
           else
             signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
             url =
