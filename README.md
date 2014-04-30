@@ -31,7 +31,7 @@ Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 ### Users
 
-Ahoy tracks which user a message is sent to.  This allows you to have a full history of messages for each user.
+Ahoy tracks the user a message is sent to (not just the email address).  This allows you to have a full history of messages for each user.
 
 By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
 
@@ -145,10 +145,10 @@ AhoyEmail.track open: false
 You can use a `Proc` for any option.
 
 ```ruby
-track utm_campaign: proc{|message, mailer| mailer.mailer_name + Time.now.year }
+track utm_campaign: proc{|message, mailer| mailer.action_name + Time.now.year }
 ```
 
-Turn tracking off for an email
+Disable tracking for an email
 
 ```ruby
 track message: false
