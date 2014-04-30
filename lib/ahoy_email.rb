@@ -17,11 +17,11 @@ module AhoyEmail
     open: true,
     click: true,
     utm_params: true,
-    utm_source: nil,
+    utm_source: proc {|message, mailer| mailer.mailer_name },
     utm_medium: "email",
     utm_term: nil,
     utm_content: nil,
-    utm_campaign: nil
+    utm_campaign: proc {|message, mailer| mailer.action_name }
   }
 end
 
@@ -44,6 +44,11 @@ module ActionMailer
       message = mail_without_ahoy(headers, &block)
 
       options = AhoyEmail.options.merge(self.class.ahoy_options).merge(@ahoy_options || {})
+      options.each do |k, v|
+        if v.respond_to?(:call)
+          options[k] = v.call(message, self)
+        end
+      end
       AhoyEmail::Processor.new(message, options).process!
 
       message
