@@ -16,8 +16,8 @@ module Ahoy
         @message.save!
       end
       url = params[:url]
-      signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, url)
-      if params[:signature] == signature
+      signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
+      if secure_compare(params[:signature], signature)
         redirect_to url
       else
         redirect_to main_app.root_url
@@ -28,6 +28,18 @@ module Ahoy
 
     def set_message
       @message = AhoyEmail.message_model.where(token: params[:id]).first
+    end
+
+    # from https://github.com/rails/rails/blob/master/activesupport/lib/active_support/message_verifier.rb
+    # constant-time comparison algorithm to prevent timing attacks
+    def secure_compare(a, b)
+      return false unless a.bytesize == b.bytesize
+
+      l = a.unpack "C#{a.bytesize}"
+
+      res = 0
+      b.each_byte { |byte| res |= byte ^ l.shift }
+      res == 0
     end
 
   end
