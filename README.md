@@ -10,7 +10,7 @@ You get:
 
 Works with any email service.
 
-:fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy) and [Ahoy Events](https://github.com/ankane/ahoy).
+:fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy) and [Ahoy Events](https://github.com/ankane/ahoy_events).
 
 ## Installation
 
