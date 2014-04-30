@@ -21,7 +21,8 @@ module AhoyEmail
     utm_medium: "email",
     utm_term: nil,
     utm_content: nil,
-    utm_campaign: proc {|message, mailer| mailer.action_name }
+    utm_campaign: proc {|message, mailer| mailer.action_name },
+    user: proc{|message, mailer| User.where(email: message.to.first).first rescue nil }
   }
 end
 
