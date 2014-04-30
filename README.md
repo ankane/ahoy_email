@@ -87,9 +87,11 @@ http://yoursite.com/ahoy/messages/rAnDoMtOken/click?url=http%3A%2F%2Fchartkick.c
 
 A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
 
-Use `track click: false` to skip this.
+Use `track click: false` to skip tracking, or skip specific links with:
 
-Or keep specific links from being tracked with `<a data-disable-tracking="true" href="..."></a>`.
+```html
+<a data-disable-tracking="true" href="..."></a>
+```
 
 ### UTM Tagging
 
@@ -101,13 +103,16 @@ The defaults are:
 - `utm_source` is the mailer name like `user_mailer`
 - `utm_campaign` is the mailer action like `welcome_email`
 
-Use `track utm_params: false` to skip this.
+Use `track utm_params: false` to skip tagging, or skip specific links with:
 
-Or keep specific links from being tracked with `<a data-disable-utm-params="true" href="..."></a>`.
+
+```html
+<a data-disable-utm-params="true" href="..."></a>
+```
 
 ## Customize
 
-There are 3 places to set options. Here's the order of precedence.
+There are 3 places to set options. Here’s the order of precedence.
 
 ### Action
 
