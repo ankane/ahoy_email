@@ -27,39 +27,13 @@ rake db:migrate
 
 ## How It Works
 
-Ahoy creates an `Ahoy::Message` record when an email is sent.
+Ahoy creates an `Ahoy::Message` record every time an email is sent by default.
 
-### Open
+### Users
 
-An invisible pixel is added right before the closing `</body>` tag to HTML emails.
+Ahoy tracks which user a message is sent to.  This allows you to have a full history of messages for each user.
 
-If a recipient has images enabled in his / her email client, the pixel is loaded and an open is recorded.
-
-### Click
-
-Links in HTML emails are rewritten to pass through your server.
-
-````
-http://chartkick.com
-```
-
-becomes
-
-```
-http://yoursite.com/ahoy/messages/rAnDoMtOken/click?url=http%3A%2F%2Fchartkick.com&signature=...
-```
-
-A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
-
-Keep specific links from being tracked with `<a data-disable-tracking="true" href="..."></a>`.
-
-### UTM Parameters
-
-UTM parameters are added to each link if they don’t already exist.
-
-By default, `utm_medium` is set to `email`.
-
-### User
+By default, Ahoy tries `User.where(email: message.to).first` to find the user.
 
 To specify the user, use:
 
@@ -89,9 +63,71 @@ And run:
 user.messages
 ```
 
+### Track Opens
+
+An invisible pixel is added right before the closing `</body>` tag to HTML emails.
+
+If a recipient has images enabled in his / her email client, the pixel is loaded and an open is recorded.
+
+Use `track open: false` to skip this.
+
+### Track Clicks
+
+Links in HTML emails are rewritten to pass through your server.
+
+````
+http://chartkick.com
+```
+
+becomes
+
+```
+http://yoursite.com/ahoy/messages/rAnDoMtOken/click?url=http%3A%2F%2Fchartkick.com&signature=...
+```
+
+A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
+
+Use `track click: false` to skip this.
+
+Or keep specific links from being tracked with `<a data-disable-tracking="true" href="..."></a>`.
+
+### UTM Tagging
+
+UTM parameters are added to each link if they don’t already exist.
+
+The defaults are:
+
+- `utm_medium` is `email`
+- `utm_source` is the mailer name (`user_mailer`)
+- `utm_action` is the mailer action (`welcome_email`)
+
+Use `track utm_params: false` to skip this.
+
+Or keep specific links from being tracked with `<a data-disable-utm-params="true" href="..."></a>`.
+
 ## Customize
 
-There are 3 places to set options.
+There are 3 places to set options. Here's the order of precedence.
+
+### Action
+
+``` ruby
+class UserMailer < ActionMailer::Base
+  def welcome_email(user)
+    # ...
+    track user: user
+    mail to: user.email
+  end
+end
+```
+
+### Mailer
+
+```ruby
+class UserMailer < ActionMailer::Base
+  track utm_campaign: "boom"
+end
+```
 
 ### Global
 
@@ -110,28 +146,9 @@ AhoyEmail.track(
 )
 ```
 
-### Mailers
-
-```ruby
-class UserMailer < ActionMailer::Base
-  track utm_campaign: "boom"
-end
-```
-
-### Action
-
-``` ruby
-class UserMailer < ActionMailer::Base
-  def welcome_email(user)
-    # ...
-    track user: user
-    mail to: user.email
-  end
-end
-```
-
 ## TODO
 
+- Add tests
 - Subscription management (lists, opt-outs) [separate gem]
 
 ## History
