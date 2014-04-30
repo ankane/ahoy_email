@@ -49,28 +49,14 @@ module AhoyEmail
     end
 
     def track_utm_parameters
-      if html_part?
-        body = (message.html_part || message).body
-
-        doc = Nokogiri::HTML(body.raw_source)
-        doc.css("a").each do |link|
-          key = "data-disable-utm-params"
-          if link[key]
-            # remove attribute
-            link.remove_attribute(key)
-          else
-            uri = Addressable::URI.parse(link["href"])
-            params = uri.query_values || {}
-            %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
-              params[key] ||= options[key.to_sym] if options[key.to_sym]
-            end
-            uri.query_values = params
-            link["href"] = uri.to_s
-          end
+      rewrite_links disable_suffix: "utm-params" do |link|
+        uri = Addressable::URI.parse(link["href"])
+        params = uri.query_values || {}
+        %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
+          params[key] ||= options[key.to_sym] if options[key.to_sym]
         end
-
-        # hacky
-        body.raw_source.sub!(body.raw_source, doc.to_s)
+        uri.query_values = params
+        link["href"] = uri.to_s
       end
     end
 
@@ -99,29 +85,35 @@ module AhoyEmail
     end
 
     def track_click
+      rewrite_links disable_suffix: "tracking" do |link|
+        signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
+        url =
+          AhoyEmail::Engine.routes.url_helpers.url_for(
+            Rails.application.config.action_mailer.default_url_options.merge(
+              controller: "ahoy/messages",
+              action: "click",
+              id: ahoy_message.token,
+              url: link["href"],
+              signature: signature
+            )
+          )
+
+        link["href"] = url
+      end
+    end
+
+    def rewrite_links(opts = {}, &block)
       if html_part?
         body = (message.html_part || message).body
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a").each do |link|
-          key = "data-disable-tracking"
+          key = "data-disable-#{opts[:disable_suffix]}"
           if link[key]
             # remove attribute
             link.remove_attribute(key)
           else
-            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
-            url =
-              AhoyEmail::Engine.routes.url_helpers.url_for(
-                Rails.application.config.action_mailer.default_url_options.merge(
-                  controller: "ahoy/messages",
-                  action: "click",
-                  id: ahoy_message.token,
-                  url: link["href"],
-                  signature: signature
-                )
-              )
-
-            link["href"] = url
+            yield link
           end
         end
 
