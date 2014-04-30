@@ -27,7 +27,7 @@ rake db:migrate
 
 ## How It Works
 
-Ahoy creates an `Ahoy::Message` record every time an email is sent by default.
+Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 ### Users
 
@@ -35,7 +35,7 @@ Ahoy tracks which user a message is sent to.  This allows you to have a full his
 
 By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
 
-To specify the user, use:
+You can pass a specific user with:
 
 ```ruby
 class UserMailer < ActionMailer::Base
@@ -47,7 +47,7 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-User is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
+The user association is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
 
 To get all messages sent to a user, add an association:
 
@@ -99,9 +99,9 @@ UTM parameters are added to each link if they don’t already exist.
 
 The defaults are:
 
-- `utm_medium` is `email`
-- `utm_source` is the mailer name like `user_mailer`
-- `utm_campaign` is the mailer action like `welcome_email`
+- utm_medium - `email`
+- utm_source - the mailer name like `user_mailer`
+- utm_campaign - the mailer action like `welcome_email`
 
 Use `track utm_params: false` to skip tagging, or skip specific links with:
 
