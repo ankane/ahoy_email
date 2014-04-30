@@ -137,8 +137,7 @@ end
 ### Global
 
 ```ruby
-AhoyEmail.track message: false
-# turns off tracking by default
+AhoyEmail.track open: false
 ```
 
 ## Reference
@@ -147,6 +146,18 @@ You can use a `Proc` for any option.
 
 ```ruby
 track utm_campaign: proc{|message, mailer| mailer.mailer_name + Time.now.year }
+```
+
+Turn tracking off for an email
+
+```ruby
+track message: false
+```
+
+Or by default
+
+```ruby
+AhoyEmail.track message: false
 ```
 
 ## TODO
