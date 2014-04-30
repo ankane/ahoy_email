@@ -15,7 +15,7 @@ module AhoyEmail
         ahoy_message.token = generate_token
         ahoy_message.user = options[:user]
 
-        track_utm_parameters!
+        track_utm_parameters! if options[:utm_params]
         track_open! if options[:open]
         track_click! if options[:click]
 
@@ -53,13 +53,19 @@ module AhoyEmail
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a").each do |link|
-          uri = Addressable::URI.parse(link["href"])
-          params = uri.query_values || {}
-          %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
-            params[key] ||= options[key.to_sym] if options[key.to_sym]
+          key = "data-disable-utm-params"
+          if link[key]
+            # remove attribute
+            link.remove_attribute(key)
+          else
+            uri = Addressable::URI.parse(link["href"])
+            params = uri.query_values || {}
+            %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
+              params[key] ||= options[key.to_sym] if options[key.to_sym]
+            end
+            uri.query_values = params
+            link["href"] = uri.to_s
           end
-          uri.query_values = params
-          link["href"] = uri.to_s
         end
 
         # hacky

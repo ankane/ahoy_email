@@ -16,6 +16,7 @@ module AhoyEmail
     message: true,
     open: true,
     click: true,
+    utm_params: true,
     utm_source: nil,
     utm_medium: "email",
     utm_term: nil,
