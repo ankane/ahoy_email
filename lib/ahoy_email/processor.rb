@@ -9,28 +9,29 @@ module AhoyEmail
       @options = options
     end
 
-    def process!
+    def process
       if options[:message]
         @ahoy_message = Ahoy::Message.new
         ahoy_message.token = generate_token
         ahoy_message.user = options[:user]
 
-        track_utm_parameters! if options[:utm_params]
-        track_open! if options[:open]
-        track_click! if options[:click]
+        track_utm_parameters if options[:utm_params]
+        track_open if options[:open]
+        track_click if options[:click]
 
         # save
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
         ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
         ahoy_message.save
+        message["Ahoy-Message-Id"] = ahoy_message.id
       end
     rescue => e
       report_error(e)
     end
 
-    def mark_sent!
+    def track_send
       if (message_id = message["Ahoy-Message-Id"])
-        ahoy_message = Ahoy::Message.where(id: message_id).first
+        ahoy_message = Ahoy::Message.where(id: message_id.to_s).first
         if ahoy_message
           ahoy_message.sent_at = Time.now
           ahoy_message.save
@@ -47,7 +48,7 @@ module AhoyEmail
       SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
     end
 
-    def track_utm_parameters!
+    def track_utm_parameters
       if html_part?
         body = (message.html_part || message).body
 
@@ -73,7 +74,7 @@ module AhoyEmail
       end
     end
 
-    def track_open!
+    def track_open
       if html_part?
         raw_source = (message.html_part || message).body.raw_source
         regex = /<\/body>/i
@@ -97,7 +98,7 @@ module AhoyEmail
       end
     end
 
-    def track_click!
+    def track_click
       if html_part?
         body = (message.html_part || message).body
 

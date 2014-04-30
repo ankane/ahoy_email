@@ -31,7 +31,7 @@ Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 ### Users
 
-Ahoy tracks the user a message is sent to (not just the email address).  This allows you to have a full history of messages for each user.
+Ahoy tracks the user a message is sent to - not just the email address.  This gives you a full history of messages for each user, even if her or she changes addresses.
 
 By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
 
@@ -67,7 +67,7 @@ user.messages
 
 An invisible pixel is added right before the closing `</body>` tag to HTML emails.
 
-If a recipient has images enabled in his / her email client, the pixel is loaded and an open is recorded.
+If the user has images enabled in his or her email client, the pixel is loaded and the open time is recorded.
 
 Use `track open: false` to skip this.
 

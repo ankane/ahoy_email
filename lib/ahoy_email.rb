@@ -50,7 +50,7 @@ module ActionMailer
           options[k] = v.call(message, self)
         end
       end
-      AhoyEmail::Processor.new(message, options).process!
+      AhoyEmail::Processor.new(message, options).process
 
       message
     end

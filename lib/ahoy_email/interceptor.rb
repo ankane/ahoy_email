@@ -3,7 +3,7 @@ module AhoyEmail
     class << self
 
       def delivering_email(message)
-        AhoyEmail::Processor.new(message).mark_sent!
+        AhoyEmail::Processor.new(message).track_send
       end
 
     end
