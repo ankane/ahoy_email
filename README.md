@@ -10,6 +10,8 @@ You get:
 
 Works with any email service.
 
+:fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy) and [Ahoy Events](https://github.com/ankane/ahoy).
+
 ## Installation
 
 Add this line to your application’s Gemfile:
