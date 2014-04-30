@@ -24,6 +24,15 @@ module AhoyEmail
     utm_campaign: proc {|message, mailer| mailer.action_name },
     user: proc{|message, mailer| User.where(email: message.to.first).first rescue nil }
   }
+
+  def self.message_model=(message_model)
+    @message_model = message_model
+  end
+
+  def self.message_model
+    @message_model || Ahoy::Message
+  end
+
 end
 
 module ActionMailer

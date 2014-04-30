@@ -82,7 +82,7 @@ http://chartkick.com
 becomes
 
 ```
-http://yoursite.com/ahoy/messages/rAnDoMtOken/click?url=http%3A%2F%2Fchartkick.com&signature=...
+http://yoursite.com/ahoy/messages/rAnDoMtOkEn/click?url=http%3A%2F%2Fchartkick.com&signature=...
 ```
 
 A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
@@ -158,6 +158,12 @@ Or by default
 
 ```ruby
 AhoyEmail.track message: false
+```
+
+Use a different model
+
+```ruby
+AhoyEmail.message_model = UserMessage
 ```
 
 ## TODO

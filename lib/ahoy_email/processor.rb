@@ -11,7 +11,7 @@ module AhoyEmail
 
     def process
       if options[:message]
-        @ahoy_message = Ahoy::Message.new
+        @ahoy_message = AhoyEmail.message_model.new
         ahoy_message.token = generate_token
         ahoy_message.user = options[:user]
 
