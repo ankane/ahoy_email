@@ -63,7 +63,7 @@ And run:
 user.messages
 ```
 
-### Track Opens
+### Opens
 
 An invisible pixel is added right before the closing `</body>` tag to HTML emails.
 
@@ -71,7 +71,7 @@ If the user has images enabled in his or her email client, the pixel is loaded a
 
 Use `track open: false` to skip this.
 
-### Track Clicks
+### Clicks
 
 Links in HTML emails are rewritten to pass through your server.
 
@@ -93,7 +93,7 @@ Use `track click: false` to skip tracking, or skip specific links with:
 <a data-disable-tracking="true" href="..."></a>
 ```
 
-### UTM Tagging
+### UTM Parameters
 
 UTM parameters are added to each link if they don’t already exist.
 
