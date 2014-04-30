@@ -1,6 +1,7 @@
-## 0.1.1 [unreleased]
+## 0.1.1
 
-- Fixed deprecation warning
+- Use secure compare for signature verification
+- Fixed deprecation warnings
 
 ## 0.1.0
 
