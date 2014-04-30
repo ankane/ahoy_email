@@ -31,7 +31,7 @@ module AhoyEmail
 
     def track_send
       if (message_id = message["Ahoy-Message-Id"])
-        ahoy_message = Ahoy::Message.where(id: message_id.to_s).first
+        ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
         if ahoy_message
           ahoy_message.sent_at = Time.now
           ahoy_message.save

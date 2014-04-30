@@ -27,7 +27,7 @@ module Ahoy
     protected
 
     def set_message
-      @message = Ahoy::Message.where(token: params[:id]).first
+      @message = AhoyEmail.message_model.where(token: params[:id]).first
     end
 
   end
