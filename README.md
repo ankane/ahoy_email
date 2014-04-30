@@ -1,14 +1,14 @@
 # Ahoy Email
 
-:construction: Coming soon - May 1, 2014
-
-:envelope: Simple, powerful email tracking for Rails
+:postbox: Simple, powerful email tracking for Rails
 
 You get:
 
 - A history of emails sent to each user
 - Open and click tracking
 - Easy UTM tagging
+
+Works with any email service.
 
 ## Installation
 
@@ -31,7 +31,7 @@ Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 ### Users
 
-Ahoy tracks the user a message is sent to - not just the email address.  This gives you a full history of messages for each user, even if her or she changes addresses.
+Ahoy tracks the user a message is sent to - not just the email address.  This gives you a full history of messages for each user, even if he or she changes addresses.
 
 By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
 
@@ -65,15 +65,15 @@ user.messages
 
 ### Opens
 
-An invisible pixel is added right before the closing `</body>` tag to HTML emails.
+An invisible pixel is added right before the `</body>` tag in HTML emails.
 
-If the user has images enabled in his or her email client, the pixel is loaded and the open time is recorded.
+If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
 
 Use `track open: false` to skip this.
 
 ### Clicks
 
-Links in HTML emails are rewritten to pass through your server.
+A redirect is added to links to track clicks in HTML emails.
 
 ````
 http://chartkick.com
@@ -82,7 +82,7 @@ http://chartkick.com
 becomes
 
 ```
-http://yoursite.com/ahoy/messages/rAnDoMtOkEn/click?url=http%3A%2F%2Fchartkick.com&signature=...
+http://you.io/ahoy/messages/rAnDoMtOkEn/click?url=http%3A%2F%2Fchartkick.com&signature=...
 ```
 
 A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
@@ -95,7 +95,7 @@ Use `track click: false` to skip tracking, or skip specific links with:
 
 ### UTM Parameters
 
-UTM parameters are added to each link if they don’t already exist.
+UTM parameters are added to links if they don’t already exist.
 
 The defaults are:
 
@@ -169,7 +169,7 @@ AhoyEmail.message_model = UserMessage
 ## TODO
 
 - Add tests
-- Open and click hooks
+- Open and click hooks for deeper analytics
 - Subscription management (lists, opt-outs) [separate gem]
 
 ## History
