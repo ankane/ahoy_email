@@ -78,7 +78,7 @@ module AhoyEmail
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a").each do |link|
           # utm params first
-          if options[:utm_params] and !disabled_attribute?(link, "utm-params")
+          if options[:utm_params] and !skip_attribute?(link, "utm-params")
             uri = Addressable::URI.parse(link["href"])
             params = uri.query_values || {}
             %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
@@ -88,7 +88,7 @@ module AhoyEmail
             link["href"] = uri.to_s
           end
 
-          if options[:click] and !disabled_attribute?(link, "tracking")
+          if options[:click] and !skip_attribute?(link, "click")
             signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
             url =
               AhoyEmail::Engine.routes.url_helpers.url_for(
@@ -114,8 +114,8 @@ module AhoyEmail
       (message.html_part || message).content_type =~ /html/
     end
 
-    def disabled_attribute?(link, suffix)
-      attribute = "data-disable-#{suffix}"
+    def skip_attribute?(link, suffix)
+      attribute = "data-skip-#{suffix}"
       if link[attribute]
         # remove it
         link.remove_attribute(attribute)

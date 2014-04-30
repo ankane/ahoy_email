@@ -90,7 +90,7 @@ A signature is added to prevent [open redirects](https://www.owasp.org/index.php
 Use `track click: false` to skip tracking, or skip specific links with:
 
 ```html
-<a data-disable-tracking="true" href="...">Can't touch this</a>
+<a data-skip-click="true" href="...">Can't touch this</a>
 ```
 
 ### UTM Parameters
@@ -107,7 +107,7 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 
 
 ```html
-<a data-disable-utm-params="true" href="...">Break it down</a>
+<a data-skip-utm-params="true" href="...">Break it down</a>
 ```
 
 ## Customize
