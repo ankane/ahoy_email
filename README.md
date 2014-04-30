@@ -131,19 +131,17 @@ end
 
 ### Global
 
-The defaults are listed below.
+```ruby
+AhoyEmail.track message: false
+# turns off tracking by default
+```
+
+## Reference
+
+You can use a `Proc` for any option.
 
 ```ruby
-AhoyEmail.track(
-  message: true,
-  open: true,
-  click: true,
-  utm_source: nil,
-  utm_medium: "email",
-  utm_term: nil,
-  utm_content: nil,
-  utm_campaign: nil
-)
+track utm_campaign: proc{|message, mailer| mailer.mailer_name + Time.now.year }
 ```
 
 ## TODO
