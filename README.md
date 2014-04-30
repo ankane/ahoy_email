@@ -163,6 +163,7 @@ AhoyEmail.track message: false
 ## TODO
 
 - Add tests
+- Open and click hooks
 - Subscription management (lists, opt-outs) [separate gem]
 
 ## History
