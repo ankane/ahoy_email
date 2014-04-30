@@ -33,7 +33,7 @@ Ahoy creates an `Ahoy::Message` record every time an email is sent by default.
 
 Ahoy tracks which user a message is sent to.  This allows you to have a full history of messages for each user.
 
-By default, Ahoy tries `User.where(email: message.to).first` to find the user.
+By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
 
 To specify the user, use:
 
@@ -98,8 +98,8 @@ UTM parameters are added to each link if they don’t already exist.
 The defaults are:
 
 - `utm_medium` is `email`
-- `utm_source` is the mailer name (`user_mailer`)
-- `utm_action` is the mailer action (`welcome_email`)
+- `utm_source` is the mailer name like `user_mailer`
+- `utm_campaign` is the mailer action like `welcome_email`
 
 Use `track utm_params: false` to skip this.
 
