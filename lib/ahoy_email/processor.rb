@@ -15,9 +15,8 @@ module AhoyEmail
         ahoy_message.token = generate_token
         ahoy_message.user = options[:user]
 
-        track_utm_parameters if options[:utm_params]
         track_open if options[:open]
-        track_click if options[:click]
+        track_links if options[:utm_params] or options[:click]
 
         # save
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
@@ -48,18 +47,6 @@ module AhoyEmail
       SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
     end
 
-    def track_utm_parameters
-      rewrite_links disable_suffix: "utm-params" do |link|
-        uri = Addressable::URI.parse(link["href"])
-        params = uri.query_values || {}
-        %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
-          params[key] ||= options[key.to_sym] if options[key.to_sym]
-        end
-        uri.query_values = params
-        link["href"] = uri.to_s
-      end
-    end
-
     def track_open
       if html_part?
         raw_source = (message.html_part || message).body.raw_source
@@ -84,36 +71,37 @@ module AhoyEmail
       end
     end
 
-    def track_click
-      rewrite_links disable_suffix: "tracking" do |link|
-        signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
-        url =
-          AhoyEmail::Engine.routes.url_helpers.url_for(
-            Rails.application.config.action_mailer.default_url_options.merge(
-              controller: "ahoy/messages",
-              action: "click",
-              id: ahoy_message.token,
-              url: link["href"],
-              signature: signature
-            )
-          )
-
-        link["href"] = url
-      end
-    end
-
-    def rewrite_links(opts = {}, &block)
+    def track_links
       if html_part?
         body = (message.html_part || message).body
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a").each do |link|
-          key = "data-disable-#{opts[:disable_suffix]}"
-          if link[key]
-            # remove attribute
-            link.remove_attribute(key)
-          else
-            yield link
+          # utm params first
+          if options[:utm_params] and !disabled_attribute?(link, "utm-params")
+            uri = Addressable::URI.parse(link["href"])
+            params = uri.query_values || {}
+            %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
+              params[key] ||= options[key.to_sym] if options[key.to_sym]
+            end
+            uri.query_values = params
+            link["href"] = uri.to_s
+          end
+
+          if options[:click] and !disabled_attribute?(link, "tracking")
+            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
+            url =
+              AhoyEmail::Engine.routes.url_helpers.url_for(
+                Rails.application.config.action_mailer.default_url_options.merge(
+                  controller: "ahoy/messages",
+                  action: "click",
+                  id: ahoy_message.token,
+                  url: link["href"],
+                  signature: signature
+                )
+              )
+
+            link["href"] = url
           end
         end
 
@@ -124,6 +112,17 @@ module AhoyEmail
 
     def html_part?
       (message.html_part || message).content_type =~ /html/
+    end
+
+    def disabled_attribute?(link, suffix)
+      attribute = "data-disable-#{suffix}"
+      if link[attribute]
+        # remove it
+        link.remove_attribute(attribute)
+        true
+      else
+        false
+      end
     end
 
     # not a fan of quiet errors
