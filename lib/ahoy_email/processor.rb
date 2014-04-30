@@ -89,7 +89,7 @@ module AhoyEmail
           end
 
           if options[:click] and !skip_attribute?(link, "click")
-            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
+            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
             url =
               AhoyEmail::Engine.routes.url_helpers.url_for(
                 Rails.application.config.action_mailer.default_url_options.merge(
