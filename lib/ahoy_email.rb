@@ -24,6 +24,10 @@ module AhoyEmail
     user: proc{|message, mailer| User.where(email: message.to.first).first rescue nil }
   }
 
+  def self.track(options)
+    self.options = self.options.merge(options)
+  end
+
   def self.message_model=(message_model)
     @message_model = message_model
   end
