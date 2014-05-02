@@ -13,6 +13,7 @@ module Ahoy
     def click
       if @message and !@message.clicked_at
         @message.clicked_at = Time.now
+        @message.opened_at ||= @message.clicked_at
         @message.save!
       end
       url = params[:url]
