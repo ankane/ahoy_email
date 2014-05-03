@@ -1,5 +1,6 @@
 ## 0.1.3 [unreleased]
 
+- Added `to` field
 - Added subscribers for open and click events
 
 ## 0.1.2

@@ -4,6 +4,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       t.string :token
 
       # user
+      t.text :to
       t.integer :user_id
       t.string :user_type
 
