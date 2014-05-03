@@ -1,4 +1,4 @@
-## 0.1.3 [unreleased]
+## 0.1.3
 
 - Added `to` and `mailer` fields
 - Added subscribers for open and click events
