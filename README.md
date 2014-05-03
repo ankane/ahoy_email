@@ -195,7 +195,6 @@ AhoyEmail.message_model = UserMessage
 ## TODO
 
 - Add tests
-- Open and click hooks for deeper analytics
 - Subscription management (lists, opt-outs) [separate gem]
 
 ## History
