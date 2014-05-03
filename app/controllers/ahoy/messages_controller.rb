@@ -7,6 +7,7 @@ module Ahoy
         @message.opened_at = Time.now
         @message.save!
       end
+      publish :open
       send_data Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), type: "image/gif", disposition: "inline"
     end
 
@@ -18,6 +19,7 @@ module Ahoy
       end
       url = params[:url]
       signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
+      publish :click, url: params[:url]
       if secure_compare(params[:signature], signature)
         redirect_to url
       else
@@ -29,6 +31,16 @@ module Ahoy
 
     def set_message
       @message = AhoyEmail.message_model.where(token: params[:id]).first
+    end
+
+    def publish(name, event = {})
+      AhoyEmail.subscribers.each do |subscriber|
+        if subscriber.respond_to?(name)
+          event[:message] = @message
+          event[:controller] = self
+          subscriber.send name, event
+        end
+      end
     end
 
     # from https://github.com/rails/rails/blob/master/activesupport/lib/active_support/message_verifier.rb

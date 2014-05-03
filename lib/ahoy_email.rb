@@ -9,7 +9,7 @@ require "ahoy_email/mailer"
 require "ahoy_email/engine"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :options
+  mattr_accessor :secret_token, :options, :subscribers
 
   self.options = {
     message: true,
@@ -23,6 +23,8 @@ module AhoyEmail
     utm_campaign: proc {|message, mailer| mailer.action_name },
     user: proc{|message, mailer| User.where(email: message.to.first).first rescue nil }
   }
+
+  self.subscribers = []
 
   def self.track(options)
     self.options = self.options.merge(options)

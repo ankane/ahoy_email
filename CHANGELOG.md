@@ -1,3 +1,7 @@
+## 0.1.3 [unreleased]
+
+- Added subscribers for open and click events
+
 ## 0.1.2
 
 - Added `AhoyEmail.track` (fix)
