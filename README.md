@@ -10,6 +10,8 @@ You get:
 
 Works with any email service.
 
+:bullettrain_side: To manage email subscriptions, check out [Mailkick](https://github.com/ankane/mailkick)
+
 :fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy) and [Ahoy Events](https://github.com/ankane/ahoy_events).
 
 ## Installation
@@ -191,11 +193,6 @@ Use a different model
 ```ruby
 AhoyEmail.message_model = UserMessage
 ```
-
-## TODO
-
-- Add tests
-- Subscription management (lists, opt-outs) [separate gem]
 
 ## History
 

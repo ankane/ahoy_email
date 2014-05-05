@@ -1,3 +1,7 @@
+## 0.1.4 [unreleased]
+
+- Try not to rewrite unsubscribe links
+
 ## 0.1.3
 
 - Added `to` and `mailer` fields
