@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Rails 3 fix
+
 ## 0.1.4
 
 - Try not to rewrite unsubscribe links
