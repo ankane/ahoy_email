@@ -12,12 +12,12 @@ module AhoyEmail
 
     module ClassMethods
       def track(options)
-        self.ahoy_options = ahoy_options.merge(options)
+        self.ahoy_options = ahoy_options.merge(message: true).merge(options)
       end
     end
 
     def track(options)
-      @ahoy_options = (@ahoy_options || {}).merge(options)
+      @ahoy_options = (@ahoy_options || {}).merge(message: true).merge(options)
     end
 
     def mail_with_ahoy(headers = {}, &block)
