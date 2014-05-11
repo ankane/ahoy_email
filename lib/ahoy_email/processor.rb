@@ -52,13 +52,11 @@ module AhoyEmail
         raw_source = (message.html_part || message).body.raw_source
         regex = /<\/body>/i
         url =
-          AhoyEmail::Engine.routes.url_helpers.url_for(
-            Rails.application.config.action_mailer.default_url_options.merge(
-              controller: "ahoy/messages",
-              action: "open",
-              id: ahoy_message.token,
-              format: "gif"
-            )
+          url_for(
+            controller: "ahoy/messages",
+            action: "open",
+            id: ahoy_message.token,
+            format: "gif"
           )
         pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: nil)
 
@@ -90,18 +88,14 @@ module AhoyEmail
 
           if options[:click] and !skip_attribute?(link, "click")
             signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
-            url =
-              AhoyEmail::Engine.routes.url_helpers.url_for(
-                Rails.application.config.action_mailer.default_url_options.merge(
-                  controller: "ahoy/messages",
-                  action: "click",
-                  id: ahoy_message.token,
-                  url: link["href"],
-                  signature: signature
-                )
+            link["href"] =
+              url_for(
+                controller: "ahoy/messages",
+                action: "click",
+                id: ahoy_message.token,
+                url: link["href"],
+                signature: signature
               )
-
-            link["href"] = url
           end
         end
 
@@ -126,6 +120,10 @@ module AhoyEmail
       else
         false
       end
+    end
+
+    def url_for(options)
+      AhoyEmail::Engine.routes.url_helpers.url_for((ActionMailer::Base.default_url_options || {}).merge(options))
     end
 
     # not a fan of quiet errors
