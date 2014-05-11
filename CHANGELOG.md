@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Enable tracking when track is called by default
+
 ## 0.1.5
 
 - Rails 3 fix
