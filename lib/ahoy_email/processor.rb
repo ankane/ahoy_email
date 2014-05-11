@@ -1,7 +1,5 @@
 module AhoyEmail
   class Processor
-    include ActionView::Helpers::AssetTagHelper
-
     attr_reader :message, :options, :ahoy_message
 
     def initialize(message, options = {})
@@ -62,7 +60,7 @@ module AhoyEmail
               format: "gif"
             )
           )
-        pixel = image_tag(url, size: "1x1", alt: nil)
+        pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: nil)
 
         # try to add before body tag
         if raw_source.match(regex)
