@@ -117,14 +117,16 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 ## Customize
 
 ### Tracking
-Skip tracking of attributes by removing them from the database. You can remove these attributes: 
+
+Skip tracking of attributes by removing them from your model.  You can safely remove:
 
 - to
-- content
-- subject
 - mailer
+- subject
+- content
 
-### Configuration 
+### Configuration
+
 There are 3 places to set options. Here’s the order of precedence.
 
 #### Action
