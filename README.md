@@ -116,9 +116,20 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 
 ## Customize
 
+### Tracking
+
+Skip tracking of attributes by removing them from your model.  You can safely remove:
+
+- to
+- mailer
+- subject
+- content
+
+### Configuration
+
 There are 3 places to set options. Here’s the order of precedence.
 
-### Action
+#### Action
 
 ``` ruby
 class UserMailer < ActionMailer::Base
@@ -130,7 +141,7 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-### Mailer
+#### Mailer
 
 ```ruby
 class UserMailer < ActionMailer::Base
@@ -138,7 +149,7 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-### Global
+#### Global
 
 ```ruby
 AhoyEmail.track open: false
