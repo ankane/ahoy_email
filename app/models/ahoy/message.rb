@@ -3,5 +3,11 @@ module Ahoy
     self.table_name = "ahoy_messages"
 
     belongs_to :user, polymorphic: true
+
+    attr_reader :options
+
+    def initialize(options = {})
+      @options = options
+    end
   end
 end
