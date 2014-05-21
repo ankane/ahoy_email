@@ -9,7 +9,7 @@ module AhoyEmail
 
     def process
       if options[:message]
-        @ahoy_message = AhoyEmail.message_model.new
+        @ahoy_message = AhoyEmail.message_model.new(options)
         ahoy_message.token = generate_token
         ahoy_message.to = message.to.join(", ") if ahoy_message.respond_to?(:to=)
         ahoy_message.user = options[:user]
