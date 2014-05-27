@@ -12,7 +12,7 @@ Works with any email service.
 
 :bullettrain_side: To manage unsubscribes, check out [Mailkick](https://github.com/ankane/mailkick)
 
-:fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy) and [Ahoy Events](https://github.com/ankane/ahoy_events).
+:fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy)
 
 ## Installation
 
