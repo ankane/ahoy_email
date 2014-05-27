@@ -1,14 +1,15 @@
 module AhoyEmail
   class Processor
-    attr_reader :message, :options, :ahoy_message
+    attr_reader :message, :mailer, :ahoy_message
 
-    def initialize(message, options = {})
+    def initialize(message, mailer = nil)
       @message = message
-      @options = options
+      @mailer = mailer
     end
 
     def process
-      if options[:message]
+      action_name = mailer.action_name.to_sym
+      if options[:message] and (!options[:only] or options[:only].include?(action_name)) and !options[:except].to_a.include?(action_name)
         @ahoy_message = AhoyEmail.message_model.new
         ahoy_message.token = generate_token
         ahoy_message.to = message.to.join(", ") if ahoy_message.respond_to?(:to=)
@@ -42,6 +43,20 @@ module AhoyEmail
     end
 
     protected
+
+    def options
+      @options ||= begin
+        options = AhoyEmail.options.merge(mailer.class.ahoy_options)
+        if mailer.ahoy_options
+          options = options.except(:only, :except).merge(mailer.ahoy_options)
+        end
+        options.each do |k, v|
+          if v.respond_to?(:call)
+            options[k] = v.call(message, mailer)
+          end
+        end
+      end
+    end
 
     def generate_token
       SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)

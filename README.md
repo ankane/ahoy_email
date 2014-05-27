@@ -193,6 +193,13 @@ Disable tracking for an email
 track message: false
 ```
 
+Or specific actions [master]
+
+```ruby
+track only: [:welcome_email]
+track except: [:welcome_email]
+```
+
 Or by default
 
 ```ruby

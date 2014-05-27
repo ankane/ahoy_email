@@ -1,3 +1,7 @@
+## 0.2.1 [unreleased]
+
+- Added `only` and `except` options
+
 ## 0.2.0
 
 - Enable tracking when track is called by default
