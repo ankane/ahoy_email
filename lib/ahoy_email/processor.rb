@@ -55,6 +55,7 @@ module AhoyEmail
             options[k] = v.call(message, mailer)
           end
         end
+        options
       end
     end
 
