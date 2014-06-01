@@ -21,6 +21,7 @@ module AhoyEmail
         ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
         ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
+        ahoy_message.data = options[:data].presence if ahoy_message.respond_to?(:data=)
 
         ahoy_message.save
         message["Ahoy-Message-Id"] = ahoy_message.id

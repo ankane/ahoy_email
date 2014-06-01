@@ -13,6 +13,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       t.string :mailer
       t.text :subject
       t.text :content
+      t.text :data
 
       # timestamps
       t.timestamp :sent_at
