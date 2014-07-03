@@ -24,7 +24,7 @@ module AhoyEmail
         ahoy_message.data = options[:data].presence if ahoy_message.respond_to?(:data=)
 
         ahoy_message.save
-        message["Ahoy-Message-Id"] = ahoy_message.id
+        message["Ahoy-Message-Id"] = ahoy_message.id.to_s
       end
     rescue => e
       report_error(e)
