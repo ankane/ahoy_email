@@ -1,3 +1,9 @@
+## 0.2.2
+
+- Fixed secret token for Rails 4.1
+- Fixed links with href
+- Fixed message id for Rails 3.1
+
 ## 0.2.1
 
 - Added `only` and `except` options
