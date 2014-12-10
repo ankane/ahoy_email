@@ -22,7 +22,8 @@ module AhoyEmail
     utm_content: nil,
     utm_campaign: proc {|message, mailer| mailer.action_name },
     user: proc{|message, mailer| (message.to.size == 1 ? User.where(email: message.to.first).first : nil) rescue nil },
-    mailer: proc{|message, mailer| "#{mailer.class.name}##{mailer.action_name}" }
+    mailer: proc{|message, mailer| "#{mailer.class.name}##{mailer.action_name}" },
+    url_options: {}
   }
 
   self.subscribers = []
