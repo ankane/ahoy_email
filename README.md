@@ -206,10 +206,10 @@ Or by default
 AhoyEmail.track message: false
 ```
 
-Customize host / domain
+Customize domain
 
 ```ruby
-track url_options: { host: 'mydomain.com' }
+track url_options: {host: "mydomain.com"}
 ```
 
 Use a different model
