@@ -9,14 +9,14 @@ module AhoyEmail
 
     def process
       action_name = mailer.action_name.to_sym
-      if options[:message] and (!options[:only] or options[:only].include?(action_name)) and !options[:except].to_a.include?(action_name)
+      if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
         @ahoy_message = AhoyEmail.message_model.new
         ahoy_message.token = generate_token
         ahoy_message.to = message.to.join(", ") if ahoy_message.respond_to?(:to=)
         ahoy_message.user = options[:user]
 
         track_open if options[:open]
-        track_links if options[:utm_params] or options[:click]
+        track_links if options[:utm_params] || options[:click]
 
         ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
@@ -92,17 +92,17 @@ module AhoyEmail
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a[href]").each do |link|
           # utm params first
-          if options[:utm_params] and !skip_attribute?(link, "utm-params")
+          if options[:utm_params] && !skip_attribute?(link, "utm-params")
             uri = Addressable::URI.parse(link["href"])
             params = uri.query_values || {}
-            %w[utm_source utm_medium utm_term utm_content utm_campaign].each do |key|
+            %w(utm_source utm_medium utm_term utm_content utm_campaign).each do |key|
               params[key] ||= options[key.to_sym] if options[key.to_sym]
             end
             uri.query_values = params
             link["href"] = uri.to_s
           end
 
-          if options[:click] and !skip_attribute?(link, "click")
+          if options[:click] && !skip_attribute?(link, "click")
             signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
             link["href"] =
               url_for(
@@ -140,8 +140,8 @@ module AhoyEmail
 
     def url_for(opt)
       opt = (ActionMailer::Base.default_url_options || {})
-          .merge(options[:url_options])
-          .merge(opt)
+            .merge(options[:url_options])
+            .merge(opt)
       AhoyEmail::Engine.routes.url_helpers.url_for(opt)
     end
 
@@ -155,6 +155,5 @@ module AhoyEmail
         raise e
       end
     end
-
   end
 end

@@ -24,7 +24,6 @@ module AhoyEmail
       def copy_migration
         migration_template "install.rb", "db/migrate/create_ahoy_messages.rb"
       end
-
     end
   end
 end

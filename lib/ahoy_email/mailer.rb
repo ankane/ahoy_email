@@ -1,6 +1,5 @@
 module AhoyEmail
   module Mailer
-
     def self.included(base)
       base.extend ClassMethods
       base.class_eval do
@@ -26,6 +25,5 @@ module AhoyEmail
       AhoyEmail::Processor.new(message, self).process
       message
     end
-
   end
 end
