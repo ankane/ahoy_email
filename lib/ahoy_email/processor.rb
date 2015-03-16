@@ -18,6 +18,9 @@ module AhoyEmail
         track_open if options[:open]
         track_links if options[:utm_params] || options[:click]
 
+        ahoy_message.utm_source = options[:utm_source] if ahoy_message.respond_to?(:utm_source=)
+        ahoy_message.utm_medium = options[:utm_medium] if ahoy_message.respond_to?(:utm_medium=)
+        ahoy_message.utm_campaign = options[:utm_campaign] if ahoy_message.respond_to?(:utm_campaign=)
         ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
         ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
