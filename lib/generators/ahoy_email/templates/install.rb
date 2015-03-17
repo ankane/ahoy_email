@@ -11,11 +11,11 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       # optional
       # feel free to remove
       t.string :mailer
+      t.text :subject
+      t.text :content
       t.string :utm_source
       t.string :utm_medium
       t.string :utm_campaign
-      t.text :subject
-      t.text :content
 
       # timestamps
       t.timestamp :sent_at
