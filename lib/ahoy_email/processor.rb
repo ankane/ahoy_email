@@ -87,7 +87,7 @@ module AhoyEmail
         end
       end
     end
-
+    
     def track_links
       if html_part?
         body = (message.html_part || message).body
@@ -143,7 +143,7 @@ module AhoyEmail
         false
       end
     end
-       
+
     def url_for(opt)
       opt = (ActionMailer::Base.default_url_options || {})
             .merge(options[:url_options])
