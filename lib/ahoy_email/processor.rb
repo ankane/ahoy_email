@@ -136,11 +136,14 @@ module AhoyEmail
       elsif link["href"].to_s =~ /unsubscribe/i
         # try to avoid unsubscribe links
         true
+      elsif link["href"].to_s.start_with?("mailto:")
+        # mailto's shouldn't go through a redirect
+        true
       else
         false
       end
     end
-
+       
     def url_for(opt)
       opt = (ActionMailer::Base.default_url_options || {})
             .merge(options[:url_options])
