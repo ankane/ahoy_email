@@ -222,7 +222,7 @@ AhoyEmail.message_model = UserMessage
 
 ### 0.2.3
 
-Optionally, you can store UTM paramters by adding `utm_source`, `utm_medium`, and `utm_campaign` columns to your message model.
+Optionally, you can store UTM parameters by adding `utm_source`, `utm_medium`, and `utm_campaign` columns to your message model.
 
 ## History
 
