@@ -87,7 +87,7 @@ module AhoyEmail
         end
       end
     end
-  
+
     def track_links
       if html_part?
         body = (message.html_part || message).body
