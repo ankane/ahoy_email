@@ -2,6 +2,8 @@ module AhoyEmail
   class Processor
     attr_reader :message, :mailer, :ahoy_message
 
+    UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
+
     def initialize(message, mailer = nil)
       @message = message
       @mailer = mailer
@@ -18,12 +20,13 @@ module AhoyEmail
         track_open if options[:open]
         track_links if options[:utm_params] || options[:click]
 
-        ahoy_message.utm_source = options[:utm_source] if ahoy_message.respond_to?(:utm_source=)
-        ahoy_message.utm_medium = options[:utm_medium] if ahoy_message.respond_to?(:utm_medium=)
-        ahoy_message.utm_campaign = options[:utm_campaign] if ahoy_message.respond_to?(:utm_campaign=)
         ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
         ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
         ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
+
+        UTM_PARAMETERS.each do |k|
+          ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
+        end
 
         ahoy_message.save
         message["Ahoy-Message-Id"] = ahoy_message.id.to_s
@@ -98,7 +101,7 @@ module AhoyEmail
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
             uri = Addressable::URI.parse(link["href"])
             params = uri.query_values || {}
-            %w(utm_source utm_medium utm_term utm_content utm_campaign).each do |key|
+            UTM_PARAMETERS.each do |key|
               params[key] ||= options[key.to_sym] if options[key.to_sym]
             end
             uri.query_values = params

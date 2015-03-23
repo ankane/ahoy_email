@@ -8,14 +8,17 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       t.integer :user_id
       t.string :user_type
 
-      # optional
-      # feel free to remove
+      # optional - feel free to remove
       t.string :mailer
       t.text :subject
       t.text :content
-      t.string :utm_source
-      t.string :utm_medium
-      t.string :utm_campaign
+
+      # optional
+      # t.string :utm_source
+      # t.string :utm_medium
+      # t.string :utm_term
+      # t.string :utm_content
+      # t.string :utm_campaign
 
       # timestamps
       t.timestamp :sent_at
