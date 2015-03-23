@@ -87,7 +87,7 @@ module AhoyEmail
         end
       end
     end
-
+  
     def track_links
       if html_part?
         body = (message.html_part || message).body
@@ -135,6 +135,9 @@ module AhoyEmail
         true
       elsif link["href"].to_s =~ /unsubscribe/i
         # try to avoid unsubscribe links
+        true
+      elsif link["href"].to_s.start_with?("mailto:")
+        # mailto's shouldn't go through a redirect
         true
       else
         false
