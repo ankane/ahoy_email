@@ -39,6 +39,14 @@ module AhoyEmail
   def self.message_model
     @message_model || Ahoy::Message
   end
+
+  class << self
+    attr_writer :custom_parameters
+  end
+
+  def self.custom_parameters
+    @custom_parameters || []
+  end
 end
 
 ActionMailer::Base.send :include, AhoyEmail::Mailer

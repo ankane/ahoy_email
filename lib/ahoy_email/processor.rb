@@ -28,6 +28,10 @@ module AhoyEmail
           ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
         end
 
+        AhoyEmail.custom_parameters.each do |p|
+          ahoy_message.send("#{p}=", options[p]) if ahoy_message.respond_to?("#{p}=")
+        end
+
         ahoy_message.save
         message["Ahoy-Message-Id"] = ahoy_message.id.to_s
       end
