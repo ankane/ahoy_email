@@ -1,3 +1,7 @@
+## 0.2.4 [unreleased]
+
+- Added `extra` option for extra attributes
+
 ## 0.2.3
 
 - Save utm parameters

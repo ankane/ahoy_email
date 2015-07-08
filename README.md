@@ -114,6 +114,14 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 <a data-skip-utm-params="true" href="...">Break it down</a>
 ```
 
+### Extra Attributes [master]
+
+Create a migration to add extra attributes to the `ahoy_messages` table and use:
+
+```ruby
+track extra: {campaign_id: 1}
+```
+
 ## Customize
 
 ### Tracking
