@@ -99,9 +99,10 @@ module AhoyEmail
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a[href]").each do |link|
+          uri = Addressable::URI.parse(link["href"])
+          next unless trackable?(uri)
           # utm params first
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
-            uri = Addressable::URI.parse(link["href"])
             params = uri.query_values || {}
             UTM_PARAMETERS.each do |key|
               params[key] ||= options[key.to_sym] if options[key.to_sym]
@@ -141,12 +142,14 @@ module AhoyEmail
       elsif link["href"].to_s =~ /unsubscribe/i
         # try to avoid unsubscribe links
         true
-      elsif link["href"].to_s.start_with?("mailto:")
-        # mailto's shouldn't go through a redirect
-        true
       else
         false
       end
+    end
+    
+    # Filter trackable URIs, i.e. absolute one with http 
+    def trackable?(uri)
+      uri.absolute? && %w(http https).include?(uri.scheme)
     end
 
     def url_for(opt)
