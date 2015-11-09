@@ -99,7 +99,7 @@ module AhoyEmail
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a[href]").each do |link|
-          uri = Addressable::URI.parse(link["href"])
+          uri = parse_uri(link["href"])
           next unless trackable?(uri)
           # utm params first
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
@@ -150,6 +150,15 @@ module AhoyEmail
     # Filter trackable URIs, i.e. absolute one with http 
     def trackable?(uri)
       uri.absolute? && %w(http https).include?(uri.scheme)
+    end
+
+    # Parse href attribute, return uri if valid nil otherwise
+    def parse_uri(href)
+      # to_s prevent to return nil from this method
+      Addressable::URI.parse(href.to_s)
+    rescue
+      # In case of error always return an empty URI which is then skipped
+      Addressable::URI.parse('')
     end
 
     def url_for(opt)
