@@ -116,7 +116,17 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 
 ### Extra Attributes
 
-Create a migration to add extra attributes to the `ahoy_messages` table and use:
+Create a migration to add extra attributes to the `ahoy_messages` table, for example:
+
+```ruby
+class AddCampaignIdToAhoyMessages < ActiveRecord::Migration
+  def change
+    add_column :ahoy_messages, :campaign_id, :integer
+  end
+end
+```
+
+Then use:
 
 ```ruby
 track extra: {campaign_id: 1}
