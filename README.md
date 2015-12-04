@@ -97,6 +97,14 @@ Use `track click: false` to skip tracking, or skip specific links with:
 <a data-skip-click="true" href="...">Can't touch this</a>
 ```
 
+### Abitrary data
+
+You can store arbitrary attributes on the `Ahoy::Message` model in the `data` column.
+
+```
+track data: { notification_id: 2 }
+```
+
 ### UTM Parameters
 
 UTM parameters are added to links if they don’t already exist.
@@ -142,6 +150,7 @@ Skip tracking of attributes by removing them from your model.  You can safely re
 - mailer
 - subject
 - content
+- data
 
 ### Configuration
 

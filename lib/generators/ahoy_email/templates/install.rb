@@ -12,6 +12,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       t.string :mailer
       t.text :subject
       t.text :content
+      t.text :data
 
       # optional
       # t.string :utm_source
