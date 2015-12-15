@@ -10,44 +10,44 @@ module AhoyEmail
     end
 
     def process
-      action_name = mailer.action_name.to_sym
-      if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
-        @ahoy_message = AhoyEmail.message_model.new
-        ahoy_message.token = generate_token
-        ahoy_message.to = message.to.join(", ") if ahoy_message.respond_to?(:to=)
-        ahoy_message.user = options[:user]
+      safely do
+        action_name = mailer.action_name.to_sym
+        if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
+          @ahoy_message = AhoyEmail.message_model.new
+          ahoy_message.token = generate_token
+          ahoy_message.to = message.to.join(", ") if ahoy_message.respond_to?(:to=)
+          ahoy_message.user = options[:user]
 
-        track_open if options[:open]
-        track_links if options[:utm_params] || options[:click]
+          track_open if options[:open]
+          track_links if options[:utm_params] || options[:click]
 
-        ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
-        ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
-        ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
+          ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
+          ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
+          ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
 
-        UTM_PARAMETERS.each do |k|
-          ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
+          UTM_PARAMETERS.each do |k|
+            ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
+          end
+
+          ahoy_message.assign_attributes(options[:extra] || {})
+
+          ahoy_message.save
+          message["Ahoy-Message-Id"] = ahoy_message.id.to_s
         end
-
-        ahoy_message.assign_attributes(options[:extra] || {})
-
-        ahoy_message.save
-        message["Ahoy-Message-Id"] = ahoy_message.id.to_s
       end
-    rescue => e
-      report_error(e)
     end
 
     def track_send
-      if (message_id = message["Ahoy-Message-Id"])
-        ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
-        if ahoy_message
-          ahoy_message.sent_at = Time.now
-          ahoy_message.save
+      safely do
+        if (message_id = message["Ahoy-Message-Id"])
+          ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
+          if ahoy_message
+            ahoy_message.sent_at = Time.now
+            ahoy_message.save
+          end
+          message["Ahoy-Message-Id"] = nil
         end
-        message["Ahoy-Message-Id"] = nil
       end
-    rescue => e
-      report_error(e)
     end
 
     protected
@@ -164,17 +164,6 @@ module AhoyEmail
             .merge(options[:url_options])
             .merge(opt)
       AhoyEmail::Engine.routes.url_helpers.url_for(opt)
-    end
-
-    # not a fan of quiet errors
-    # but tracking should *not* break
-    # email delivery in production
-    def report_error(e)
-      if Rails.env.production?
-        $stderr.puts e
-      else
-        raise e
-      end
     end
   end
 end
