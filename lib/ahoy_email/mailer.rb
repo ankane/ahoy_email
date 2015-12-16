@@ -21,6 +21,9 @@ module AhoyEmail
     end
 
     def mail_with_ahoy(headers = {}, &block)
+      # this mimics what original method does
+      return message if @_mail_was_called && headers.blank? && !block
+
       message = mail_without_ahoy(headers, &block)
       AhoyEmail::Processor.new(message, self).process
       message
