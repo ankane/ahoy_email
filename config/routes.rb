@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  next if has_named_route?('ahoy_email_engine')
   mount AhoyEmail::Engine => "/ahoy"
 end
 
