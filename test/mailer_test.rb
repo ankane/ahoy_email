@@ -11,6 +11,11 @@ class UserMailer < ActionMailer::Base
     mail to: "test@example.org", subject: "Hello", body: "World"
   end
 
+  def welcome3
+    track message: false
+    mail to: "test@example.org", subject: "Hello", body: "World"
+  end
+
   private
 
   def prevent_delivery_to_guests
@@ -29,6 +34,11 @@ class MailerTest < Minitest::Test
 
   def test_prevent_delivery
     assert_message :welcome2
+  end
+
+  def test_no_message
+    UserMailer.welcome3.to
+    assert_equal 0, Ahoy::Message.count
   end
 
   def assert_message(method)
