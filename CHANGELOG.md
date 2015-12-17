@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Added safely for error reporting
+- Fixed error with `to`
+- Prevent duplicate records when mail called multiple times
+
 ## 0.2.4
 
 - Added `extra` option for extra attributes
