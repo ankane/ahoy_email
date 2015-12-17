@@ -15,7 +15,7 @@ module AhoyEmail
         if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
           @ahoy_message = AhoyEmail.message_model.new
           ahoy_message.token = generate_token
-          ahoy_message.to = message.to.join(", ") if ahoy_message.respond_to?(:to=)
+          ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
           ahoy_message.user = options[:user]
 
           track_open if options[:open]
