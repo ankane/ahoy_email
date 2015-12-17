@@ -1,5 +1,6 @@
 require "ahoy_email/version"
 require "action_mailer"
+require "rails"
 require "nokogiri"
 require "addressable/uri"
 require "openssl"
