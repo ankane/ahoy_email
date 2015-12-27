@@ -6,3 +6,5 @@ require "combustion"
 
 Combustion.path = "test/internal"
 Combustion.initialize! :all
+
+ActionMailer::Base.delivery_method = :test

@@ -39,7 +39,7 @@ module AhoyEmail
 
     def track_send
       safely do
-        if (message_id = message["Ahoy-Message-Id"])
+        if (message_id = message["Ahoy-Message-Id"]) && message.perform_deliveries
           ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
           if ahoy_message
             ahoy_message.sent_at = Time.now
