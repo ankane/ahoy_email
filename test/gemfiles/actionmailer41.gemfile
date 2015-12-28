@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+# Specify your gem's dependencies in ahoy_email.gemspec
+gemspec path: "../../"
+
+gem "actionmailer", "~> 4.1.0"
