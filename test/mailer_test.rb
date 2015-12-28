@@ -1,7 +1,8 @@
 require_relative "test_helper"
 
 class UserMailer < ActionMailer::Base
-  after_action :prevent_delivery_to_guests, only: [:welcome2]
+  default from: "from@example.com"
+  after_action :prevent_delivery_to_guests, only: [:welcome2] if Rails.version >= "4.0.0"
 
   def welcome
     mail to: "test@example.org", subject: "Hello", body: "World"
@@ -34,6 +35,9 @@ class MailerTest < Minitest::Test
 
   def test_prevent_delivery
     assert_message :welcome2
+    if Rails.version >= "4.0.0"
+      assert_nil Ahoy::Message.first.sent_at
+    end
   end
 
   def test_no_message
@@ -43,7 +47,7 @@ class MailerTest < Minitest::Test
 
   def assert_message(method)
     message = UserMailer.send(method)
-    message.to # trigger creation
+    message.respond_to?(:deliver_now) ? message.deliver_now : message.deliver
     ahoy_message = Ahoy::Message.first
     assert_equal 1, Ahoy::Message.count
     assert_equal "test@example.org", ahoy_message.to
