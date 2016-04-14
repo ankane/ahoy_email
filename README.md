@@ -238,6 +238,10 @@ AhoyEmail.message_model = UserMessage
 
 ## Upgrading
 
+### 0.3.2
+
+Optionally, upload html email content to S3 instead of storing the content in the database.
+
 ### 0.2.3
 
 Optionally, you can store UTM parameters by adding `utm_source`, `utm_medium`, and `utm_campaign` columns to your message model.
