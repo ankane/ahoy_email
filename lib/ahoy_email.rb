@@ -36,6 +36,24 @@ module AhoyEmail
 
   class << self
     attr_writer :message_model
+    attr_accessor :configuration
+  end
+
+  def self.configure
+    self.configuration ||= Configuration.new
+    yield(configuration)
+  end
+
+  class Configuration
+    attr_accessor :s3_access_key, :s3_secret_key, :s3_bucket_name, :s3_region, :s3_path
+
+    def initialize
+      @s3_access_key = nil
+      @s3_secret_key = nil
+      @s3_bucket_name = nil
+      @s3_region = nil
+      @s3_path = "emails/%Y/%m/%d"
+    end
   end
 
   def self.message_model

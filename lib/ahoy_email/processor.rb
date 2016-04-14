@@ -25,6 +25,8 @@ module AhoyEmail
           ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
           ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
 
+          upload_content_to_s3
+
           UTM_PARAMETERS.each do |k|
             ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
           end
@@ -51,6 +53,28 @@ module AhoyEmail
     end
 
     protected
+
+    def s3_upload?
+      !!(AhoyEmail.configuration && AhoyEmail.configuration.s3_access_key.present? && AhoyEmail.configuration.s3_secret_key.present? && AhoyEmail.configuration.s3_bucket_name.present?)
+    end
+
+    def upload_content_to_s3
+      if s3_upload?
+        begin
+          s3 = Aws::S3::Resource.new(credentials: s3_credentials, region: AhoyEmail.configuration.s3_region)
+          path = "#{Time.now.strftime((AhoyEmail.configuration.s3_path || "emails/%Y/%m/%d"))}/#{ahoy_message.token}.html"
+          obj = s3.bucket(AhoyEmail.configuration.s3_bucket_name).object(path)
+          obj.put(body: message.body.decoded)
+          ahoy_message.content = "http://#{AhoyEmail.configuration.s3_bucket_name}.s3.amazonaws.com/#{path}" if ahoy_message.respond_to?(:content=)
+        rescue
+          p "Unable to upload email to S3."
+        end
+      end
+    end
+
+    def s3_credentials
+      Aws::Credentials.new(AhoyEmail.configuration.s3_access_key, AhoyEmail.configuration.s3_secret_key)
+    end
 
     def options
       @options ||= begin
