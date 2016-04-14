@@ -3,19 +3,25 @@ module Ahoy
     before_filter :set_message
 
     def open
-      if @message && !@message.opened_at
-        @message.opened_at = Time.now
-        @message.save!
+      if @message
+        @message.opened_at = Time.now unless @message.opened_at
+        if @message.save!
+          @message.increment!(:open_count) if @message.respond_to?(:open_count=)
+        end
       end
       publish :open
       send_data Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), type: "image/gif", disposition: "inline"
     end
 
     def click
-      if @message && !@message.clicked_at
-        @message.clicked_at = Time.now
-        @message.opened_at ||= @message.clicked_at
-        @message.save!
+      if @message
+        unless @message.clicked_at
+          @message.clicked_at = Time.now
+          @message.opened_at ||= @message.clicked_at
+        end
+        if @message.save!
+          @message.increment!(:click_count) if @message.respond_to?(:click_count=)
+        end
       end
       url = params[:url].to_s
       signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
