@@ -23,7 +23,14 @@ module AhoyEmail
 
           ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
           ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
-          ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
+
+          if ahoy_message.respond_to?(:content=)
+            if options[:html_content]
+              ahoy_message.content = message.body.decoded
+            else
+              ahoy_message.content = message.to_s
+            end
+          end
 
           UTM_PARAMETERS.each do |k|
             ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")

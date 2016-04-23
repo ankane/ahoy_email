@@ -236,6 +236,12 @@ Use a different model
 AhoyEmail.message_model = UserMessage
 ```
 
+Or store html content
+
+```ruby
+track html_content: true
+```
+
 ## Upgrading
 
 ### 0.2.3
