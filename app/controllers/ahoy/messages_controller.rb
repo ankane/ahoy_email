@@ -20,7 +20,7 @@ module Ahoy
       url = params[:url].to_s
       signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
       publish :click, url: params[:url]
-      if secure_compare(params[:signature], signature)
+      if secure_compare(params[:signature].to_s, signature)
         redirect_to url
       else
         redirect_to main_app.root_url
