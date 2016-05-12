@@ -1,3 +1,8 @@
+## 0.3.1
+
+- Fixed deprecation warnings
+- Fixed `stack level too deep` error
+
 ## 0.3.0
 
 - Added safely for error reporting
