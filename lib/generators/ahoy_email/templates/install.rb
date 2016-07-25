@@ -20,6 +20,10 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       # t.string :utm_content
       # t.string :utm_campaign
 
+      # optional
+      # t.integer :open_count, default: 0
+      # t.integer :click_count, default: 0
+
       # timestamps
       t.timestamp :sent_at
       t.timestamp :opened_at

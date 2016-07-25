@@ -238,6 +238,10 @@ AhoyEmail.message_model = UserMessage
 
 ## Upgrading
 
+## 3.1
+
+Optionally, track open and click counts by incrementing open_count and click_count on your message model.
+
 ### 0.2.3
 
 Optionally, you can store UTM parameters by adding `utm_source`, `utm_medium`, and `utm_campaign` columns to your message model.
