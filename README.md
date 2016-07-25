@@ -212,7 +212,7 @@ AhoyEmail.subscribers << EmailSubscriber.new
 You can use a `Proc` for any option.
 
 ```ruby
-track utm_campaign: proc{|message, mailer| mailer.action_name + Time.now.year }
+track utm_campaign: proc { |message, mailer| mailer.action_name + Time.now.year }
 ```
 
 Disable tracking for an email
