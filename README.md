@@ -179,19 +179,29 @@ Subscribe to open and click events. Create an initializer `config/initializers/a
 
 ```ruby
 class EmailSubscriber
-
   def open(event)
-    # :message and :controller keys
-    ahoy = event[:controller].ahoy
-    ahoy.track "Email opened", message_id: event[:message].id
+    # any code you want
   end
 
   def click(event)
-    # same keys as above, plus :url
-    ahoy = event[:controller].ahoy
-    ahoy.track "Email clicked", message_id: event[:message].id, url: event[:url]
+    # any code you want
+  end
+end
+
+AhoyEmail.subscribers << EmailSubscriber.new
+```
+
+Here’s an example if you use [Ahoy](https://github.com/ankane/ahoy) to track visits and events:
+
+```ruby
+class EmailSubscriber
+  def open(event)
+    event[:controller].ahoy.track "Email opened", message_id: event[:message].id
   end
 
+  def click(event)
+    event[:controller].ahoy.track "Email clicked", message_id: event[:message].id, url: event[:url]
+  end
 end
 
 AhoyEmail.subscribers << EmailSubscriber.new
