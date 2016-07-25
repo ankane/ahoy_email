@@ -11,7 +11,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration
       # optional - feel free to remove
       t.string :mailer
       t.text :subject
-      t.text :content
+      # t.text :content
 
       # optional
       # t.string :utm_source
