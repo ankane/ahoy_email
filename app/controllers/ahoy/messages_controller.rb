@@ -1,6 +1,10 @@
 module Ahoy
   class MessagesController < ActionController::Base
-    before_filter :set_message
+    if respond_to? :before_action
+      before_action :set_message
+    else
+      before_filter :set_message
+    end
 
     def open
       if @message && !@message.opened_at
