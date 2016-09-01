@@ -11,7 +11,7 @@ notifications:
     on_failure: change
 gemfile:
   - Gemfile
-  - test/gemfiles/activerecord42.gemfile
-  - test/gemfiles/activerecord41.gemfile
-  - test/gemfiles/activerecord40.gemfile
-  - test/gemfiles/activerecord32.gemfile
+  - test/gemfiles/actionmailer42.gemfile
+  - test/gemfiles/actionmailer41.gemfile
+  - test/gemfiles/actionmailer40.gemfile
+  - test/gemfiles/actionmailer32.gemfile
