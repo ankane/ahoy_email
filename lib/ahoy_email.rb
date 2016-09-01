@@ -11,7 +11,7 @@ require "ahoy_email/mailer"
 require "ahoy_email/engine"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :options, :subscribers
+  mattr_accessor :secret_token, :options, :subscribers, :belongs_to
 
   self.options = {
     message: true,
@@ -29,6 +29,8 @@ module AhoyEmail
   }
 
   self.subscribers = []
+
+  self.belongs_to = {}
 
   def self.track(options)
     self.options = self.options.merge(options)
