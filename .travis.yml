@@ -15,6 +15,3 @@ gemfile:
   - test/gemfiles/activerecord41.gemfile
   - test/gemfiles/activerecord40.gemfile
   - test/gemfiles/activerecord32.gemfile
-matrix:
-  allow_failures:
-    - gemfile: test/gemfiles/activerecord32.gemfile
