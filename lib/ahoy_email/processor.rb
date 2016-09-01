@@ -10,7 +10,7 @@ module AhoyEmail
     end
 
     def process
-      safely do
+      Safely.safely do
         action_name = mailer.action_name.to_sym
         if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
           @ahoy_message = AhoyEmail.message_model.new
@@ -38,7 +38,7 @@ module AhoyEmail
     end
 
     def track_send
-      safely do
+      Safely.safely do
         if (message_id = message["Ahoy-Message-Id"]) && message.perform_deliveries
           ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
           if ahoy_message
