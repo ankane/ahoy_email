@@ -14,6 +14,8 @@ Works with any email service.
 
 :fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy)
 
+[![Build Status](https://travis-ci.org/ankane/ahoy_email.svg?branch=master)](https://travis-ci.org/ankane/ahoy_email)
+
 ## Installation
 
 Add this line to your application’s Gemfile:
