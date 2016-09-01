@@ -10,3 +10,5 @@ Combustion.path = "test/internal"
 Combustion.initialize! :all
 
 ActionMailer::Base.delivery_method = :test
+
+ActiveRecord::Base.belongs_to_required_by_default = true if ActiveRecord::VERSION::MAJOR >= 5
