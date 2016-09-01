@@ -1,4 +1,4 @@
-## 0.4.0 [unreleased]
+## 0.4.0
 
 - Fixed `belongs_to` error in Rails 5
 - Include `safely_block` gem without polluting global namespace
