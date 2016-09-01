@@ -31,7 +31,7 @@ module AhoyEmail
 
           ahoy_message.assign_attributes(options[:extra] || {})
 
-          ahoy_message.save
+          ahoy_message.save!
           message["Ahoy-Message-Id"] = ahoy_message.id.to_s
         end
       end
