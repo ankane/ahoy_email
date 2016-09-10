@@ -1,5 +1,5 @@
 module Ahoy
-  class MessagesController < ActionController::Base
+  class MessagesController < AhoyEmail.message_parent_controller.to_s.constantize
     if respond_to? :before_action
       before_action :set_message
     else

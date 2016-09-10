@@ -38,10 +38,15 @@ module AhoyEmail
 
   class << self
     attr_writer :message_model
+    attr_writer :message_parent_controller
   end
 
   def self.message_model
     @message_model || Ahoy::Message
+  end
+
+  def self.message_parent_controller
+    @message_parent_controller || ActionController::Base
   end
 end
 
