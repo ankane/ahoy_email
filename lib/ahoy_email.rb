@@ -11,7 +11,7 @@ require "ahoy_email/mailer"
 require "ahoy_email/engine"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :options, :subscribers, :belongs_to
+  mattr_accessor :secret_token, :options, :subscribers, :belongs_to, :unknow_url_redirect, :router_name
 
   self.options = {
     message: true,
@@ -27,6 +27,10 @@ module AhoyEmail
     mailer: proc { |message, mailer| "#{mailer.class.name}##{mailer.action_name}" },
     url_options: {}
   }
+
+  self.unknow_url_redirect = :root_path
+
+  self.router_name = :main_app
 
   self.subscribers = []
 
