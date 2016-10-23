@@ -68,20 +68,14 @@ module AhoyEmail
     end
 
     def generate_token
-      SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+      @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
     end
 
     def track_open
       if html_part?
         raw_source = (message.html_part || message).body.raw_source
         regex = /<\/body>/i
-        url =
-          url_for(
-            controller: "ahoy/messages",
-            action: "open",
-            id: ahoy_message.token,
-            format: "gif"
-          )
+        url = default_url.gsub("$ID$", generate_token).gsub("/click", "/open.gif")
         pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: nil)
 
         # try to add before body tag
@@ -101,27 +95,23 @@ module AhoyEmail
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])
           next unless trackable?(uri)
-          # utm params first
+
+          params = uri.query_values || {}
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
-            params = uri.query_values || {}
             UTM_PARAMETERS.each do |key|
               params[key] ||= options[key.to_sym] if options[key.to_sym]
             end
-            uri.query_values = params
-            link["href"] = uri.to_s
           end
+          uri.query_values = params
 
           if options[:click] && !skip_attribute?(link, "click")
-            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
-            link["href"] =
-              url_for(
-                controller: "ahoy/messages",
-                action: "click",
-                id: ahoy_message.token,
-                url: link["href"],
-                signature: signature
-              )
+            redirect_uri = uri.to_s
+            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, redirect_uri)
+            uri = parse_uri(default_url.gsub("$ID$", generate_token))
+            uri.query_values = { signature: signature, url: redirect_uri }
           end
+
+          link["href"] = uri.to_s
         end
 
         # hacky
@@ -159,11 +149,8 @@ module AhoyEmail
       Addressable::URI.parse(href.to_s) rescue nil
     end
 
-    def url_for(opt)
-      opt = (ActionMailer::Base.default_url_options || {})
-            .merge(options[:url_options])
-            .merge(opt)
-      AhoyEmail::Engine.routes.url_helpers.url_for(opt)
+    def default_url
+      @opt ||= AhoyEmail::Engine.routes.url_helpers.url_for((ActionMailer::Base.default_url_options || {}).merge(controller: "ahoy/messages", action: "click", id: "$ID$"))
     end
   end
 end
