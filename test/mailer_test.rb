@@ -71,7 +71,7 @@ class MailerTest < Minitest::Test
   def test_array_params
     message = UserMailer.welcome5
     body = message.body.to_s
-    assert_match "baz[]=1&amp;baz[]=2", body
+    assert_match "baz%5B%5D=1&amp;baz%5B%5D=2", body
   end
 
   private
