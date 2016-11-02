@@ -1,3 +1,4 @@
+require 'pp'
 module AhoyEmail
   class Processor
     attr_reader :message, :mailer, :ahoy_message
@@ -104,6 +105,7 @@ module AhoyEmail
           # utm params first
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
             params = uri.query_values || {}
+            puts "zomg"
             UTM_PARAMETERS.each do |key|
               params[key] ||= options[key.to_sym] if options[key.to_sym]
             end

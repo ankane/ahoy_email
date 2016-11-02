@@ -17,6 +17,12 @@ class UserMailer < ActionMailer::Base
     mail to: "test@example.org", subject: "Hello", body: "World"
   end
 
+  def welcome4
+    track message: true, utm_params: "baz", click: true
+
+    mail to: "test@example.org", subject: "Hello, World"
+  end
+
   private
 
   def prevent_delivery_to_guests
@@ -56,5 +62,25 @@ class MailerTest < Minitest::Test
     assert_equal "user_mailer", ahoy_message.utm_source
     assert_equal "email", ahoy_message.utm_medium
     assert_equal method.to_s, ahoy_message.utm_campaign
+  end
+
+  def test_handling_array_params
+    message = UserMailer.send(:welcome4)
+    message.respond_to?(:deliver_now) ? message.deliver_now : message.deliver
+    ahoy_message = Ahoy::Message.first
+    assert_equal 1, Ahoy::Message.count
+
+    pp [:ahoy, ahoy_message]
+
+    # message = UserMailer.send(method)
+    # message.respond_to?(:deliver_now) ? message.deliver_now : message.deliver
+    # ahoy_message = Ahoy::Message.first
+    # assert_equal 1, Ahoy::Message.count
+    # assert_equal "test@example.org", ahoy_message.to
+    # assert_equal "UserMailer##{method}", ahoy_message.mailer
+    # assert_equal "Hello", ahoy_message.subject
+    # assert_equal "user_mailer", ahoy_message.utm_source
+    # assert_equal "email", ahoy_message.utm_medium
+    # assert_equal method.to_s, ahoy_message.utm_campaign
   end
 end
