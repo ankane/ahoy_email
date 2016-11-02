@@ -103,9 +103,10 @@ module AhoyEmail
           next unless trackable?(uri)
           # utm params first
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
-            params = uri.query_values || {}
+            params = uri.query_values(Array) || []
             UTM_PARAMETERS.each do |key|
-              params[key] ||= options[key.to_sym] if options[key.to_sym]
+              next if params.any? { |k, _v| k == key } || !options[key.to_sym]
+              params << [key, options[key.to_sym]]
             end
             uri.query_values = params
             link["href"] = uri.to_s
