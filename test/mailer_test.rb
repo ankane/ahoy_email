@@ -18,17 +18,25 @@ class UserMailer < ActionMailer::Base
   end
 
   def welcome4
-    track click: false
-    mail to: "test@example.org", subject: "Hello" do |format|
-      format.html { render text: '<a href="http://example.org">Hi<a>' }
-    end
+    html_message('<a href="http://example.org">Hi<a>')
+  end
+
+  def welcome5
+    html_message('<a href="http://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
   end
 
   private
 
-  def prevent_delivery_to_guests
-    mail.perform_deliveries = false
-  end
+    def prevent_delivery_to_guests
+      mail.perform_deliveries = false
+    end
+
+    def html_message(html)
+      track click: false
+      mail to: "test@example.org", subject: "Hello" do |format|
+        format.html { render text: html }
+      end
+    end
 end
 
 class MailerTest < Minitest::Test
@@ -60,16 +68,24 @@ class MailerTest < Minitest::Test
     assert_match "utm_source=user_mailer", body
   end
 
-  def assert_message(method)
-    message = UserMailer.send(method)
-    message.respond_to?(:deliver_now) ? message.deliver_now : message.deliver
-    ahoy_message = Ahoy::Message.first
-    assert_equal 1, Ahoy::Message.count
-    assert_equal "test@example.org", ahoy_message.to
-    assert_equal "UserMailer##{method}", ahoy_message.mailer
-    assert_equal "Hello", ahoy_message.subject
-    assert_equal "user_mailer", ahoy_message.utm_source
-    assert_equal "email", ahoy_message.utm_medium
-    assert_equal method.to_s, ahoy_message.utm_campaign
+  def test_array_params
+    message = UserMailer.welcome5
+    body = message.body.to_s
+    assert_match "baz[]=1&amp;baz[]=2", body
   end
+
+  private
+
+    def assert_message(method)
+      message = UserMailer.send(method)
+      message.respond_to?(:deliver_now) ? message.deliver_now : message.deliver
+      ahoy_message = Ahoy::Message.first
+      assert_equal 1, Ahoy::Message.count
+      assert_equal "test@example.org", ahoy_message.to
+      assert_equal "UserMailer##{method}", ahoy_message.mailer
+      assert_equal "Hello", ahoy_message.subject
+      assert_equal "user_mailer", ahoy_message.utm_source
+      assert_equal "email", ahoy_message.utm_medium
+      assert_equal method.to_s, ahoy_message.utm_campaign
+    end
 end
