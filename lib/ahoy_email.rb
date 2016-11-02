@@ -41,7 +41,7 @@ module AhoyEmail
   end
 
   def self.message_model
-    @message_model || ::Ahoy::Message
+    (defined?(@message_model) && @message_model) || ::Ahoy::Message
   end
 end
 
