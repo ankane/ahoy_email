@@ -17,6 +17,13 @@ class UserMailer < ActionMailer::Base
     mail to: "test@example.org", subject: "Hello", body: "World"
   end
 
+  def welcome4
+    track click: false
+    mail to: "test@example.org", subject: "Hello" do |format|
+      format.html { render text: '<a href="http://example.org">Hi<a>' }
+    end
+  end
+
   private
 
   def prevent_delivery_to_guests
@@ -43,6 +50,14 @@ class MailerTest < Minitest::Test
   def test_no_message
     UserMailer.welcome3.to
     assert_equal 0, Ahoy::Message.count
+  end
+
+  def test_utm_params
+    message = UserMailer.welcome4
+    body = message.body.to_s
+    assert_match "utm_campaign=welcome4", body
+    assert_match "utm_medium=email", body
+    assert_match "utm_source=user_mailer", body
   end
 
   def assert_message(method)
