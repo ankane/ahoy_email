@@ -1,3 +1,7 @@
+## 0.4.1 [unreleased]
+
+- Added `invalid_redirect_url`
+
 ## 0.4.0
 
 - Fixed `belongs_to` error in Rails 5
