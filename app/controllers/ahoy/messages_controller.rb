@@ -27,7 +27,7 @@ module Ahoy
       if secure_compare(params[:signature].to_s, signature)
         redirect_to url
       else
-        redirect_to AhoyEmail.invalid_redirect_url
+        redirect_to AhoyEmail.invalid_redirect_url || main_app.root_url
       end
     end
 

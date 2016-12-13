@@ -28,8 +28,6 @@ module AhoyEmail
     url_options: {}
   }
 
-  self.invalid_redirect_url = '/'
-
   self.subscribers = []
 
   self.belongs_to = {}
