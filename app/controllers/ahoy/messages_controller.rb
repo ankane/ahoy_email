@@ -27,7 +27,7 @@ module Ahoy
       if secure_compare(params[:signature].to_s, signature)
         redirect_to url
       else
-        redirect_to send(AhoyEmail.router_name).send(AhoyEmail.unknow_url_redirect)
+        redirect_to AhoyEmail.invalid_redirect_url
       end
     end
 
