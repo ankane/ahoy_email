@@ -81,7 +81,7 @@ Use `track open: false` to skip this.
 
 A redirect is added to links to track clicks in HTML emails.
 
-````
+```
 http://chartkick.com
 ```
 
