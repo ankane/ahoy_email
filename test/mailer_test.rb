@@ -34,7 +34,7 @@ class UserMailer < ActionMailer::Base
     def html_message(html)
       track click: false
       mail to: "test@example.org", subject: "Hello" do |format|
-        format.html { render text: html }
+        format.html { render plain: html }
       end
     end
 end
