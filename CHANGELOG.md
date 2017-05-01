@@ -1,4 +1,4 @@
-## 0.5.0 [unreleased]
+## 0.5.0
 
 - Added support for Rails 5.1
 - Added `invalid_redirect_url`
