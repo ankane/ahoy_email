@@ -12,7 +12,7 @@ module Ahoy
         @message.save!
       end
       publish :open
-      send_data Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), type: "image/gif", disposition: "inline"
+      send_file "#{AhoyEmail::Engine.root}/app/assets/images/transparent.gif", :type => "image/gif", :disposition => "inline"
     end
 
     def click
