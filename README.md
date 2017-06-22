@@ -144,6 +144,7 @@ Skip tracking of attributes by removing them from your model.  You can safely re
 - mailer
 - subject
 - content
+- content_text
 
 ### Configuration
 
