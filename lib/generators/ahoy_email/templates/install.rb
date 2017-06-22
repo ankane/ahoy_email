@@ -24,6 +24,10 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
       t.timestamp :sent_at
       t.timestamp :opened_at
       t.timestamp :clicked_at
+
+      # ip
+      # t.string  :opened_ip, limit: 39
+      # t.string  :clicked_ip, limit: 39
     end
 
     add_index :ahoy_messages, [:token]

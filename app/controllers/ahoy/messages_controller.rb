@@ -9,6 +9,7 @@ module Ahoy
     def open
       if @message && !@message.opened_at
         @message.opened_at = Time.now
+        @message.opened_ip = request.remote_ip if @message.respond_to?(:opened_ip)
         @message.save!
       end
       publish :open
@@ -19,6 +20,8 @@ module Ahoy
       if @message && !@message.clicked_at
         @message.clicked_at = Time.now
         @message.opened_at ||= @message.clicked_at
+        @message.clicked_ip = request.remote_ip if @message.respond_to?(:clicked_ip)
+        @message.opened_ip ||= request.remote_ip if @message.respond_to?(:opened_ip)
         @message.save!
       end
       url = params[:url].to_s
