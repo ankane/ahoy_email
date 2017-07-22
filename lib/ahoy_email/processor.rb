@@ -157,7 +157,7 @@ module AhoyEmail
     # Return uri if valid, nil otherwise
     def parse_uri(href)
       # to_s prevent to return nil from this method
-      Addressable::URI.parse(href.to_s) rescue nil
+      Addressable::URI.heuristic_parse(href.to_s) rescue nil
     end
 
     def url_for(opt)
