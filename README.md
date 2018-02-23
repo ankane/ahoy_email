@@ -144,6 +144,8 @@ Skip tracking of attributes by removing them from your model.  You can safely re
 - mailer
 - subject
 - content
+- opened_ip
+- clicked_ip
 
 ### Configuration
 
