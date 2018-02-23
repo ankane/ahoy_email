@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 2.3.0
+  - 2.4.2
 sudo: false
 script: bundle exec rake test
 before_script:

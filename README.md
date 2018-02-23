@@ -44,7 +44,7 @@ By default, Ahoy tries `User.where(email: message.to.first).first` to find the u
 You can pass a specific user with:
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   def welcome_email(user)
     # ...
     track user: user
@@ -152,7 +152,7 @@ There are 3 places to set options. Here’s the order of precedence.
 #### Action
 
 ``` ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   def welcome_email(user)
     # ...
     track user: user
@@ -164,7 +164,7 @@ end
 #### Mailer
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   track utm_campaign: "boom"
 end
 ```
