@@ -58,7 +58,7 @@ The user association is [polymorphic](http://railscasts.com/episodes/154-polymor
 To get all messages sent to a user, add an association:
 
 ```ruby
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_many :messages, class_name: "Ahoy::Message"
 end
 ```
