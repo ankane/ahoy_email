@@ -116,6 +116,12 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 <a data-skip-utm-params="true" href="...">Break it down</a>
 ```
 
+By default, links with an href matching "unsubscribe" will be ignored. To re-enable tracking on unsubscribe links, use: track unsubscribe_links: true
+
+```ruby
+track unsubscribe_links: true
+```
+
 ### Extra Attributes
 
 Create a migration to add extra attributes to the `ahoy_messages` table, for example:
