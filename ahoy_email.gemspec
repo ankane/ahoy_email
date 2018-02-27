@@ -19,7 +19,9 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.0.0"
 
-  spec.add_runtime_dependency "rails"
+  spec.add_runtime_dependency "railties"
+  spec.add_runtime_dependency "actionmailer"
+  spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency "addressable", ">= 2.3.2"
   spec.add_runtime_dependency "nokogiri"
   spec.add_runtime_dependency "safely_block", ">= 0.1.1"
@@ -28,5 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "combustion"
+  spec.add_development_dependency "rails"
   spec.add_development_dependency "sqlite3"
 end

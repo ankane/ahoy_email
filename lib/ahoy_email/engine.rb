@@ -1,3 +1,5 @@
+require "rails/engine"
+
 module AhoyEmail
   class Engine < ::Rails::Engine
     initializer "ahoy_email" do |app|

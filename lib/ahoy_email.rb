@@ -1,4 +1,4 @@
-require "rails"
+require "active_support"
 require "nokogiri"
 require "addressable/uri"
 require "openssl"
