@@ -9,7 +9,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Andrew Kane"]
   spec.email         = ["andrew@chartkick.com"]
   spec.summary       = "Simple, powerful email tracking for Rails"
-  spec.description   = "Simple, powerful email tracking for Rails"
   spec.homepage      = "https://github.com/ankane/ahoy_email"
   spec.license       = "MIT"
 
@@ -25,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "nokogiri"
   spec.add_runtime_dependency "safely_block", ">= 0.1.1"
 
-  spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "combustion"
