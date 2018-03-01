@@ -5,8 +5,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
 
       # user
       t.text :to
-      t.integer :user_id
-      t.string :user_type
+      t.references :user
 
       # optional - feel free to remove
       t.string :mailer
@@ -27,6 +26,5 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
     end
 
     add_index :ahoy_messages, [:token]
-    add_index :ahoy_messages, [:user_id, :user_type]
   end
 end
