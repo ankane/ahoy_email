@@ -48,6 +48,10 @@ module AhoyEmail
     self.options[:enabled] = false
   end
 
+  def self.enable!
+    self.options[:enabled] = true
+  end
+
   def self.enabled?
     !!self.options[:enabled]
   end

@@ -45,6 +45,7 @@ end
 
 class MailerTest < Minitest::Test
   def setup
+    AhoyEmail.enable!
     Ahoy::Message.delete_all
   end
 
