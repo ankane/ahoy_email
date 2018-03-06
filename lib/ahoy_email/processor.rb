@@ -12,7 +12,7 @@ module AhoyEmail
     def process
       Safely.safely do
         action_name = mailer.action_name.to_sym
-        if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
+        if AhoyEmail.enabled? && options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
           @ahoy_message = AhoyEmail.message_model.new
           ahoy_message.token = generate_token
           ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
@@ -39,11 +39,11 @@ module AhoyEmail
 
     def track_send
       Safely.safely do
-        if (message_id = message["Ahoy-Message-Id"]) && message.perform_deliveries
+        if AhoyEmail.enabled? && (message_id = message["Ahoy-Message-Id"]) && message.perform_deliveries
           ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
           if ahoy_message
             ahoy_message.sent_at = Time.now
-            ahoy_message.save
+            ahoy_message.save!
           end
           message["Ahoy-Message-Id"] = nil
         end
