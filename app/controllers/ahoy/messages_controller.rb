@@ -1,5 +1,5 @@
 module Ahoy
-  class MessagesController < ActionController::Base
+  class MessagesController < ApplicationController
     if respond_to? :before_action
       before_action :set_message
     else
