@@ -11,5 +11,6 @@ notifications:
     on_failure: change
 gemfile:
   - Gemfile
+  - test/gemfiles/actionmailer51.gemfile
   - test/gemfiles/actionmailer50.gemfile
   - test/gemfiles/actionmailer42.gemfile
