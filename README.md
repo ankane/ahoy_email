@@ -59,7 +59,7 @@ To get all messages sent to a user, add an association:
 
 ```ruby
 class User < ApplicationRecord
-  has_many :messages, class_name: 'Ahoy::Message', as: :user
+  has_many :messages, class_name: "Ahoy::Message", as: :user
 end
 ```
 
