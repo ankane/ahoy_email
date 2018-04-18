@@ -28,7 +28,7 @@ And run the generator. This creates a model to store messages.
 
 ```sh
 rails generate ahoy_email:install
-rake db:migrate
+rails db:migrate
 ```
 
 ## How It Works
