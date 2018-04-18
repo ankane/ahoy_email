@@ -5,7 +5,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
 
       # user
       t.text :to
-      t.references :user
+      t.references :user, polymorphic: true
 
       # optional - feel free to remove
       t.string :mailer
