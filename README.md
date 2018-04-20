@@ -251,7 +251,7 @@ track unsubscribe_links: true
 Use a different model
 
 ```ruby
-AhoyEmail.message_model = UserMessage
+AhoyEmail.message_model = -> { UserMessage }
 ```
 
 ## Upgrading
