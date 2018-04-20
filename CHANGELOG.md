@@ -1,5 +1,7 @@
 ## 0.5.1 [unreleased]
 
+- Added `unsubscribe_links` option
+- Allow `message_model` to accept a proc
 - Use `references` in migration
 
 ## 0.5.0

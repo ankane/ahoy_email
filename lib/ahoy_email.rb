@@ -40,7 +40,9 @@ module AhoyEmail
   end
 
   def self.message_model
-    (defined?(@message_model) && @message_model) || ::Ahoy::Message
+    model = (defined?(@message_model) && @message_model) || ::Ahoy::Message
+    model = model.call if model.respond_to?(:call)
+    model
   end
 end
 
