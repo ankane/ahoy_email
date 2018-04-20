@@ -99,13 +99,13 @@ Use `track open: false` to skip this.
 A redirect is added to links to track clicks in HTML emails.
 
 ```
-http://chartkick.com
+https://chartkick.com
 ```
 
 becomes
 
 ```
-http://you.io/ahoy/messages/rAnDoMtOkEn/click?url=http%3A%2F%2Fchartkick.com&signature=...
+https://yoursite.com/ahoy/messages/rAnDoMtOkEn/click?url=https%3A%2F%2Fchartkick.com&signature=...
 ```
 
 A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
