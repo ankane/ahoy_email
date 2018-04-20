@@ -1,3 +1,7 @@
+## 0.5.2 [unreleased]
+
+- Fixed secret token for Rails 5.2
+
 ## 0.5.1
 
 - Fixed deprecation warning in Rails 5.2
