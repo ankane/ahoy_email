@@ -5,8 +5,8 @@
 You get:
 
 - A history of emails sent to each user
-- Open and click tracking
 - Easy UTM tagging
+- Open and click tracking
 
 Works with any email service.
 
@@ -69,6 +69,23 @@ And run:
 user.messages
 ```
 
+### UTM Parameters
+
+UTM parameters are added to links if they don’t already exist.
+
+The defaults are:
+
+- utm_medium - `email`
+- utm_source - the mailer name like `user_mailer`
+- utm_campaign - the mailer action like `welcome_email`
+
+Use `track utm_params: false` to skip tagging, or skip specific links with:
+
+
+```html
+<a data-skip-utm-params="true" href="...">Break it down</a>
+```
+
 ### Opens
 
 An invisible pixel is added right before the `</body>` tag in HTML emails.
@@ -97,23 +114,6 @@ Use `track click: false` to skip tracking, or skip specific links with:
 
 ```html
 <a data-skip-click="true" href="...">Can't touch this</a>
-```
-
-### UTM Parameters
-
-UTM parameters are added to links if they don’t already exist.
-
-The defaults are:
-
-- utm_medium - `email`
-- utm_source - the mailer name like `user_mailer`
-- utm_campaign - the mailer action like `welcome_email`
-
-Use `track utm_params: false` to skip tagging, or skip specific links with:
-
-
-```html
-<a data-skip-utm-params="true" href="...">Break it down</a>
 ```
 
 ### Extra Attributes
