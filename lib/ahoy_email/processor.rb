@@ -54,8 +54,8 @@ module AhoyEmail
 
     def options
       @options ||= begin
-        options = AhoyEmail.options.merge(mailer.class.ahoy_options)
-        if mailer.ahoy_options
+        options = AhoyEmail.options.merge(mailer.class.try(:ahoy_options) || {})
+        if mailer.try(:ahoy_options)
           options = options.except(:only, :except).merge(mailer.ahoy_options)
         end
         options.each do |k, v|
@@ -96,7 +96,6 @@ module AhoyEmail
     def track_links
       if html_part?
         body = (message.html_part || message).body
-
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])

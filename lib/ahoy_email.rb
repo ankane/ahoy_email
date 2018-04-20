@@ -36,11 +36,15 @@ module AhoyEmail
   end
 
   class << self
-    attr_writer :message_model
+    attr_writer :message_model, :processor
   end
 
   def self.message_model
     (defined?(@message_model) && @message_model) || ::Ahoy::Message
+  end
+      
+  def self.processor
+    (defined?(@processor) && @processor) || ::AhoyEmail::Processor
   end
 end
 
