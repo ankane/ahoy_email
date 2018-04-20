@@ -242,7 +242,7 @@ Customize domain
 track url_options: {host: "mydomain.com"}
 ```
 
-By default, unsubscribe links are excluded from tracking. To change this, use: [master]
+By default, unsubscribe links are excluded from tracking. To change this, use:
 
 ```ruby
 track unsubscribe_links: true

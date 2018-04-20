@@ -1,4 +1,4 @@
-## 0.5.1 [unreleased]
+## 0.5.1
 
 - Fixed deprecation warning in Rails 5.2
 - Added `unsubscribe_links` option
