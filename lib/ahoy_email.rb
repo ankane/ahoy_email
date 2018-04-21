@@ -16,6 +16,7 @@ module AhoyEmail
     message: true,
     open: true,
     click: true,
+    enabled: true,
     utm_params: true,
     utm_source: proc { |message, mailer| mailer.mailer_name },
     utm_medium: "email",
@@ -43,6 +44,18 @@ module AhoyEmail
     model = (defined?(@message_model) && @message_model) || ::Ahoy::Message
     model = model.call if model.respond_to?(:call)
     model
+  end
+
+  def self.disable!
+    self.options[:enabled] = false
+  end
+
+  def self.enable!
+    self.options[:enabled] = true
+  end
+
+  def self.enabled?
+    !!self.options[:enabled]
   end
 end
 

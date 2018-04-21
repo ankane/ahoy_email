@@ -25,6 +25,10 @@ class UserMailer < ActionMailer::Base
     html_message('<a href="http://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
   end
 
+  def welcome6
+    mail to: "test@example.org", subject: "Hello", body: "World"
+  end
+
   private
 
     def prevent_delivery_to_guests
@@ -41,6 +45,7 @@ end
 
 class MailerTest < Minitest::Test
   def setup
+    AhoyEmail.enable!
     Ahoy::Message.delete_all
   end
 
@@ -72,6 +77,13 @@ class MailerTest < Minitest::Test
     message = UserMailer.welcome5
     body = message.body.to_s
     assert_match "baz%5B%5D=1&amp;baz%5B%5D=2", body
+  end
+
+  def test_global_disable
+    AhoyEmail.disable!
+    message = UserMailer.welcome6
+    message.respond_to?(:deliver_now) ? message.deliver_now : message.deliver
+    assert_equal 0, Ahoy::Message.count
   end
 
   private
