@@ -2,7 +2,7 @@ module AhoyEmail
   module Mailer
     def self.included(base)
       base.extend ClassMethods
-      base.send(:prepend, InstanceMethods)
+      base.prepend InstanceMethods
       base.class_eval do
         attr_accessor :ahoy_options
         class_attribute :ahoy_options
