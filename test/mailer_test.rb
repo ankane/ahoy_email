@@ -25,6 +25,31 @@ class UserMailer < ActionMailer::Base
     html_message('<a href="http://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
   end
 
+  def heuristic_parse
+    track heuristic_parse: true
+    html_message('<a href="example.org">Hi<a>')
+  end
+
+  def mailto
+    track heuristic_parse: true
+    html_message('<a href="mailto:someone@yoursite.com">Email Us</a>')
+  end
+
+  def app_link
+    track heuristic_parse: true
+    html_message('<a href="fb://profile/33138223345">Email Us</a>')
+  end
+
+  def welcome4_heuristic
+    track heuristic_parse: true
+    html_message('<a href="http://example.org">Hi<a>')
+  end
+
+  def welcome5_heuristic
+    track heuristic_parse: true
+    html_message('<a href="http://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+  end
+
   private
 
     def prevent_delivery_to_guests
@@ -70,6 +95,43 @@ class MailerTest < Minitest::Test
 
   def test_array_params
     message = UserMailer.welcome5
+    body = message.body.to_s
+    assert_match "baz%5B%5D=1&amp;baz%5B%5D=2", body
+  end
+
+  def test_heuristic_parse
+    # Should convert the URI fragment into a URI
+    message = UserMailer.heuristic_parse
+    body = message.body.to_s
+    assert_match "http://example.org", body
+  end
+
+  def test_mailto
+    # heuristic parse should ignore the mailto link
+    message = UserMailer.mailto
+    body = message.body.to_s
+    assert_match "<a href=\"mailto:someone@yoursite.com\">", body
+  end
+
+  def test_app_link
+    # heuristic parse should ignore the app link
+    message = UserMailer.app_link
+    body = message.body.to_s
+    assert_match "<a href=\"fb://profile/33138223345\">", body
+  end
+
+  def test_utm_params_heuristic_parse
+    # heuristic parse should not have unexpected side effects
+    message = UserMailer.welcome4_heuristic
+    body = message.body.to_s
+    assert_match "utm_campaign=welcome4", body
+    assert_match "utm_medium=email", body
+    assert_match "utm_source=user_mailer", body
+  end
+
+  def test_array_params_heuristic_parse
+    # heuristic parse should not have unexpected side effects
+    message = UserMailer.welcome5_heuristic
     body = message.body.to_s
     assert_match "baz%5B%5D=1&amp;baz%5B%5D=2", body
   end
