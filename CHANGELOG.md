@@ -1,6 +1,7 @@
 ## 0.5.2 [unreleased]
 
 - Fixed secret token for Rails 5.2
+- Added `heuristic_parse` option
 
 ## 0.5.1
 
