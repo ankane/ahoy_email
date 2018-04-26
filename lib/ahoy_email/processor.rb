@@ -140,7 +140,7 @@ module AhoyEmail
         # remove it
         link.remove_attribute(attribute)
         true
-      elsif link["href"].to_s =~ /unsubscribe/i
+      elsif link["href"].to_s =~ /unsubscribe/i && !options[:unsubscribe_links]
         # try to avoid unsubscribe links
         true
       else

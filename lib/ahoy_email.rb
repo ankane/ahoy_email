@@ -1,6 +1,4 @@
-require "ahoy_email/version"
-require "action_mailer"
-require "rails"
+require "active_support"
 require "nokogiri"
 require "addressable/uri"
 require "openssl"
@@ -9,6 +7,7 @@ require "ahoy_email/processor"
 require "ahoy_email/interceptor"
 require "ahoy_email/mailer"
 require "ahoy_email/engine"
+require "ahoy_email/version"
 
 module AhoyEmail
   mattr_accessor :secret_token, :options, :subscribers, :belongs_to, :invalid_redirect_url
@@ -41,9 +40,13 @@ module AhoyEmail
   end
 
   def self.message_model
-    (defined?(@message_model) && @message_model) || ::Ahoy::Message
+    model = (defined?(@message_model) && @message_model) || ::Ahoy::Message
+    model = model.call if model.respond_to?(:call)
+    model
   end
 end
 
-ActionMailer::Base.send :include, AhoyEmail::Mailer
-ActionMailer::Base.register_interceptor AhoyEmail::Interceptor
+ActiveSupport.on_load(:action_mailer) do
+  include AhoyEmail::Mailer
+  register_interceptor AhoyEmail::Interceptor
+end

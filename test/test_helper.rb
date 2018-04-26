@@ -7,8 +7,10 @@ require "combustion"
 Minitest::Test = Minitest::Unit::TestCase unless defined?(Minitest::Test)
 
 Combustion.path = "test/internal"
-Combustion.initialize! :all
+Combustion.initialize! :all do
+  if config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer)
+    config.active_record.sqlite3.represent_boolean_as_integer = true
+  end
+end
 
 ActionMailer::Base.delivery_method = :test
-
-ActiveRecord::Base.belongs_to_required_by_default = true if ActiveRecord::VERSION::MAJOR >= 5

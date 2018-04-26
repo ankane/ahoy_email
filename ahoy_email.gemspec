@@ -9,7 +9,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Andrew Kane"]
   spec.email         = ["andrew@chartkick.com"]
   spec.summary       = "Simple, powerful email tracking for Rails"
-  spec.description   = "Simple, powerful email tracking for Rails"
   spec.homepage      = "https://github.com/ankane/ahoy_email"
   spec.license       = "MIT"
 
@@ -20,14 +19,17 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.0.0"
 
-  spec.add_runtime_dependency "rails"
-  spec.add_runtime_dependency "addressable"
+  spec.add_runtime_dependency "railties"
+  spec.add_runtime_dependency "actionmailer"
+  spec.add_runtime_dependency "activerecord"
+  spec.add_runtime_dependency "addressable", ">= 2.3.2"
   spec.add_runtime_dependency "nokogiri"
   spec.add_runtime_dependency "safely_block", ">= 0.1.1"
 
-  spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "combustion"
+  spec.add_development_dependency "rails"
   spec.add_development_dependency "sqlite3"
 end
