@@ -1,8 +1,9 @@
 require "active_support"
-require "nokogiri"
 require "addressable/uri"
+require "nokogiri"
 require "openssl"
 require "safely/core"
+
 require "ahoy_email/processor"
 require "ahoy_email/interceptor"
 require "ahoy_email/mailer"
