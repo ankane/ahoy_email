@@ -11,6 +11,7 @@ ActiveRecord::Schema.define do
     t.string :mailer
     t.text :subject
     t.text :content
+    t.text :content_text
 
     # optional
     t.string :utm_source
