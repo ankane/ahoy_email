@@ -15,16 +15,7 @@ module AhoyEmail
         if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
           track_open if options[:open]
           track_links if options[:utm_params] || options[:click]
-
-          data = {
-            token: token
-          }
-
-          (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
-            data[k.to_sym] = options[k.to_sym]
-          end
-
-          AhoyEmail.track_method.call(message, data)
+          track_message
         end
       end
     end
@@ -61,6 +52,17 @@ module AhoyEmail
 
     def token
       @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+    end
+
+    def track_message
+      data = {
+        token: token
+      }
+      (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
+        data[k.to_sym] = options[k.to_sym]
+      end
+
+      AhoyEmail.track_method.call(message, data)
     end
 
     def track_open
