@@ -1,6 +1,6 @@
 module AhoyEmail
   class Processor
-    attr_reader :message, :mailer, :ahoy_message
+    attr_reader :message, :mailer
 
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
@@ -13,26 +13,18 @@ module AhoyEmail
       Safely.safely do
         action_name = mailer.action_name.to_sym
         if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
-          @ahoy_message = AhoyEmail.message_model.new
-          ahoy_message.token = generate_token
-          ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
-          ahoy_message.user = options[:user]
-
           track_open if options[:open]
           track_links if options[:utm_params] || options[:click]
 
-          ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
-          ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
-          ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
+          data = {
+            token: token
+          }
 
-          UTM_PARAMETERS.each do |k|
-            ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
+          (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
+            data[k.to_sym] = options[k.to_sym]
           end
 
-          ahoy_message.assign_attributes(options[:extra] || {})
-
-          ahoy_message.save!
-          message["Ahoy-Message-Id"] = ahoy_message.id.to_s
+          AhoyEmail.track_method.call(message, data)
         end
       end
     end
@@ -67,8 +59,8 @@ module AhoyEmail
       end
     end
 
-    def generate_token
-      SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+    def token
+      @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
     end
 
     def track_open
@@ -79,7 +71,7 @@ module AhoyEmail
           url_for(
             controller: "ahoy/messages",
             action: "open",
-            id: ahoy_message.token,
+            id: token,
             format: "gif"
           )
         pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: "")
@@ -118,7 +110,7 @@ module AhoyEmail
               url_for(
                 controller: "ahoy/messages",
                 action: "click",
-                id: ahoy_message.token,
+                id: token,
                 url: link["href"],
                 signature: signature
               )
