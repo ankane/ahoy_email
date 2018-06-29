@@ -11,7 +11,7 @@ require "ahoy_email/engine"
 require "ahoy_email/version"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method
+  mattr_accessor :secret_token, :options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method, :preserve_callbacks
   mattr_writer :message_model
 
   self.options = {
@@ -53,6 +53,8 @@ module AhoyEmail
   self.subscribers = []
 
   self.belongs_to = {}
+
+  self.preserve_callbacks = []
 
   def self.track(options)
     self.options = self.options.merge(options)
