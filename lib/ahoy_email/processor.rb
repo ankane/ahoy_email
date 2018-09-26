@@ -16,6 +16,7 @@ module AhoyEmail
           data[:user_type] = user.model_name.name
           data[:user_id] = user.id
         end
+        puts data.to_json
         mailer.message["Ahoy-Message"] = data.to_json
       end
     end

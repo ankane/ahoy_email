@@ -39,17 +39,13 @@ Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 Ahoy tracks the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
-By default, Ahoy tries `User.find_by(email: message.to.first)` to find the user.
+By default, Ahoy tries `params[:user]`, then `User.find_by(email: message.to.first)` to find the user.
 
 You can pass a specific user with:
 
 ```ruby
 class UserMailer < ApplicationMailer
-  def welcome
-    @user = params[:user]
-    track user: @user
-    mail to: @user.email
-  end
+  track user: -> { @some_user }
 end
 ```
 
@@ -69,6 +65,34 @@ And run:
 user.messages
 ```
 
+### Extra Attributes
+
+Create a migration to add extra attributes to the `ahoy_messages` table. For example:
+
+```ruby
+class AddCampaignIdToAhoyMessages < ActiveRecord::Migration[5.2]
+  def change
+    add_column :ahoy_messages, :coupon_id, :integer
+  end
+end
+```
+
+Then use:
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track extra: {campaign_id: 1}
+end
+```
+
+You can use a proc as well.
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track extra: -> { {coupon_id: params[:coupon].id} }
+end
+```
+
 ### UTM Parameters
 
 UTM parameters are added to links if they don’t already exist.
@@ -80,7 +104,6 @@ The defaults are:
 - utm_campaign - the mailer action like `welcome_email`
 
 Use `track utm_params: false` to skip tagging, or skip specific links with:
-
 
 ```html
 <a data-skip-utm-params="true" href="...">Break it down</a>
@@ -114,24 +137,6 @@ Use `track click: false` to skip tracking, or skip specific links with:
 
 ```html
 <a data-skip-click="true" href="...">Can't touch this</a>
-```
-
-### Extra Attributes
-
-Create a migration to add extra attributes to the `ahoy_messages` table, for example:
-
-```ruby
-class AddCampaignIdToAhoyMessages < ActiveRecord::Migration
-  def change
-    add_column :ahoy_messages, :campaign_id, :integer
-  end
-end
-```
-
-Then use:
-
-```ruby
-track extra: {campaign_id: 1}
 ```
 
 ## Customize

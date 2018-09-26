@@ -26,7 +26,7 @@ module AhoyEmail
     # utm_term: nil,
     # utm_content: nil,
     # utm_campaign: ->(message, mailer) { mailer.action_name },
-    user: -> { (message.to.size == 1 ? User.find_by(email: message.to.first) : nil) rescue nil },
+    user: -> { params[:user] || (message.to.size == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
     mailer: -> { "#{self.class.name}##{action_name}" },
     # url_options: {},
     # heuristic_parse: false
