@@ -16,9 +16,9 @@ module AhoyEmail
 
   self.options = {
     message: true,
-    open: true,
-    click: true,
-    utm_params: true,
+    open: false,
+    click: false,
+    utm_params: false,
     utm_source: ->(message, mailer) { mailer.mailer_name },
     utm_medium: "email",
     utm_term: nil,
@@ -32,7 +32,6 @@ module AhoyEmail
 
   self.track_method = lambda do |message, data|
     ahoy_message = AhoyEmail.message_model.new
-    ahoy_message.token = data[:token]
     ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
     ahoy_message.user = data[:user]
 
@@ -46,8 +45,8 @@ module AhoyEmail
 
     ahoy_message.assign_attributes(data[:extra] || {})
 
+    ahoy_message.sent_at = Time.now
     ahoy_message.save!
-    message["Ahoy-Message-Id"] = ahoy_message.id.to_s
   end
 
   self.subscribers = []

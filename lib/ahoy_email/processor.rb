@@ -4,33 +4,26 @@ module AhoyEmail
 
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
-    def initialize(message, mailer = nil)
-      @message = message
-      @mailer = mailer
-    end
-
-    def process
+    def process_message(message, mailer)
       Safely.safely do
         action_name = mailer.action_name.to_sym
         if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
-          track_open if options[:open]
-          track_links if options[:utm_params] || options[:click]
-          track_message
+          # track_open if options[:open]
+          # track_links if options[:utm_params] || options[:click]
+          # track_message
         end
       end
     end
 
-    def track_send
+    def track_message(message)
       Safely.safely do
-        if (message_id = message["Ahoy-Message-Id"]) && message.perform_deliveries
-          ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
-          if ahoy_message
-            ahoy_message.sent_at = Time.now
-            ahoy_message.save
-          end
-          message["Ahoy-Message-Id"] = nil
+        if message.perform_deliveries && data_header = message["Ahoy-Message"]
+          data = JSON.parse(data_header)
+          AhoyEmail.track_method.call(message, data)
         end
       end
+    ensure
+      message["Ahoy-Message"] = nil if message["Ahoy-Message"]
     end
 
     protected
@@ -54,16 +47,16 @@ module AhoyEmail
       @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
     end
 
-    def track_message
-      data = {
-        token: token
-      }
-      (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
-        data[k.to_sym] = options[k.to_sym]
-      end
+    # def track_message
+    #   data = {
+    #     token: token
+    #   }
+    #   (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
+    #     data[k.to_sym] = options[k.to_sym]
+    #   end
 
-      AhoyEmail.track_method.call(message, data)
-    end
+    #   AhoyEmail.track_method.call(message, data)
+    # end
 
     def track_open
       if html_part?

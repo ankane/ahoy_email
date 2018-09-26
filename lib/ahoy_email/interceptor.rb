@@ -2,7 +2,7 @@ module AhoyEmail
   class Interceptor
     class << self
       def delivering_email(message)
-        AhoyEmail::Processor.new(message).track_send
+        AhoyEmail::Processor.new.track_message(message)
       end
     end
   end

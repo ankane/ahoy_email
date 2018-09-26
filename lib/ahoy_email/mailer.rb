@@ -26,7 +26,7 @@ module AhoyEmail
         return message if @_mail_was_called && headers.blank? && !block
 
         message = super
-        AhoyEmail::Processor.new(message, self).process
+        AhoyEmail::Processor.new.process_message(message, self)
         message
       end
     end
