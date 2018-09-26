@@ -4,7 +4,7 @@
 
 Breaking changes
 
-- UTM parameters, open tracking, and click tracking are now opt-in
+- UTM parameters, open tracking, and click tracking are not enabled by default
 
 ## 0.5.2
 

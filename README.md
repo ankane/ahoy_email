@@ -81,7 +81,7 @@ Then use:
 
 ```ruby
 class CouponMailer < ApplicationMailer
-  track extra: {campaign_id: 1}
+  track extra: {coupon_id: 1}
 end
 ```
 
@@ -95,7 +95,13 @@ end
 
 ### UTM Parameters
 
-UTM parameters are added to links if they don’t already exist.
+Automatically add UTM parameters to links.
+
+```ruby
+class UserMailer < ApplicationMailer
+  track utm_params: true # use only/except to limit actions
+end
+```
 
 The defaults are:
 
@@ -103,7 +109,15 @@ The defaults are:
 - utm_source - the mailer name like `user_mailer`
 - utm_campaign - the mailer action like `welcome_email`
 
-Use `track utm_params: false` to skip tagging, or skip specific links with:
+You can customize any with:
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track utm_params: true, utm_campaign: -> { "coupon_#{params[:coupon].id}" }
+end
+```
+
+Skip specific links with:
 
 ```html
 <a data-skip-utm-params="true" href="...">Break it down</a>
@@ -111,13 +125,23 @@ Use `track utm_params: false` to skip tagging, or skip specific links with:
 
 ### Opens
 
-An invisible pixel is added right before the `</body>` tag in HTML emails.
+```ruby
+class UserMailer < ApplicationMailer
+  track open: true # use only/except to limit actions
+end
+```
 
-If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
+An invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
 
 Use `track open: false` to skip this.
 
 ### Clicks
+
+```ruby
+class UserMailer < ApplicationMailer
+  track click: true # use only/except to limit actions
+end
+```
 
 A redirect is added to links to track clicks in HTML emails.
 
@@ -133,7 +157,7 @@ https://yoursite.com/ahoy/messages/rAnDoMtOkEn/click?url=https%3A%2F%2Fchartkick
 
 A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
 
-Use `track click: false` to skip tracking, or skip specific links with:
+Skip specific links with:
 
 ```html
 <a data-skip-click="true" href="...">Can't touch this</a>
@@ -149,36 +173,6 @@ Skip tracking of attributes by removing them from your model. You can safely rem
 - mailer
 - subject
 - content
-
-### Configuration
-
-There are 3 places to set options. Here’s the order of precedence.
-
-#### Action
-
-``` ruby
-class UserMailer < ApplicationMailer
-  def welcome_email(user)
-    # ...
-    track user: user
-    mail to: user.email
-  end
-end
-```
-
-#### Mailer
-
-```ruby
-class UserMailer < ApplicationMailer
-  track utm_campaign: "boom"
-end
-```
-
-#### Global
-
-```ruby
-AhoyEmail.track open: false
-```
 
 ## Events
 
@@ -216,10 +210,13 @@ AhoyEmail.subscribers << EmailSubscriber.new
 
 ## Reference
 
-You can use a `Proc` for any option.
+Set global options
 
 ```ruby
-track utm_campaign: ->(message, mailer) { mailer.action_name + Time.now.year }
+AhoyEmail.default_options.merge!(
+  user: -> { params[:admin] },
+  utm_params: true
+}
 ```
 
 Disable tracking for an email
@@ -263,7 +260,36 @@ AhoyEmail.message_model = -> { UserMessage }
 
 ### 1.0.0
 
+Breaking changes
 
+- UTM parameters, open tracking, and click tracking are not enabled by default. To enable, create an initializer with:
+
+```ruby
+AhoyEmail.api = true
+
+AhoyEmail.default_options.merge!(
+  open: true,
+  click: true,
+  utm_params: true
+)
+
+# or
+AhoyEmail.configure do |config|
+  config.open = true
+  config.click = true
+  config.utm_params = true
+end
+```
+
+- Procs are now executed in the context of the mailer and take no arguments.
+
+```ruby
+# old
+user: ->(mailer, message) { User.find_by(email: message.to.first) }
+
+# new
+user: -> { User.find_by(email: message.to.first) }
+```
 
 ### 0.2.3
 
