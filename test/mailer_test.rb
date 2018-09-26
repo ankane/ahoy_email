@@ -137,8 +137,7 @@ class MailerTest < Minitest::Test
   private
 
   def assert_message(method)
-    message = UserMailer.send(method)
-    message.deliver_now
+    UserMailer.send(method).deliver_now
     ahoy_message = Ahoy::Message.first
     assert_equal 1, Ahoy::Message.count
     assert_equal "test@example.org", ahoy_message.to
