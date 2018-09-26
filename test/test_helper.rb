@@ -17,7 +17,10 @@ class User < ActiveRecord::Base
 end
 
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.org"
+  default from: "from@example.org",
+          to: -> { (params && params[:to]) || "to@example.org" },
+          subject: "Hello",
+          body: "World"
 end
 
 class Minitest::Test

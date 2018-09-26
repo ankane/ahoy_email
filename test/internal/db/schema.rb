@@ -5,6 +5,9 @@ ActiveRecord::Schema.define do
     t.string :mailer
     t.text :subject
     t.timestamp :sent_at
+
+    # extra
+    t.integer :coupon_id
   end
 
   create_table :users, force: true do |t|
