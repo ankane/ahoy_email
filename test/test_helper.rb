@@ -21,6 +21,12 @@ class ApplicationMailer < ActionMailer::Base
           to: -> { (params && params[:to]) || "to@example.org" },
           subject: "Hello",
           body: "World"
+
+  def html_message(html)
+    mail do |format|
+      format.html { render plain: html }
+    end
+  end
 end
 
 class Minitest::Test
