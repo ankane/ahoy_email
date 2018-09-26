@@ -17,6 +17,9 @@ module AhoyEmail
     end
 
     def save_ahoy_options
+      ahoy_options = self.ahoy_options || AhoyEmail.default_options
+
+      # TODO figure out how to enable/disable
       if ahoy_options
         options = {}
         ahoy_options.each do |k, v|
