@@ -70,7 +70,7 @@ user.messages
 Create a migration to add extra attributes to the `ahoy_messages` table. For example:
 
 ```ruby
-class AddCampaignIdToAhoyMessages < ActiveRecord::Migration[5.2]
+class AddCouponIdToAhoyMessages < ActiveRecord::Migration[5.2]
   def change
     add_column :ahoy_messages, :coupon_id, :integer
   end
