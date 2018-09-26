@@ -13,6 +13,11 @@ class UserMailer < ApplicationMailer
 end
 
 class UserTest < Minitest::Test
+  def setup
+    super
+    User.delete_all
+  end
+
   def test_no_user
     UserMailer.welcome.deliver_now
     assert_nil ahoy_message.user

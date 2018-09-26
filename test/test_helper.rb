@@ -25,7 +25,6 @@ end
 
 class Minitest::Test
   def setup
-    User.delete_all
     Ahoy::Message.delete_all
   end
 
