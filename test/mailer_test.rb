@@ -18,11 +18,11 @@ class UserMailer < ActionMailer::Base
   end
 
   def welcome4
-    html_message('<a href="http://example.org">Hi<a>')
+    html_message('<a href="https://example.org">Hi<a>')
   end
 
   def welcome5
-    html_message('<a href="http://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+    html_message('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
   end
 
   def heuristic_parse
@@ -42,12 +42,12 @@ class UserMailer < ActionMailer::Base
 
   def welcome4_heuristic
     track heuristic_parse: true
-    html_message('<a href="http://example.org">Hi<a>')
+    html_message('<a href="https://example.org">Hi<a>')
   end
 
   def welcome5_heuristic
     track heuristic_parse: true
-    html_message('<a href="http://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+    html_message('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
   end
 
   private
@@ -101,7 +101,7 @@ class MailerTest < Minitest::Test
     # Should convert the URI fragment into a URI
     message = UserMailer.heuristic_parse
     body = message.body.to_s
-    assert_match "http://example.org", body
+    assert_match "https://example.org", body
   end
 
   def test_mailto

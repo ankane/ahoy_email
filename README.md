@@ -53,7 +53,7 @@ class UserMailer < ApplicationMailer
 end
 ```
 
-The user association is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
+The user association is [polymorphic](https://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
 
 To get all messages sent to a user, add an association:
 
