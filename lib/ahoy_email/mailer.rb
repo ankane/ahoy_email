@@ -6,7 +6,7 @@ module AhoyEmail
       attr_accessor :ahoy_options
       class_attribute :ahoy_options
       self.ahoy_options = {}
-      after_action :track_ahoy_message
+      after_action :save_ahoy_options
     end
 
     class_methods do
@@ -19,8 +19,8 @@ module AhoyEmail
       self.ahoy_options = (ahoy_options || {}).merge(message: true).merge(options)
     end
 
-    def track_ahoy_message
-      AhoyEmail::Processor.new.process_message(message, self)
+    def save_ahoy_options
+      AhoyEmail::Processor.new.save_options(message, self)
     end
   end
 end

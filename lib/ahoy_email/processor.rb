@@ -4,7 +4,7 @@ module AhoyEmail
 
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
-    def process_message(message, mailer)
+    def save_options(message, mailer)
       @message = message
       @mailer = mailer
 
@@ -22,7 +22,7 @@ module AhoyEmail
       end
     end
 
-    def track_message(message)
+    def process_message(message)
       Safely.safely do
         if message.perform_deliveries && (data_header = message["Ahoy-Message"])
           data = JSON.parse(data_header.to_s).symbolize_keys
