@@ -101,7 +101,7 @@ class MailerTest < Minitest::Test
     # Should convert the URI fragment into a URI
     message = UserMailer.heuristic_parse
     body = message.body.to_s
-    assert_match "https://example.org", body
+    assert_match "http://example.org", body
   end
 
   def test_mailto
