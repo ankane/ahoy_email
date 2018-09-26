@@ -37,18 +37,18 @@ Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 ### Users
 
-Ahoy tracks the user a message is sent to - not just the email address.  This gives you a full history of messages for each user, even if he or she changes addresses.
+Ahoy tracks the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
-By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
+By default, Ahoy tries `User.find_by(email: message.to.first)` to find the user.
 
 You can pass a specific user with:
 
 ```ruby
 class UserMailer < ApplicationMailer
-  def welcome_email(user)
-    # ...
-    track user: user
-    mail to: user.email
+  def welcome
+    @user = params[:user]
+    track user: @user
+    mail to: @user.email
   end
 end
 ```
@@ -138,7 +138,7 @@ track extra: {campaign_id: 1}
 
 ### Tracking
 
-Skip tracking of attributes by removing them from your model.  You can safely remove:
+Skip tracking of attributes by removing them from your model. You can safely remove:
 
 - to
 - mailer
@@ -255,6 +255,10 @@ AhoyEmail.message_model = -> { UserMessage }
 ```
 
 ## Upgrading
+
+### 1.0.0
+
+
 
 ### 0.2.3
 

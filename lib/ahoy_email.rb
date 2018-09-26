@@ -1,9 +1,11 @@
+# dependencies
 require "active_support"
 require "addressable/uri"
 require "nokogiri"
 require "openssl"
 require "safely/core"
 
+# modules
 require "ahoy_email/processor"
 require "ahoy_email/interceptor"
 require "ahoy_email/mailer"

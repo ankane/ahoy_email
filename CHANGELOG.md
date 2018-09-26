@@ -1,3 +1,11 @@
+## 1.0.0 [unreleased]
+
+- Removed support for Rails < 4.2
+
+Breaking changes
+
+- UTM parameters, open tracking, and click tracking are now opt-in
+
 ## 0.5.2
 
 - Fixed secret token for Rails 5.2
