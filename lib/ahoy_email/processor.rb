@@ -5,20 +5,27 @@ module AhoyEmail
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
     def process_message(message, mailer)
+      @message = message
+      @mailer = mailer
+
       Safely.safely do
         action_name = mailer.action_name.to_sym
         if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
-          # track_open if options[:open]
-          # track_links if options[:utm_params] || options[:click]
-          # track_message
+          data = message_data
+          user = data.delete(:user)
+          if user
+            data[:user_type] = user.model_name.name
+            data[:user_id] = user.id
+          end
+          message["Ahoy-Message"] = data.to_json
         end
       end
     end
 
     def track_message(message)
       Safely.safely do
-        if message.perform_deliveries && data_header = message["Ahoy-Message"]
-          data = JSON.parse(data_header)
+        if message.perform_deliveries && (data_header = message["Ahoy-Message"])
+          data = JSON.parse(data_header.to_s).symbolize_keys
           AhoyEmail.track_method.call(message, data)
         end
       end
@@ -47,16 +54,13 @@ module AhoyEmail
       @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
     end
 
-    # def track_message
-    #   data = {
-    #     token: token
-    #   }
-    #   (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
-    #     data[k.to_sym] = options[k.to_sym]
-    #   end
-
-    #   AhoyEmail.track_method.call(message, data)
-    # end
+    def message_data
+      data = {}
+      (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
+        data[k.to_sym] = options[k.to_sym]
+      end
+      data
+    end
 
     def track_open
       if html_part?

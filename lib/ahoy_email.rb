@@ -24,7 +24,7 @@ module AhoyEmail
     utm_term: nil,
     utm_content: nil,
     utm_campaign: ->(message, mailer) { mailer.action_name },
-    user: ->(message, mailer) { (message.to.size == 1 ? User.where(email: message.to.first).first : nil) rescue nil },
+    user: ->(message, mailer) { (message.to.size == 1 ? User.find_by(email: message.to.first) : nil) rescue nil },
     mailer: ->(message, mailer) { "#{mailer.class.name}##{mailer.action_name}" },
     url_options: {},
     heuristic_parse: false
@@ -33,7 +33,8 @@ module AhoyEmail
   self.track_method = lambda do |message, data|
     ahoy_message = AhoyEmail.message_model.new
     ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
-    ahoy_message.user = data[:user]
+    ahoy_message.user_type = data[:user_type]
+    ahoy_message.user_id = data[:user_id]
 
     ahoy_message.mailer = data[:mailer] if ahoy_message.respond_to?(:mailer=)
     ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
@@ -67,4 +68,7 @@ end
 ActiveSupport.on_load(:action_mailer) do
   include AhoyEmail::Mailer
   register_interceptor AhoyEmail::Interceptor
+  # if ActionMailer::Base.respond_to?(:register_preview_interceptor)
+  #   ActionMailer::Base.register_preview_interceptor(AhoyEmail::Interceptor)
+  # end
 end
