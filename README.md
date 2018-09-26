@@ -219,23 +219,18 @@ AhoyEmail.default_options.merge!(
 }
 ```
 
-Disable tracking for an email
+Disable tracking for a mailer or action
 
 ```ruby
-track message: false
-```
-
-Or specific actions
-
-```ruby
-track only: [:welcome_email]
-track except: [:welcome_email]
+class UserMailer < ApplicationMailer
+  disable_track only: [:welcome]
+end
 ```
 
 Or by default
 
 ```ruby
-AhoyEmail.track message: false
+AhoyEmail.track_default = false
 ```
 
 Customize domain
@@ -259,6 +254,9 @@ AhoyEmail.message_model = -> { UserMessage }
 ## Upgrading
 
 ### 1.0.0
+
+- Only saves emails that are sent
+- Doesn't require additional user lookup query if params[:user] is passed
 
 Breaking changes
 

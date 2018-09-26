@@ -14,13 +14,19 @@ module AhoyEmail
           self.ahoy_options = ahoy_options.merge(options.except(:only, :except))
         end
       end
+
+      def disable_track(**options)
+        before_action(options) do
+          @ahoy_disable_track = true
+        end
+      end
     end
 
     def save_ahoy_options
       ahoy_options = self.ahoy_options || AhoyEmail.default_options
 
       # TODO figure out how to enable/disable
-      if ahoy_options
+      if ahoy_options && !@ahoy_disable_track
         options = {}
         ahoy_options.each do |k, v|
           # execute options in mailer content
