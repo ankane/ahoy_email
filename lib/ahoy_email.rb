@@ -13,23 +13,23 @@ require "ahoy_email/engine"
 require "ahoy_email/version"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method
+  mattr_accessor :secret_token, :default_options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method
   mattr_writer :message_model
 
-  self.options = {
-    message: true,
-    open: false,
-    click: false,
-    utm_params: false,
-    utm_source: ->(message, mailer) { mailer.mailer_name },
-    utm_medium: "email",
-    utm_term: nil,
-    utm_content: nil,
-    utm_campaign: ->(message, mailer) { mailer.action_name },
-    user: ->(message, mailer) { (message.to.size == 1 ? User.find_by(email: message.to.first) : nil) rescue nil },
-    mailer: ->(message, mailer) { "#{mailer.class.name}##{mailer.action_name}" },
-    url_options: {},
-    heuristic_parse: false
+  self.default_options = {
+    # message: true,
+    # open: false,
+    # click: false,
+    # utm_params: false,
+    # utm_source: ->(message, mailer) { mailer.mailer_name },
+    # utm_medium: "email",
+    # utm_term: nil,
+    # utm_content: nil,
+    # utm_campaign: ->(message, mailer) { mailer.action_name },
+    user: -> { (message.to.size == 1 ? User.find_by(email: message.to.first) : nil) rescue nil },
+    mailer: -> { "#{self.class.name}##{action_name}" },
+    # url_options: {},
+    # heuristic_parse: false
   }
 
   self.track_method = lambda do |message, data|

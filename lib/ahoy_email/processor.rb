@@ -4,21 +4,19 @@ module AhoyEmail
 
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
-    def save_options(message, mailer)
-      @message = message
-      @mailer = mailer
-
+    def save_options(mailer, options)
       Safely.safely do
         action_name = mailer.action_name.to_sym
-        if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
-          data = message_data
-          user = data.delete(:user)
-          if user
-            data[:user_type] = user.model_name.name
-            data[:user_id] = user.id
-          end
-          message["Ahoy-Message"] = data.to_json
+        data = {
+          mailer: options[:mailer],
+          extra: options[:extra]
+        }
+        user = options[:user]
+        if user
+          data[:user_type] = user.model_name.name
+          data[:user_id] = user.id
         end
+        mailer.message["Ahoy-Message"] = data.to_json
       end
     end
 
@@ -35,31 +33,8 @@ module AhoyEmail
 
     protected
 
-    def options
-      @options ||= begin
-        options = AhoyEmail.options.merge(mailer.class.ahoy_options)
-        if mailer.ahoy_options
-          options = options.except(:only, :except).merge(mailer.ahoy_options)
-        end
-        options.each do |k, v|
-          if v.respond_to?(:call)
-            options[k] = v.call(message, mailer)
-          end
-        end
-        options
-      end
-    end
-
     def token
       @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
-    end
-
-    def message_data
-      data = {}
-      (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
-        data[k.to_sym] = options[k.to_sym]
-      end
-      data
     end
 
     def track_open

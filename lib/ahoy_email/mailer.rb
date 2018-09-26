@@ -4,23 +4,27 @@ module AhoyEmail
 
     included do
       attr_accessor :ahoy_options
-      class_attribute :ahoy_options
-      self.ahoy_options = {}
       after_action :save_ahoy_options
     end
 
     class_methods do
-      def track(options = {})
-        self.ahoy_options = ahoy_options.merge(message: true).merge(options)
+      def track(**options)
+        before_action(options.slice(:only, :except)) do
+          self.ahoy_options ||= AhoyEmail.default_options
+          self.ahoy_options = ahoy_options.merge(options.except(:only, :except))
+        end
       end
     end
 
-    def track(options = {})
-      self.ahoy_options = (ahoy_options || {}).merge(message: true).merge(options)
-    end
-
     def save_ahoy_options
-      AhoyEmail::Processor.new.save_options(message, self)
+      if ahoy_options
+        options = {}
+        ahoy_options.each do |k, v|
+          # execute options in mailer content
+          options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
+        end
+        AhoyEmail::Processor.new.save_options(self, options)
+      end
     end
   end
 end
