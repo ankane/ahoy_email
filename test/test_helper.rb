@@ -37,6 +37,16 @@ class Minitest::Test
   def ahoy_message
     Ahoy::Message.last
   end
+
+  def with_default(options)
+    previous_options = AhoyEmail.default_options.dup
+    begin
+      AhoyEmail.default_options.merge!(options)
+      yield
+    ensure
+      AhoyEmail.default_options = previous_options
+    end
+  end
 end
 
 # class UserMailer < ActionMailer::Base
