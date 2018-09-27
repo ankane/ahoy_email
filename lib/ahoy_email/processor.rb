@@ -51,7 +51,7 @@ module AhoyEmail
         end
       end
 
-      mailer.message["Ahoy-Message"] = data.to_json
+      mailer.message.ahoy_options = data
     end
 
     def track_open

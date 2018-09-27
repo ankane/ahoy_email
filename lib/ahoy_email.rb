@@ -8,7 +8,7 @@ require "safely/core"
 # modules
 require "ahoy_email/processor"
 require "ahoy_email/tracker"
-require "ahoy_email/interceptor"
+require "ahoy_email/observer"
 require "ahoy_email/mailer"
 require "ahoy_email/version"
 require "ahoy_email/engine" if defined?(Rails)
@@ -58,6 +58,8 @@ module AhoyEmail
 
     ahoy_message.sent_at = Time.now
     ahoy_message.save!
+
+    ahoy_message
   end
 
   self.subscribers = []
@@ -73,5 +75,6 @@ end
 
 ActiveSupport.on_load(:action_mailer) do
   include AhoyEmail::Mailer
-  register_interceptor AhoyEmail::Interceptor
+  register_observer AhoyEmail::Observer
+  Mail::Message.attr_accessor :ahoy_options, :ahoy_message
 end

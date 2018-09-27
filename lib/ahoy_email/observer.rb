@@ -1,7 +1,7 @@
 module AhoyEmail
-  class Interceptor
+  class Observer
     class << self
-      def delivering_email(message)
+      def delivered_email(message)
         AhoyEmail::Tracker.new(message).perform
       end
     end

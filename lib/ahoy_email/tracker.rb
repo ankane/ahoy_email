@@ -7,15 +7,12 @@ module AhoyEmail
     end
 
     def perform
-      if message.perform_deliveries && (data_header = message["Ahoy-Message"])
-        Safely.safely do
-          data = JSON.parse(data_header.to_s).symbolize_keys
-          data[:message] = message
-          AhoyEmail.track_method.call(data)
+      Safely.safely do
+        if message.perform_deliveries && message.ahoy_options
+          data = message.ahoy_options.merge(message: message)
+          message.ahoy_message = AhoyEmail.track_method.call(data)
         end
       end
-    ensure
-      message["Ahoy-Message"] = nil if message["Ahoy-Message"]
     end
   end
 end

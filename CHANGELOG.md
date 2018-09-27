@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Use observer instead of interceptor
+
 ## 1.0.0
 
 - Removed support for Rails < 4.2
