@@ -33,11 +33,25 @@ rails db:migrate
 
 ## How It Works
 
-Ahoy creates an `Ahoy::Message` record for each email sent by default.
+### Message History
+
+Ahoy creates an `Ahoy::Message` record for each email sent by default. You can disable history for a mailer:
+
+```ruby
+class UserMailer < ApplicationMailer
+  track message: false # use only/except to limit actions
+end
+```
+
+Or by default:
+
+```ruby
+AhoyEmail.default_options[:message] = false
+```
 
 ### Users
 
-Ahoy tracks the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
+Ahoy records the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
 By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to.first)` to find the user.
 
@@ -66,6 +80,8 @@ user.messages
 ```
 
 ### Extra Attributes
+
+Record extra attributes on the `Ahoy::Message` model.
 
 Create a migration to add extra attributes to the `ahoy_messages` table. For example:
 
@@ -105,9 +121,9 @@ end
 
 The defaults are:
 
-- utm_medium - `email`
-- utm_source - the mailer name like `coupon_mailer`
-- utm_campaign - the mailer action like `offer`
+- `utm_medium` - `email`
+- `utm_source` - the mailer name like `coupon_mailer`
+- `utm_campaign` - the mailer action like `offer`
 
 You can customize them with:
 
@@ -124,6 +140,8 @@ Skip specific links with:
 ```
 
 ### Opens & Clicks
+
+#### Setup
 
 Additional setup is required to track opens and clicks.
 
@@ -155,6 +173,8 @@ class UserMailer < ApplicationMailer
 end
 ```
 
+#### How It Works
+
 For opens, an invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in their email client, the pixel is loaded and the open time recorded.
 
 For clicks, a redirect is added to links to track clicks in HTML emails.
@@ -177,16 +197,30 @@ Skip specific links with:
 <%= link_to "Go", some_url, data: {skip_click: true} %>
 ```
 
+By default, unsubscribe links are excluded. To change this, use:
+
+```ruby
+AhoyEmail.default_options[:unsubscribe_links] = true
+```
+
+You can specify the domain to use with:
+
+```ruby
+AhoyEmail.default_options[:url_options] = {host: "mydomain.com"}
+```
+
+#### Events
+
 Subscribe to open and click events by adding to the initializer:
 
 ```ruby
 class EmailSubscriber
   def open(event)
-    # any code you want
+    # your code
   end
 
   def click(event)
-    # any code you want
+    # your code
   end
 end
 
@@ -215,32 +249,6 @@ Set global options
 
 ```ruby
 AhoyEmail.default_options[:user] = -> { params[:admin] }
-```
-
-Disable tracking for a mailer
-
-```ruby
-class UserMailer < ApplicationMailer
-  track message: false # use only/except to limit actions
-end
-```
-
-Or by default
-
-```ruby
-AhoyEmail.default_options[:message] = false
-```
-
-Customize domain
-
-```ruby
-AhoyEmail.default_options[:url_options] = {host: "mydomain.com"}
-```
-
-By default, unsubscribe links are excluded from click tracking. To change this, use:
-
-```ruby
-AhoyEmail.default_options[:unsubscribe_links] = true
 ```
 
 Use a different model
