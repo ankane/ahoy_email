@@ -7,6 +7,7 @@ Breaking changes
 
 - UTM parameters, open tracking, and click tracking are not enabled by default
 - Procs are now executed in the context of the mailer and take no arguments
+- Invalid options now throw an `ArgumentError`
 - `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
 
 ## 0.5.2

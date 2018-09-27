@@ -275,6 +275,7 @@ Breaking changes
   user: -> { User.find_by(email: message.to.first) }
   ```
 
+- Invalid options now throw an `ArgumentError`
 - `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
 
 ### 0.2.3
