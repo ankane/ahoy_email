@@ -11,14 +11,8 @@ class ExtraTest < Minitest::Test
     assert_equal 1, ahoy_message.coupon_id
   end
 
-  def test_proc
-    skip unless params_supported?
-    ExtraMailer.with(coupon_id: 2).other.deliver_now
-    assert_equal 2, ahoy_message.coupon_id
-  end
-
-  def test_proc_no_params
-    ExtraMailer.other_no_params(2).deliver_now
+  def test_dynamic
+    ExtraMailer.other(2).deliver_now
     assert_equal 2, ahoy_message.coupon_id
   end
 end
