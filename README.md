@@ -96,7 +96,7 @@ end
 Automatically add UTM parameters to links.
 
 ```ruby
-class UserMailer < ApplicationMailer
+class CouponMailer < ApplicationMailer
   track utm_params: true # use only/except to limit actions
 end
 ```
@@ -104,8 +104,8 @@ end
 The defaults are:
 
 - utm_medium - `email`
-- utm_source - the mailer name like `user_mailer`
-- utm_campaign - the mailer action like `welcome_email`
+- utm_source - the mailer name like `coupon_mailer`
+- utm_campaign - the mailer action like `offer`
 
 You can customize them with:
 
