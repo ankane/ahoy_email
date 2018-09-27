@@ -123,6 +123,8 @@ Skip specific links with:
 
 ### Opens & Clicks
 
+Additional setup is required to track opens and clicks.
+
 Create a migration with:
 
 ```ruby
@@ -143,7 +145,7 @@ Create an initializer `config/initializers/ahoy_email.rb` with:
 AhoyEmail.api = true
 ```
 
-Then use:
+And add to mailers you want to track:
 
 ```ruby
 class UserMailer < ApplicationMailer
@@ -262,7 +264,7 @@ Breaking changes
   ```
 
 - Only sent emails are recorded
-- Procs are now executed in the context of the mailer and take no arguments
+- Proc options are now executed in the context of the mailer and take no arguments
 
   ```ruby
   # old
