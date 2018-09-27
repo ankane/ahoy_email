@@ -232,13 +232,13 @@ AhoyEmail.default_options[:message] = false
 Customize domain
 
 ```ruby
-track url_options: {host: "mydomain.com"}
+AhoyEmail.default_options[:url_options] = {host: "mydomain.com"}
 ```
 
 By default, unsubscribe links are excluded from click tracking. To change this, use:
 
 ```ruby
-track unsubscribe_links: true
+AhoyEmail.default_options[:unsubscribe_links] = true
 ```
 
 Use a different model
