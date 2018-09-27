@@ -247,6 +247,14 @@ Use a different model
 AhoyEmail.message_model = -> { UserMessage }
 ```
 
+Or fully customize how messages are tracked
+
+```ruby
+AhoyEmail.track_method = lambda do |data|
+  # your code
+end
+```
+
 ## Upgrading
 
 ### 1.0
