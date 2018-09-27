@@ -113,7 +113,7 @@ You can customize any with:
 
 ```ruby
 class CouponMailer < ApplicationMailer
-  track utm_params: true, utm_campaign: -> { "coupon_#{params[:coupon].id}" }
+  track utm_params: true, utm_campaign: -> { "coupon#{params[:coupon].id}" }
 end
 ```
 
@@ -123,27 +123,39 @@ Skip specific links with:
 <a data-skip-utm-params="true" href="...">Break it down</a>
 ```
 
-### Opens
+### Opens & Clicks
+
+Create a migration to add a few columns:
 
 ```ruby
-class UserMailer < ApplicationMailer
-  track open: true # use only/except to limit actions
+class CreateAhoyMessages < ActiveRecord::Migration[5.2]
+  def change
+    add_column :ahoy_messages, :token, :string
+    add_column :ahoy_messages, :opened_at, :timestamp
+    add_column :ahoy_messages, :clicked_at, :timestamp
+
+    add_index :ahoy_messages, :token, unique: true
+  end
 end
 ```
 
-An invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
+Create an initializer `config/initializers/ahoy_email.rb` with:
 
-Use `track open: false` to skip this.
+```ruby
+AhoyEmail.api = true
+```
 
-### Clicks
+Then use:
 
 ```ruby
 class UserMailer < ApplicationMailer
-  track click: true # use only/except to limit actions
+  track open: true, click: true # use only/except to limit actions
 end
 ```
 
-A redirect is added to links to track clicks in HTML emails.
+For opens, An invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
+
+For clicks, a redirect is added to links to track clicks in HTML emails.
 
 ```
 https://chartkick.com
@@ -162,19 +174,6 @@ Skip specific links with:
 ```html
 <a data-skip-click="true" href="...">Can't touch this</a>
 ```
-
-## Customize
-
-### Tracking
-
-Skip tracking of attributes by removing them from your model. You can safely remove:
-
-- to
-- mailer
-- subject
-- content
-
-## Events
 
 Subscribe to open and click events. Create an initializer `config/initializers/ahoy_email.rb` with:
 
@@ -213,10 +212,7 @@ AhoyEmail.subscribers << EmailSubscriber.new
 Set global options
 
 ```ruby
-AhoyEmail.default_options.merge!(
-  user: -> { params[:admin] },
-  utm_params: true
-}
+AhoyEmail.default_options[:user] = -> { params[:admin] }
 ```
 
 Disable tracking for a mailer or action
@@ -265,18 +261,9 @@ Breaking changes
 ```ruby
 AhoyEmail.api = true
 
-AhoyEmail.default_options.merge!(
-  open: true,
-  click: true,
-  utm_params: true
-)
-
-# or
-AhoyEmail.configure do |config|
-  config.open = true
-  config.click = true
-  config.utm_params = true
-end
+AhoyEmail.default_options[:open] = true
+AhoyEmail.default_options[:click] = true
+AhoyEmail.default_options[:utm_params] = true
 ```
 
 - Procs are now executed in the context of the mailer and take no arguments.
