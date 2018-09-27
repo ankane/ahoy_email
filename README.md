@@ -119,8 +119,8 @@ end
 
 Skip specific links with:
 
-```html
-<a data-skip-utm-params="true" href="...">Break it down</a>
+```erb
+<%= link_to "Go", some_url, data: {skip_utm_params: true} %>
 ```
 
 ### Opens & Clicks
@@ -173,8 +173,8 @@ A signature is added to prevent [open redirects](https://www.owasp.org/index.php
 
 Skip specific links with:
 
-```html
-<a data-skip-click="true" href="...">Can't touch this</a>
+```erb
+<%= link_to "Go", some_url, data: {skip_click: true} %>
 ```
 
 Subscribe to open and click events by adding to the initializer:
