@@ -37,7 +37,8 @@ module AhoyEmail
       user = options[:user]
       if user
         data[:user_type] = user.model_name.name
-        data[:user_id] = user.id
+        id = user.id
+        data[:user_id] = id.is_a?(Integer) ? id : id.to_s
       end
 
       if options[:open] || options[:click]
