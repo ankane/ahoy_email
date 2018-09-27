@@ -14,4 +14,8 @@ gemfile:
   - test/gemfiles/actionmailer51.gemfile
   - test/gemfiles/actionmailer50.gemfile
   - test/gemfiles/actionmailer42.gemfile
-  - test/gemfiles/mongoid6.gemfile
+matrix:
+  include:
+    gemfile: test/gemfiles/mongoid6.gemfile
+    services:
+      - mongodb
