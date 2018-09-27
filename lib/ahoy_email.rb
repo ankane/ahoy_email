@@ -14,7 +14,7 @@ require "ahoy_email/engine"
 require "ahoy_email/version"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api
+  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks
   mattr_writer :message_model
 
   self.api = false
@@ -59,6 +59,8 @@ module AhoyEmail
   end
 
   self.subscribers = []
+
+  self.preserve_callbacks = []
 
   def self.message_model
     model = (defined?(@message_model) && @message_model) || ::Ahoy::Message
