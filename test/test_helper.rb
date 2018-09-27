@@ -13,22 +13,6 @@ end
 
 ActionMailer::Base.delivery_method = :test
 
-class User < ActiveRecord::Base
-end
-
-class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.org",
-          to: -> { (params && params[:to]) || "to@example.org" },
-          subject: "Hello",
-          body: "World"
-
-  def mail_html(html)
-    mail do |format|
-      format.html { render plain: html }
-    end
-  end
-end
-
 class Minitest::Test
   def setup
     Ahoy::Message.delete_all

@@ -1,21 +1,5 @@
 require_relative "test_helper"
 
-class UtmParamsMailer < ApplicationMailer
-  track utm_params: true, except: [:welcome]
-
-  def welcome
-    mail_html('<a href="https://example.org">Test</a>')
-  end
-
-  def basic
-    mail_html('<a href="https://example.org">Test</a>')
-  end
-
-  def array_params
-    mail_html('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
-  end
-end
-
 class UtmParamsTest < Minitest::Test
   def test_default
     message = UtmParamsMailer.welcome.deliver_now

@@ -1,17 +1,5 @@
 require_relative "test_helper"
 
-class UserMailer < ApplicationMailer
-  track user: -> { params[:some_user] }, only: [:other]
-
-  def welcome
-    mail
-  end
-
-  def other
-    mail
-  end
-end
-
 class UserTest < Minitest::Test
   def setup
     super
