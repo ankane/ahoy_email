@@ -32,8 +32,8 @@ module Ahoy
       user_signature = params[:signature].to_s
       url = params[:url].to_s
 
-      # transition to HMAC-SHA256
-      digest = user_signature.length == 40 ? "SHA1" : "SHA256"
+      # TODO sign more than just url and transition to HMAC-SHA256
+      digest = "SHA1"
       signature = OpenSSL::HMAC.hexdigest(digest, AhoyEmail.secret_token, url)
 
       if ActiveSupport::SecurityUtils.secure_compare(user_signature, signature)

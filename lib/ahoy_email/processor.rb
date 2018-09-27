@@ -96,7 +96,8 @@ module AhoyEmail
           end
 
           if options[:click] && !skip_attribute?(link, "click")
-            signature = OpenSSL::HMAC.hexdigest("SHA256", AhoyEmail.secret_token, link["href"])
+            # TODO sign more than just url and transition to HMAC-SHA256
+            signature = OpenSSL::HMAC.hexdigest("SHA1", AhoyEmail.secret_token, link["href"])
             link["href"] =
               url_for(
                 controller: "ahoy/messages",
