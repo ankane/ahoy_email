@@ -45,7 +45,7 @@ You can pass a specific user with:
 
 ```ruby
 class UserMailer < ApplicationMailer
-  track user: -> { @some_user }
+  track user: -> { params[:some_user] }
 end
 ```
 
@@ -153,7 +153,7 @@ class UserMailer < ApplicationMailer
 end
 ```
 
-For opens, An invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
+For opens, An invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in their email client, the pixel is loaded and the open time recorded.
 
 For clicks, a redirect is added to links to track clicks in HTML emails.
 
