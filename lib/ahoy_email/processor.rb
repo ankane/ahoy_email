@@ -47,7 +47,7 @@ module AhoyEmail
 
       if options[:utm_params]
         UTM_PARAMETERS.each do |k|
-          data[k] = options[k]
+          data[k] = options[k.to_sym] if options[k.to_sym]
         end
       end
 
