@@ -91,7 +91,7 @@ class CouponMailer < ApplicationMailer
 end
 ```
 
-### UTM Parameters
+### UTM Tagging
 
 Automatically add UTM parameters to links.
 
