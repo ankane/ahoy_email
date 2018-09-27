@@ -1,4 +1,4 @@
-## 1.0.0 [unreleased]
+## 1.0.0
 
 - Removed support for Rails < 4.2
 
