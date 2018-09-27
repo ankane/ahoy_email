@@ -12,7 +12,7 @@ class MessageTest < Minitest::Test
   end
 
   def test_prevent_delivery
-    MessageMailer.with(deliver: false).welcome.deliver_now
+    MessageMailer.no_deliver.deliver_now
     assert_nil ahoy_message
   end
 

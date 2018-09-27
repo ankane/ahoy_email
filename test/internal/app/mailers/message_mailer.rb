@@ -16,9 +16,14 @@ class MessageMailer < ApplicationMailer
     mail
   end
 
+  def no_deliver
+    @prevent_delivery = true
+    mail
+  end
+
   private
 
   def prevent_delivery
-    mail.perform_deliveries = false if params && params[:deliver] == false
+    mail.perform_deliveries = false if @prevent_delivery
   end
 end
