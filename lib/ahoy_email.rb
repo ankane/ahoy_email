@@ -32,7 +32,7 @@ module AhoyEmail
     user: -> { (params && params[:user]) || (message.to.size == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
     mailer: -> { "#{self.class.name}##{action_name}" },
     url_options: {},
-    heuristic_parse: false
+    extra: {}
   }
 
   self.track_method = lambda do |data|
