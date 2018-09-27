@@ -1,12 +1,70 @@
 # require_relative "test_helper"
 
-# class MailerTest < Minitest::Test
-#   def test_array_params
-#     message = UserMailer.welcome5
-#     body = message.body.to_s
-#     assert_match "baz%5B%5D=1&amp;baz%5B%5D=2", body
+# class UserMailer < ActionMailer::Base
+#   default from: "from@example.com"
+#   after_action :prevent_delivery_to_guests, only: [:welcome2]
+
+#   def welcome
+#     mail to: "test@example.org", subject: "Hello", body: "World"
 #   end
 
+#   def welcome2
+#     mail to: "test@example.org", subject: "Hello", body: "World"
+#   end
+
+#   def welcome3
+#     track message: false
+#     mail to: "test@example.org", subject: "Hello", body: "World"
+#   end
+
+#   def welcome4
+#     html_message('<a href="https://example.org">Hi<a>')
+#   end
+
+#   def welcome5
+#     html_message('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+#   end
+
+#   def heuristic_parse
+#     track heuristic_parse: true
+#     html_message('<a href="example.org">Hi<a>')
+#   end
+
+#   def mailto
+#     track heuristic_parse: true
+#     html_message('<a href="mailto:someone@yoursite.com">Email Us</a>')
+#   end
+
+#   def app_link
+#     track heuristic_parse: true
+#     html_message('<a href="fb://profile/33138223345">Email Us</a>')
+#   end
+
+#   def welcome4_heuristic
+#     track heuristic_parse: true
+#     html_message('<a href="https://example.org">Hi<a>')
+#   end
+
+#   def welcome5_heuristic
+#     track heuristic_parse: true
+#     html_message('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+#   end
+
+#   private
+
+#   def prevent_delivery_to_guests
+#     mail.perform_deliveries = false
+#   end
+
+#   def html_message(html)
+#     track click: false
+#     mail to: "test@example.org", subject: "Hello" do |format|
+#       format.html { render plain: html }
+#     end
+#   end
+# end
+
+# class MailerTest < Minitest::Test
 #   def test_heuristic_parse
 #     # Should convert the URI fragment into a URI
 #     message = UserMailer.heuristic_parse
