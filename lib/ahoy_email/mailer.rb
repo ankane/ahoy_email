@@ -32,7 +32,7 @@ module AhoyEmail
           # execute options in mailer content
           options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
         end
-        AhoyEmail::Processor.new.save_options(self, options)
+        AhoyEmail::Processor.new.perform(self, options)
       end
     end
   end
