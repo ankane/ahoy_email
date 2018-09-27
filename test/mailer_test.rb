@@ -72,20 +72,6 @@
 #     assert_match "http://example.org", body
 #   end
 
-#   def test_mailto
-#     # heuristic parse should ignore the mailto link
-#     message = UserMailer.mailto
-#     body = message.body.to_s
-#     assert_match "<a href=\"mailto:someone@yoursite.com\">", body
-#   end
-
-#   def test_app_link
-#     # heuristic parse should ignore the app link
-#     message = UserMailer.app_link
-#     body = message.body.to_s
-#     assert_match "<a href=\"fb://profile/33138223345\">", body
-#   end
-
 #   def test_utm_params_heuristic_parse
 #     # heuristic parse should not have unexpected side effects
 #     message = UserMailer.welcome4_heuristic
