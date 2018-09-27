@@ -31,7 +31,7 @@ rails db:migrate
 
 ## How It Works
 
-Ahoy creates an `Ahoy::Message` every time an email is sent by default.
+Ahoy creates an `Ahoy::Message` for each email sent by default.
 
 ### Users
 
