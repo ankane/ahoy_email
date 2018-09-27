@@ -6,7 +6,7 @@ You get:
 
 - A history of emails sent to each user
 - Easy UTM tagging
-- Open and click tracking
+- Optional open and click tracking
 
 Works with any email service.
 
@@ -153,7 +153,7 @@ class UserMailer < ApplicationMailer
 end
 ```
 
-For opens, An invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in their email client, the pixel is loaded and the open time recorded.
+For opens, an invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in their email client, the pixel is loaded and the open time recorded.
 
 For clicks, a redirect is added to links to track clicks in HTML emails.
 
