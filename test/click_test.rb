@@ -21,8 +21,8 @@ class ClickTest < Minitest::Test
     assert_body '<a href="fb://profile/33138223345">', message
   end
 
-  def test_no_scheme
-    message = ClickMailer.no_scheme.deliver_now
+  def test_schemeless
+    message = ClickMailer.schemeless.deliver_now
     assert_body "click", message
   end
 end

@@ -17,7 +17,7 @@ class ClickMailer < ApplicationMailer
     mail_html('<a href="fb://profile/33138223345">Test</a>')
   end
 
-  def no_scheme
+  def schemeless
     mail_html('<a href="example.org">Test</a>')
   end
 end
