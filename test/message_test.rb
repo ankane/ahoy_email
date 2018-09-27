@@ -4,6 +4,8 @@ class MessageMailer < ApplicationMailer
   track message: false, only: [:other]
   track message: true, only: [:other2]
 
+  after_action :prevent_delivery
+
   def welcome
     mail
   end
@@ -15,6 +17,12 @@ class MessageMailer < ApplicationMailer
   def other2
     mail
   end
+
+  private
+
+  def prevent_delivery
+    mail.perform_deliveries = false if params && params[:deliver] == false
+  end
 end
 
 class MessageTest < Minitest::Test
@@ -25,6 +33,11 @@ class MessageTest < Minitest::Test
 
   def test_false
     MessageMailer.other.deliver_now
+    assert_nil ahoy_message
+  end
+
+  def test_prevent_delivery
+    MessageMailer.with(deliver: false).welcome.deliver_now
     assert_nil ahoy_message
   end
 
