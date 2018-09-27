@@ -37,6 +37,10 @@ module AhoyEmail
         data[:user_id] = user.id
       end
 
+      if options[:open] || options[:click]
+        data[:token] = token
+      end
+
       if options[:utm_params]
         UTM_PARAMETERS.each do |k|
           data[k] = options[k]
