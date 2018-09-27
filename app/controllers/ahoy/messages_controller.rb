@@ -18,9 +18,15 @@ module Ahoy
         @message.save!
       end
       url = params[:url].to_s
-      signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
+
+      user_signature = params[:signature].to_s
+
+      # transition to HMAC-SHA256
+      digest = user_signature.length == 40 ? "SHA1" : "SHA256"
+      signature = OpenSSL::HMAC.hexdigest(digest, AhoyEmail.secret_token, url)
+
       publish :click, url: params[:url]
-      if ActiveSupport::SecurityUtils.secure_compare(params[:signature].to_s, signature)
+      if ActiveSupport::SecurityUtils.secure_compare(user_signature, signature)
         redirect_to url
       else
         redirect_to AhoyEmail.invalid_redirect_url || main_app.root_url

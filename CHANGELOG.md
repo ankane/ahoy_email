@@ -1,6 +1,7 @@
 ## 1.0.0 [unreleased]
 
 - Removed support for Rails < 4.2
+- Transitioned to HMAC-SHA256 for signatures
 
 Breaking changes
 
