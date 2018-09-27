@@ -4,7 +4,7 @@
 
 Breaking changes
 
-- UTM parameters, open tracking, and click tracking are no longer enabled by default
+- UTM tagging, open tracking, and click tracking are no longer enabled by default
 - Only sent emails are recorded
 - Proc options are now executed in the context of the mailer and take no arguments
 - Invalid options now throw an `ArgumentError`

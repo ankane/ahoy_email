@@ -271,7 +271,7 @@ end
 
 Breaking changes
 
-- UTM parameters, open tracking, and click tracking are no longer enabled by default. To enable, create an initializer with:
+- UTM tagging, open tracking, and click tracking are no longer enabled by default. To enable, create an initializer with:
 
   ```ruby
   AhoyEmail.api = true
