@@ -29,4 +29,9 @@ class MessageTest < Minitest::Test
       assert ahoy_message
     end
   end
+
+  def test_ahoy_message
+    message = MessageMailer.welcome.deliver_now
+    assert_equal message.ahoy_message, ahoy_message
+  end
 end
