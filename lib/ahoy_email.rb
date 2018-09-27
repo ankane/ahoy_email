@@ -29,7 +29,7 @@ module AhoyEmail
     utm_term: nil,
     utm_content: nil,
     utm_campaign: -> { action_name },
-    user: -> { (respond_to?(:params) && params && params[:user]) || (message.to.size == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
+    user: -> { @user || (respond_to?(:params) && params && params[:user]) || (message.to.size == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
     mailer: -> { "#{self.class.name}##{action_name}" },
     url_options: {},
     extra: {},

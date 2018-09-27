@@ -5,6 +5,11 @@ class UserMailer < ApplicationMailer
     mail
   end
 
+  def user_var(user)
+    @user = user
+    mail
+  end
+
   def to_field(to)
     mail to: to
   end

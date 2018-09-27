@@ -11,7 +11,13 @@ class UserTest < Minitest::Test
     assert_nil ahoy_message.user
   end
 
-  def test_params_user
+  def test_user_var
+    user = User.create!
+    UserMailer.user_var(user).deliver_now
+    assert_equal user, ahoy_message.user
+  end
+
+  def test_user_param
     skip unless params_supported?
     user = User.create!
     UserMailer.with(user: user).welcome.deliver_now

@@ -39,7 +39,7 @@ Ahoy creates an `Ahoy::Message` record for each email sent by default.
 
 Ahoy tracks the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
-By default, Ahoy tries `params[:user]` then `User.find_by(email: message.to.first)` to find the user.
+By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to.first)` to find the user.
 
 You can pass a specific user with:
 
