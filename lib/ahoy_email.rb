@@ -52,6 +52,8 @@ module AhoyEmail
       ahoy_message.send("#{k}=", data[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
     end
 
+    ahoy_message.token = data[:token] if ahoy_message.respond_to?(:token=)
+
     ahoy_message.assign_attributes(data[:extra] || {})
 
     ahoy_message.sent_at = Time.now
