@@ -70,7 +70,4 @@ end
 ActiveSupport.on_load(:action_mailer) do
   include AhoyEmail::Mailer
   register_interceptor AhoyEmail::Interceptor
-  # if ActionMailer::Base.respond_to?(:register_preview_interceptor)
-  #   ActionMailer::Base.register_preview_interceptor(AhoyEmail::Interceptor)
-  # end
 end

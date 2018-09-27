@@ -7,6 +7,9 @@ module AhoyEmail
     def initialize(mailer, options)
       @mailer = mailer
       @options = options
+
+      unknown_keywords = options.keys - AhoyEmail.default_options.keys
+      raise ArgumentError, "unknown keywords: #{unknown_keywords.join(", ")}" if unknown_keywords.any?
     end
 
     def perform
