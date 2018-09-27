@@ -30,11 +30,19 @@ module AhoyEmail
         mailer: options[:mailer],
         extra: options[:extra]
       }
+
       user = options[:user]
       if user
         data[:user_type] = user.model_name.name
         data[:user_id] = user.id
       end
+
+      if options[:utm_params]
+        UTM_PARAMETERS.each do |k|
+          data[k] = options[k]
+        end
+      end
+
       mailer.message["Ahoy-Message"] = data.to_json
     end
 
