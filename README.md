@@ -235,7 +235,7 @@ Customize domain
 track url_options: {host: "mydomain.com"}
 ```
 
-By default, unsubscribe links are excluded from tracking. To change this, use:
+By default, unsubscribe links are excluded from click tracking. To change this, use:
 
 ```ruby
 track unsubscribe_links: true
@@ -253,7 +253,7 @@ AhoyEmail.message_model = -> { UserMessage }
 
 Breaking changes
 
-- UTM parameters, open tracking, and click tracking are not enabled by default. To enable, create an initializer with:
+- UTM parameters, open tracking, and click tracking are no longer enabled by default. To enable, create an initializer with:
 
   ```ruby
   AhoyEmail.api = true
@@ -276,6 +276,7 @@ Breaking changes
 
 - Invalid options now throw an `ArgumentError`
 - `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
+- The `heuristic_parse` option was removed and is now the default
 
 ### 0.2.3
 

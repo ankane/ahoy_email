@@ -5,11 +5,12 @@
 
 Breaking changes
 
-- UTM parameters, open tracking, and click tracking are not enabled by default
+- UTM parameters, open tracking, and click tracking are no longer enabled by default
 - Only sent emails are recorded
 - Proc options are now executed in the context of the mailer and take no arguments
 - Invalid options now throw an `ArgumentError`
 - `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
+- The `heuristic_parse` option was removed and is now the default
 
 ## 0.5.2
 
