@@ -61,8 +61,9 @@ module AhoyEmail
       (%w(user mailer extra) + UTM_PARAMETERS).each do |k|
         data[k.to_sym] = options[k.to_sym]
       end
+      data[:message] = message
 
-      AhoyEmail.track_method.call(message, data)
+      AhoyEmail.track_method.call(data)
     end
 
     def track_open
