@@ -24,8 +24,6 @@ module AhoyEmail
     end
 
     def save_ahoy_options
-      ahoy_options = self.ahoy_options
-
       if ahoy_options[:message]
         Safely.safely do
           options = {}
