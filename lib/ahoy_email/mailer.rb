@@ -3,30 +3,30 @@ module AhoyEmail
     extend ActiveSupport::Concern
 
     included do
-      attr_accessor :ahoy_options
+      attr_writer :ahoy_options
       after_action :save_ahoy_options
     end
 
     class_methods do
       def track(**options)
         before_action(options.slice(:only, :except)) do
-          self.ahoy_options ||= AhoyEmail.default_options
-          self.ahoy_options = ahoy_options.merge(options.except(:only, :except))
-        end
-      end
-
-      def disable_track(**options)
-        before_action(options) do
-          @ahoy_disable_track = true
+          self.ahoy_options = ahoy_options.merge(message: true).merge(options.except(:only, :except))
         end
       end
     end
 
-    def save_ahoy_options
-      ahoy_options = self.ahoy_options || AhoyEmail.default_options
+    def track(**options)
+      self.ahoy_options = ahoy_options.merge(message: true).merge(options)
+    end
 
-      # TODO figure out how to enable/disable
-      if ahoy_options && !@ahoy_disable_track
+    def ahoy_options
+      @ahoy_options ||= AhoyEmail.default_options
+    end
+
+    def save_ahoy_options
+      ahoy_options = self.ahoy_options
+
+      if ahoy_options[:message]
         options = {}
         ahoy_options.each do |k, v|
           # execute options in mailer content

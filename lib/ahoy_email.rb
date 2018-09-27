@@ -17,7 +17,7 @@ module AhoyEmail
   mattr_writer :message_model
 
   self.default_options = {
-    # message: true,
+    message: true,
     # open: false,
     # click: false,
     # utm_params: false,

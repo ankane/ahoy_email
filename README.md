@@ -223,14 +223,14 @@ Disable tracking for a mailer or action
 
 ```ruby
 class UserMailer < ApplicationMailer
-  disable_track only: [:welcome]
+  track message: false, only: [:welcome]
 end
 ```
 
 Or by default
 
 ```ruby
-AhoyEmail.track_default = false
+AhoyEmail.default_options[:message] = false
 ```
 
 Customize domain
