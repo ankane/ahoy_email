@@ -10,8 +10,8 @@ require "ahoy_email/processor"
 require "ahoy_email/tracker"
 require "ahoy_email/interceptor"
 require "ahoy_email/mailer"
-require "ahoy_email/engine"
 require "ahoy_email/version"
+require "ahoy_email/engine" if defined?(Rails)
 
 module AhoyEmail
   mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks

@@ -1,8 +1,8 @@
 require "bundler/setup"
+require "combustion"
 Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
-require "combustion"
 
 Combustion.path = "test/internal"
 Combustion.initialize! :all do
