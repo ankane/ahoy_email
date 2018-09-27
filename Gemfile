@@ -4,3 +4,4 @@ source "https://rubygems.org"
 gemspec
 
 gem "actionmailer", "~> 5.2.0"
+gem "activerecord", "~> 5.2.0"
