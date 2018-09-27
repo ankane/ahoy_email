@@ -14,8 +14,10 @@ require "ahoy_email/engine"
 require "ahoy_email/version"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :default_options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method
+  mattr_accessor :secret_token, :default_options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method, :api
   mattr_writer :message_model
+
+  self.api = false
 
   self.default_options = {
     message: true,
