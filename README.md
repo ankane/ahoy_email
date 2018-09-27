@@ -8,8 +8,6 @@ You get:
 - Easy UTM tagging
 - Optional open and click tracking
 
-Works with any email service.
-
 :bullettrain_side: To manage unsubscribes, check out [Mailkick](https://github.com/ankane/mailkick)
 
 :fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy)
@@ -39,7 +37,7 @@ Ahoy creates an `Ahoy::Message` every time an email is sent by default.
 
 Ahoy tracks the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
-By default, Ahoy tries `params[:user]`, then `User.find_by(email: message.to.first)` to find the user.
+By default, Ahoy tries `params[:user]` then `User.find_by(email: message.to.first)` to find the user.
 
 You can pass a specific user with:
 
