@@ -1,10 +1,6 @@
 module Ahoy
   class MessagesController < ActionController::Base
-    if respond_to? :before_action
-      before_action :set_message
-    else
-      before_filter :set_message
-    end
+    before_action :set_message
 
     def open
       if @message && !@message.opened_at
@@ -24,7 +20,7 @@ module Ahoy
       url = params[:url].to_s
       signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
       publish :click, url: params[:url]
-      if secure_compare(params[:signature].to_s, signature)
+      if ActiveSupport::SecurityUtils.secure_compare(params[:signature].to_s, signature)
         redirect_to url
       else
         redirect_to AhoyEmail.invalid_redirect_url || main_app.root_url
@@ -45,18 +41,6 @@ module Ahoy
           subscriber.send name, event
         end
       end
-    end
-
-    # from https://github.com/rails/rails/blob/master/activesupport/lib/active_support/message_verifier.rb
-    # constant-time comparison algorithm to prevent timing attacks
-    def secure_compare(a, b)
-      return false unless a.bytesize == b.bytesize
-
-      l = a.unpack "C#{a.bytesize}"
-
-      res = 0
-      b.each_byte { |byte| res |= byte ^ l.shift }
-      res == 0
     end
   end
 end
