@@ -27,12 +27,15 @@ module AhoyEmail
       ahoy_options = self.ahoy_options
 
       if ahoy_options[:message]
-        options = {}
-        ahoy_options.each do |k, v|
-          # execute options in mailer content
-          options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
+        Safely.safely do
+          options = {}
+          ahoy_options.each do |k, v|
+            # execute options in mailer content
+            options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
+          end
+
+          AhoyEmail::Processor.new(self, options).perform
         end
-        AhoyEmail::Processor.new.perform(self, options)
       end
     end
   end

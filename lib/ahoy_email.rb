@@ -19,18 +19,18 @@ module AhoyEmail
 
   self.default_options = {
     message: true,
-    # open: false,
-    # click: false,
-    # utm_params: false,
-    # utm_source: ->(message, mailer) { mailer.mailer_name },
-    # utm_medium: "email",
-    # utm_term: nil,
-    # utm_content: nil,
-    # utm_campaign: ->(message, mailer) { mailer.action_name },
+    open: false,
+    click: false,
+    utm_params: false,
+    utm_source: -> { mailer_name },
+    utm_medium: "email",
+    utm_term: nil,
+    utm_content: nil,
+    utm_campaign: -> { action_name },
     user: -> { (params && params[:user]) || (message.to.size == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
     mailer: -> { "#{self.class.name}##{action_name}" },
-    # url_options: {},
-    # heuristic_parse: false
+    url_options: {},
+    heuristic_parse: false
   }
 
   self.track_method = lambda do |data|

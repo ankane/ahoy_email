@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 class UtmParamsMailer < ApplicationMailer
-  track utm_params: true
+  track utm_params: true, only: [:basic]
 
   def welcome
     html_message(%!<a href="https://chartkick.com">Test</a>!)

@@ -1,8 +1,14 @@
 module AhoyEmail
   class Tracker
-    def perform(message)
-      Safely.safely do
-        if message.perform_deliveries && (data_header = message["Ahoy-Message"])
+    attr_reader :message
+
+    def initialize(message)
+      @message = message
+    end
+
+    def perform
+      if message.perform_deliveries && (data_header = message["Ahoy-Message"])
+        Safely.safely do
           data = JSON.parse(data_header.to_s).symbolize_keys
           data[:message] = message
           AhoyEmail.track_method.call(data)

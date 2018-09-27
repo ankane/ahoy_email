@@ -1,30 +1,41 @@
 module AhoyEmail
   class Processor
-    attr_reader :message, :mailer
+    attr_reader :mailer, :options
 
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
-    def perform(mailer, options)
-      Safely.safely do
-        action_name = mailer.action_name.to_sym
-        data = {
-          mailer: options[:mailer],
-          extra: options[:extra]
-        }
-        user = options[:user]
-        if user
-          data[:user_type] = user.model_name.name
-          data[:user_id] = user.id
-        end
-        # puts data.to_json
-        mailer.message["Ahoy-Message"] = data.to_json
-      end
+    def initialize(mailer, options)
+      @mailer = mailer
+      @options = options
+    end
+
+    def perform
+      track_open if options[:open]
+      track_links if options[:utm_params] || options[:click]
+      track_message
     end
 
     protected
 
+    def message
+      mailer.message
+    end
+
     def token
       @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+    end
+
+    def track_message
+      data = {
+        mailer: options[:mailer],
+        extra: options[:extra]
+      }
+      user = options[:user]
+      if user
+        data[:user_type] = user.model_name.name
+        data[:user_id] = user.id
+      end
+      mailer.message["Ahoy-Message"] = data.to_json
     end
 
     def track_open
