@@ -265,6 +265,23 @@ AhoyEmail.track_method = lambda do |data|
 end
 ```
 
+## Mongoid
+
+If you prefer to use Mongoid instead of ActiveRecord, create `app/models/ahoy/message.rb` with:
+
+```ruby
+class Ahoy::Message
+  include Mongoid::Document
+
+  belongs_to :user, polymorphic: true, optional: true, index: true
+
+  field :to, type: String
+  field :mailer, type: String
+  field :subject, type: String
+  field :sent_at, type: Time
+end
+```
+
 ## Upgrading
 
 ### 1.0
