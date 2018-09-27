@@ -251,8 +251,7 @@ AhoyEmail.message_model = -> { UserMessage }
 
 ### 1.0
 
-- Only saves emails that are sent
-- Doesn’t require additional user lookup query if `params[:user]` is passed
+- Only sent emails are recorded
 
 Breaking changes
 
@@ -266,7 +265,7 @@ Breaking changes
   AhoyEmail.default_options[:utm_params] = true
   ```
 
-- Procs are now executed in the context of the mailer and take no arguments.
+- Procs are now executed in the context of the mailer and take no arguments
 
   ```ruby
   # old
@@ -276,7 +275,7 @@ Breaking changes
   user: -> { User.find_by(email: message.to.first) }
   ```
 
-- `AhoyEmail.track` was removed in favor of setting `AhoyEmail.default_options`
+- `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
 
 ### 0.2.3
 

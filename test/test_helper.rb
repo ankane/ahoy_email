@@ -22,7 +22,7 @@ class ApplicationMailer < ActionMailer::Base
           subject: "Hello",
           body: "World"
 
-  def html_message(html)
+  def mail_html(html)
     mail do |format|
       format.html { render plain: html }
     end
@@ -36,6 +36,14 @@ class Minitest::Test
 
   def ahoy_message
     Ahoy::Message.last
+  end
+
+  def refute_body(str, message)
+    refute_match str, message.body.to_s
+  end
+
+  def assert_body(str, message)
+    assert_match str, message.body.to_s
   end
 
   def with_default(options)

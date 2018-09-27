@@ -18,36 +18,36 @@
 #   end
 
 #   def welcome4
-#     html_message('<a href="https://example.org">Hi<a>')
+#     mail_html('<a href="https://example.org">Hi<a>')
 #   end
 
 #   def welcome5
-#     html_message('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+#     mail_html('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
 #   end
 
 #   def heuristic_parse
 #     track heuristic_parse: true
-#     html_message('<a href="example.org">Hi<a>')
+#     mail_html('<a href="example.org">Hi<a>')
 #   end
 
 #   def mailto
 #     track heuristic_parse: true
-#     html_message('<a href="mailto:someone@yoursite.com">Email Us</a>')
+#     mail_html('<a href="mailto:someone@yoursite.com">Email Us</a>')
 #   end
 
 #   def app_link
 #     track heuristic_parse: true
-#     html_message('<a href="fb://profile/33138223345">Email Us</a>')
+#     mail_html('<a href="fb://profile/33138223345">Email Us</a>')
 #   end
 
 #   def welcome4_heuristic
 #     track heuristic_parse: true
-#     html_message('<a href="https://example.org">Hi<a>')
+#     mail_html('<a href="https://example.org">Hi<a>')
 #   end
 
 #   def welcome5_heuristic
 #     track heuristic_parse: true
-#     html_message('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
+#     mail_html('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
 #   end
 
 #   private
@@ -56,7 +56,7 @@
 #     mail.perform_deliveries = false
 #   end
 
-#   def html_message(html)
+#   def mail_html(html)
 #     track click: false
 #     mail to: "test@example.org", subject: "Hello" do |format|
 #       format.html { render plain: html }
