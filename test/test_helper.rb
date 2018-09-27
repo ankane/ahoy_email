@@ -58,6 +58,10 @@ class Minitest::Test
     assert_match str, message.body.decoded
   end
 
+  def params_supported?
+    Rails.version > "5.1.0"
+  end
+
   def with_default(options)
     previous_options = AhoyEmail.default_options.dup
     begin

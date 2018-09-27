@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   default from: "from@example.org",
-          to: -> { (params && params[:to]) || "to@example.org" },
+          to: "to@example.org",
           subject: "Hello",
           body: "World"
 

@@ -19,7 +19,7 @@ class UserTest < Minitest::Test
 
   def test_to
     user = User.create!(email: "test@example.org")
-    UserMailer.with(to: "test@example.org").welcome.deliver_now
+    UserMailer.with(to: "test@example.org").welcome_to.deliver_now
     assert_equal user, ahoy_message.user
   end
 

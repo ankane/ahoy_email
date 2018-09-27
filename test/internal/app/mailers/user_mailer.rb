@@ -8,4 +8,8 @@ class UserMailer < ApplicationMailer
   def other
     mail
   end
+
+  def welcome_to
+    mail to: params[:to]
+  end
 end
