@@ -14,7 +14,7 @@ require "ahoy_email/engine"
 require "ahoy_email/version"
 
 module AhoyEmail
-  mattr_accessor :secret_token, :default_options, :subscribers, :belongs_to, :invalid_redirect_url, :track_method, :api
+  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api
   mattr_writer :message_model
 
   self.api = false
@@ -32,7 +32,8 @@ module AhoyEmail
     user: -> { (params && params[:user]) || (message.to.size == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
     mailer: -> { "#{self.class.name}##{action_name}" },
     url_options: {},
-    extra: {}
+    extra: {},
+    unsubscribe_links: false
   }
 
   self.track_method = lambda do |data|
@@ -57,8 +58,6 @@ module AhoyEmail
   end
 
   self.subscribers = []
-
-  self.belongs_to = {}
 
   def self.message_model
     model = (defined?(@message_model) && @message_model) || ::Ahoy::Message

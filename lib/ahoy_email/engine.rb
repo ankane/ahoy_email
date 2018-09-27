@@ -15,8 +15,6 @@ module AhoyEmail
 
         creds.respond_to?(:secret_key_base) ? creds.secret_key_base : creds.secret_token
       end
-
-      AhoyEmail.belongs_to = {optional: true} if Rails::VERSION::MAJOR >= 5
     end
   end
 end
