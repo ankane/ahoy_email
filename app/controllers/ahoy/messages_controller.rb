@@ -16,7 +16,9 @@ module Ahoy
         @message.opened_at = Time.now
         @message.save!
       end
+
       publish :open
+
       send_data Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), type: "image/gif", disposition: "inline"
     end
 
@@ -26,16 +28,17 @@ module Ahoy
         @message.opened_at ||= @message.clicked_at
         @message.save!
       end
-      url = params[:url].to_s
 
       user_signature = params[:signature].to_s
+      url = params[:url].to_s
 
       # transition to HMAC-SHA256
       digest = user_signature.length == 40 ? "SHA1" : "SHA256"
       signature = OpenSSL::HMAC.hexdigest(digest, AhoyEmail.secret_token, url)
 
-      publish :click, url: params[:url]
       if ActiveSupport::SecurityUtils.secure_compare(user_signature, signature)
+        publish :click, url: params[:url]
+
         redirect_to url
       else
         redirect_to AhoyEmail.invalid_redirect_url || main_app.root_url
