@@ -107,7 +107,7 @@ The defaults are:
 - utm_source - the mailer name like `user_mailer`
 - utm_campaign - the mailer action like `welcome_email`
 
-You can customize any with:
+You can customize them with:
 
 ```ruby
 class CouponMailer < ApplicationMailer
