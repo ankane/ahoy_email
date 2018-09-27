@@ -1,11 +1,11 @@
 ## 1.0.0 [unreleased]
 
-- Only sent emails are recorded
 - Removed support for Rails < 4.2
 
 Breaking changes
 
 - UTM parameters, open tracking, and click tracking are not enabled by default
+- Only sent emails are recorded
 - Procs are now executed in the context of the mailer and take no arguments
 - Invalid options now throw an `ArgumentError`
 - `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`

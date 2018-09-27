@@ -175,7 +175,7 @@ Skip specific links with:
 <a data-skip-click="true" href="...">Can't touch this</a>
 ```
 
-Subscribe to open and click events. Create an initializer `config/initializers/ahoy_email.rb` with:
+Subscribe to open and click events by adding to the initializer:
 
 ```ruby
 class EmailSubscriber
@@ -251,8 +251,6 @@ AhoyEmail.message_model = -> { UserMessage }
 
 ### 1.0
 
-- Only sent emails are recorded
-
 Breaking changes
 
 - UTM parameters, open tracking, and click tracking are not enabled by default. To enable, create an initializer with:
@@ -265,6 +263,7 @@ Breaking changes
   AhoyEmail.default_options[:utm_params] = true
   ```
 
+- Only sent emails are recorded
 - Procs are now executed in the context of the mailer and take no arguments
 
   ```ruby
