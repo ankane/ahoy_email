@@ -60,10 +60,6 @@ module AhoyEmail
 
   self.belongs_to = {}
 
-  def self.track(options)
-    self.options = self.options.merge(options)
-  end
-
   def self.message_model
     model = (defined?(@message_model) && @message_model) || ::Ahoy::Message
     model = model.call if model.respond_to?(:call)

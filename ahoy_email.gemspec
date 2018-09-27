@@ -6,7 +6,7 @@ require "ahoy_email/version"
 Gem::Specification.new do |spec|
   spec.name          = "ahoy_email"
   spec.version       = AhoyEmail::VERSION
-  spec.summary       = "Simple, powerful email tracking for Rails"
+  spec.summary       = "Email analytics for Rails"
   spec.homepage      = "https://github.com/ankane/ahoy_email"
   spec.license       = "MIT"
 

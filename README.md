@@ -1,6 +1,6 @@
 # Ahoy Email
 
-:postbox: Simple, powerful email tracking for Rails
+:postbox: Email analytics for Rails
 
 You get:
 
@@ -125,10 +125,10 @@ Skip specific links with:
 
 ### Opens & Clicks
 
-Create a migration to add a few columns:
+Create a migration with:
 
 ```ruby
-class CreateAhoyMessages < ActiveRecord::Migration[5.2]
+class AddTokenToAhoyMessages < ActiveRecord::Migration[5.2]
   def change
     add_column :ahoy_messages, :token, :string
     add_column :ahoy_messages, :opened_at, :timestamp
@@ -249,32 +249,34 @@ AhoyEmail.message_model = -> { UserMessage }
 
 ## Upgrading
 
-### 1.0.0
+### 1.0
 
 - Only saves emails that are sent
-- Doesn't require additional user lookup query if params[:user] is passed
+- Doesn’t require additional user lookup query if `params[:user]` is passed
 
 Breaking changes
 
 - UTM parameters, open tracking, and click tracking are not enabled by default. To enable, create an initializer with:
 
-```ruby
-AhoyEmail.api = true
+  ```ruby
+  AhoyEmail.api = true
 
-AhoyEmail.default_options[:open] = true
-AhoyEmail.default_options[:click] = true
-AhoyEmail.default_options[:utm_params] = true
-```
+  AhoyEmail.default_options[:open] = true
+  AhoyEmail.default_options[:click] = true
+  AhoyEmail.default_options[:utm_params] = true
+  ```
 
 - Procs are now executed in the context of the mailer and take no arguments.
 
-```ruby
-# old
-user: ->(mailer, message) { User.find_by(email: message.to.first) }
+  ```ruby
+  # old
+  user: ->(mailer, message) { User.find_by(email: message.to.first) }
 
-# new
-user: -> { User.find_by(email: message.to.first) }
-```
+  # new
+  user: -> { User.find_by(email: message.to.first) }
+  ```
+
+- `AhoyEmail.track` was removed in favor of setting `AhoyEmail.default_options`
 
 ### 0.2.3
 
