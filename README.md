@@ -217,11 +217,11 @@ Set global options
 AhoyEmail.default_options[:user] = -> { params[:admin] }
 ```
 
-Disable tracking for a mailer or action
+Disable tracking for a mailer
 
 ```ruby
 class UserMailer < ApplicationMailer
-  track message: false, only: [:welcome]
+  track message: false # use only/except to limit actions
 end
 ```
 
