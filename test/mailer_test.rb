@@ -1,28 +1,6 @@
 # require_relative "test_helper"
 
 # class MailerTest < Minitest::Test
-#   def test_basic
-#     assert_message :welcome
-#   end
-
-#   def test_prevent_delivery
-#     assert_message :welcome2
-#     assert_nil Ahoy::Message.first.sent_at
-#   end
-
-#   def test_no_message
-#     UserMailer.welcome3.to
-#     assert_equal 0, Ahoy::Message.count
-#   end
-
-#   def test_utm_params
-#     message = UserMailer.welcome4
-#     body = message.body.to_s
-#     assert_match "utm_campaign=welcome4", body
-#     assert_match "utm_medium=email", body
-#     assert_match "utm_source=user_mailer", body
-#   end
-
 #   def test_array_params
 #     message = UserMailer.welcome5
 #     body = message.body.to_s
