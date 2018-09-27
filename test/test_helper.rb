@@ -51,11 +51,11 @@ class Minitest::Test
   end
 
   def refute_body(str, message)
-    refute_match str, message.body.to_s
+    refute_match str, message.body.decoded
   end
 
   def assert_body(str, message)
-    assert_match str, message.body.to_s
+    assert_match str, message.body.decoded
   end
 
   def with_default(options)

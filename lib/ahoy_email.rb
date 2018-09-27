@@ -46,7 +46,7 @@ module AhoyEmail
 
     ahoy_message.mailer = data[:mailer] if ahoy_message.respond_to?(:mailer=)
     ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
-    ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
+    ahoy_message.content = message.encoded if ahoy_message.respond_to?(:content=)
 
     AhoyEmail::Processor::UTM_PARAMETERS.each do |k|
       ahoy_message.send("#{k}=", data[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
