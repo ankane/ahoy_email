@@ -41,8 +41,7 @@ module AhoyEmail
 
     ahoy_message = AhoyEmail.message_model.new
     ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
-    ahoy_message.user_type = data[:user_type]
-    ahoy_message.user_id = data[:user_id]
+    ahoy_message.user = data[:user]
 
     ahoy_message.mailer = data[:mailer] if ahoy_message.respond_to?(:mailer=)
     ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)

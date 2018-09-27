@@ -31,9 +31,11 @@ module AhoyEmail
     def track_message
       data = {
         mailer: options[:mailer],
-        extra: options[:extra]
+        extra: options[:extra],
+        user: options[:user]
       }
 
+      # legacy, remove in next major version
       user = options[:user]
       if user
         data[:user_type] = user.model_name.name
