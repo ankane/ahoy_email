@@ -38,6 +38,7 @@ module AhoyEmail
 
   self.track_method = lambda do |data|
     message = data[:message]
+
     ahoy_message = AhoyEmail.message_model.new
     ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
     ahoy_message.user_type = data[:user_type]
