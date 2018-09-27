@@ -1,16 +1,16 @@
 class UserMailer < ApplicationMailer
-  track user: -> { @some_user }, only: [:other]
+  track user: -> { @some_user }, only: [:dynamic]
 
   def welcome
     mail
   end
 
-  def other(some_user)
-    @some_user = some_user
-    mail
+  def to_field(to)
+    mail to: to
   end
 
-  def welcome_to(to)
-    mail to: to
+  def dynamic(some_user)
+    @some_user = some_user
+    mail
   end
 end

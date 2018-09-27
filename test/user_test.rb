@@ -20,13 +20,13 @@ class UserTest < Minitest::Test
 
   def test_to
     user = User.create!(email: "test@example.org")
-    UserMailer.welcome_to(user.email).deliver_now
+    UserMailer.to_field(user.email).deliver_now
     assert_equal user, ahoy_message.user
   end
 
-  def test_proc
+  def test_dynamic
     user = User.create!
-    UserMailer.other(user).deliver_now
+    UserMailer.dynamic(user).deliver_now
     assert_equal user, ahoy_message.user
   end
 end
