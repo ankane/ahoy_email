@@ -38,7 +38,7 @@ rails db:migrate
 Ahoy creates an `Ahoy::Message` record for each email sent by default. You can disable history for a mailer:
 
 ```ruby
-class UserMailer < ApplicationMailer
+class CouponMailer < ApplicationMailer
   track message: false # use only/except to limit actions
 end
 ```
@@ -58,7 +58,7 @@ By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: me
 You can pass a specific user with:
 
 ```ruby
-class UserMailer < ApplicationMailer
+class CouponMailer < ApplicationMailer
   track user: -> { params[:some_user] }
 end
 ```
@@ -168,7 +168,7 @@ AhoyEmail.api = true
 And add to mailers you want to track:
 
 ```ruby
-class UserMailer < ApplicationMailer
+class CouponMailer < ApplicationMailer
   track open: true, click: true # use only/except to limit actions
 end
 ```
