@@ -75,5 +75,5 @@ end
 ActiveSupport.on_load(:action_mailer) do
   include AhoyEmail::Mailer
   register_observer AhoyEmail::Observer
-  Mail::Message.attr_accessor :ahoy_data, :ahoy_message
+  Mail::Message.send(:attr_accessor, :ahoy_data, :ahoy_message)
 end
