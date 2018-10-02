@@ -1,6 +1,7 @@
 ## 1.0.2 [unreleased]
 
 - Fixed error with earlier versions of Ruby
+- Fixed UTM parameters storage on model
 
 ## 1.0.1
 

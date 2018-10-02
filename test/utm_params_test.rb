@@ -4,6 +4,9 @@ class UtmParamsTest < Minitest::Test
   def test_default
     message = UtmParamsMailer.welcome.deliver_now
     refute_body "utm", message
+    assert_nil ahoy_message.utm_campaign
+    assert_nil ahoy_message.utm_medium
+    assert_nil ahoy_message.utm_source
   end
 
   def test_basic
@@ -11,6 +14,9 @@ class UtmParamsTest < Minitest::Test
     assert_body "utm_campaign=basic", message
     assert_body "utm_medium=email", message
     assert_body "utm_source=utm_params_mailer", message
+    assert_equal "basic", ahoy_message.utm_campaign
+    assert_equal "email", ahoy_message.utm_medium
+    assert_equal "utm_params_mailer", ahoy_message.utm_source
   end
 
   def test_array_params

@@ -8,6 +8,13 @@ ActiveRecord::Schema.define do
 
     # extra
     t.integer :coupon_id
+
+    # legacy
+    t.string :utm_source
+    t.string :utm_medium
+    t.string :utm_term
+    t.string :utm_content
+    t.string :utm_campaign
   end
 
   create_table :users, force: true do |t|
