@@ -10,6 +10,7 @@ ActiveRecord::Schema.define do
     t.integer :coupon_id
 
     # legacy
+    t.text :content
     t.string :utm_source
     t.string :utm_medium
     t.string :utm_term

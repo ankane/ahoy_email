@@ -4,6 +4,9 @@ class MessageTest < Minitest::Test
   def test_default
     MessageMailer.welcome.deliver_now
     assert ahoy_message
+    assert_equal "Hello", ahoy_message.subject
+    assert_match "Hello", ahoy_message.content
+    assert_match "World", ahoy_message.content
   end
 
   def test_false
