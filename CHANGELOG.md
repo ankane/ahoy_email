@@ -1,3 +1,7 @@
+## 1.0.2 [unreleased]
+
+- Fixed error with earlier versions of Ruby
+
 ## 1.0.1
 
 - Use observer instead of interceptor
