@@ -22,4 +22,11 @@ class Ahoy::Message
   field :sent_at, type: Time
 
   field :coupon_id, type: Integer
+
+  field :content, type: String
+  field :utm_source, type: String
+  field :utm_campaign, type: String
+  field :utm_term, type: String
+  field :utm_medium, type: String
+  field :utm_content, type: String
 end
