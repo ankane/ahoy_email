@@ -21,8 +21,10 @@ class Ahoy::Message
   field :subject, type: String
   field :sent_at, type: Time
 
+  # extra
   field :coupon_id, type: Integer
 
+  # legacy
   field :content, type: String
   field :utm_source, type: String
   field :utm_campaign, type: String
