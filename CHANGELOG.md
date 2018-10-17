@@ -1,3 +1,7 @@
+## 1.0.3 [unreleased]
+
+- Fixed custom message model
+
 ## 1.0.2
 
 - Fixed error with Ruby < 2.5

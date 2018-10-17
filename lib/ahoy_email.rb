@@ -65,8 +65,10 @@ module AhoyEmail
 
   self.preserve_callbacks = []
 
+  self.message_model = -> { ::Ahoy::Message }
+
   def self.message_model
-    model = (defined?(@message_model) && @message_model) || ::Ahoy::Message
+    model = defined?(@@message_model) && @@message_model
     model = model.call if model.respond_to?(:call)
     model
   end
