@@ -1,33 +1,39 @@
 module AhoyEmail
   module Mailer
-    def self.included(base)
-      base.extend ClassMethods
-      base.prepend InstanceMethods
-      base.class_eval do
-        attr_accessor :ahoy_options
-        class_attribute :ahoy_options
-        self.ahoy_options = {}
+    extend ActiveSupport::Concern
+
+    included do
+      attr_writer :ahoy_options
+      after_action :save_ahoy_options
+    end
+
+    class_methods do
+      def track(**options)
+        before_action(options.slice(:only, :except)) do
+          self.ahoy_options = ahoy_options.merge(message: true).merge(options.except(:only, :except))
+        end
       end
     end
 
-    module ClassMethods
-      def track(options = {})
-        self.ahoy_options = ahoy_options.merge(message: true).merge(options)
-      end
+    def track(**options)
+      self.ahoy_options = ahoy_options.merge(message: true).merge(options)
     end
 
-    module InstanceMethods
-      def track(options = {})
-        self.ahoy_options = (ahoy_options || {}).merge(message: true).merge(options)
-      end
+    def ahoy_options
+      @ahoy_options ||= AhoyEmail.default_options
+    end
 
-      def mail(headers = {}, &block)
-        # this mimics what original method does
-        return message if @_mail_was_called && headers.blank? && !block
+    def save_ahoy_options
+      if ahoy_options[:message]
+        Safely.safely do
+          options = {}
+          ahoy_options.each do |k, v|
+            # execute options in mailer content
+            options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
+          end
 
-        message = super
-        AhoyEmail::Processor.new(message, self).process
-        message
+          AhoyEmail::Processor.new(self, options).perform
+        end
       end
     end
   end

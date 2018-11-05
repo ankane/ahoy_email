@@ -1,14 +1,14 @@
 # Ahoy Email
 
-:postbox: Simple, powerful email tracking for Rails
+:postbox: Email analytics for Rails
 
 You get:
 
 - A history of emails sent to each user
-- Open and click tracking
 - Easy UTM tagging
+- Optional open and click tracking
 
-Works with any email service.
+**Ahoy Email 1.0 was recently released!** See [how to upgrade](#upgrading)
 
 :bullettrain_side: To manage unsubscribes, check out [Mailkick](https://github.com/ankane/mailkick)
 
@@ -28,38 +28,48 @@ And run the generator. This creates a model to store messages.
 
 ```sh
 rails generate ahoy_email:install
-rake db:migrate
+rails db:migrate
 ```
 
 ## How It Works
 
-Ahoy creates an `Ahoy::Message` every time an email is sent by default.
+### Message History
+
+Ahoy creates an `Ahoy::Message` record for each email sent by default. You can disable history for a mailer:
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track message: false # use only/except to limit actions
+end
+```
+
+Or by default:
+
+```ruby
+AhoyEmail.default_options[:message] = false
+```
 
 ### Users
 
-Ahoy tracks the user a message is sent to - not just the email address.  This gives you a full history of messages for each user, even if he or she changes addresses.
+Ahoy records the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
-By default, Ahoy tries `User.where(email: message.to.first).first` to find the user.
+By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to.first)` to find the user.
 
 You can pass a specific user with:
 
 ```ruby
-class UserMailer < ActionMailer::Base
-  def welcome_email(user)
-    # ...
-    track user: user
-    mail to: user.email
-  end
+class CouponMailer < ApplicationMailer
+  track user: -> { params[:some_user] }
 end
 ```
 
-The user association is [polymorphic](http://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
+The user association is [polymorphic](https://railscasts.com/episodes/154-polymorphic-association), so use it with any model.
 
 To get all messages sent to a user, add an association:
 
 ```ruby
-class User < ActiveRecord::Base
-  has_many :messages, class_name: "Ahoy::Message"
+class User < ApplicationRecord
+  has_many :messages, class_name: "Ahoy::Message", as: :user
 end
 ```
 
@@ -69,61 +79,16 @@ And run:
 user.messages
 ```
 
-### Opens
-
-An invisible pixel is added right before the `</body>` tag in HTML emails.
-
-If the recipient has images enabled in his or her email client, the pixel is loaded and the open time recorded.
-
-Use `track open: false` to skip this.
-
-### Clicks
-
-A redirect is added to links to track clicks in HTML emails.
-
-````
-http://chartkick.com
-```
-
-becomes
-
-```
-http://you.io/ahoy/messages/rAnDoMtOkEn/click?url=http%3A%2F%2Fchartkick.com&signature=...
-```
-
-A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
-
-Use `track click: false` to skip tracking, or skip specific links with:
-
-```html
-<a data-skip-click="true" href="...">Can't touch this</a>
-```
-
-### UTM Parameters
-
-UTM parameters are added to links if they don’t already exist.
-
-The defaults are:
-
-- utm_medium - `email`
-- utm_source - the mailer name like `user_mailer`
-- utm_campaign - the mailer action like `welcome_email`
-
-Use `track utm_params: false` to skip tagging, or skip specific links with:
-
-
-```html
-<a data-skip-utm-params="true" href="...">Break it down</a>
-```
-
 ### Extra Attributes
 
-Create a migration to add extra attributes to the `ahoy_messages` table, for example:
+Record extra attributes on the `Ahoy::Message` model.
+
+Create a migration to add extra attributes to the `ahoy_messages` table. For example:
 
 ```ruby
-class AddCampaignIdToAhoyMessages < ActiveRecord::Migration
+class AddCouponIdToAhoyMessages < ActiveRecord::Migration[5.2]
   def change
-    add_column :ahoy_messages, :campaign_id, :integer
+    add_column :ahoy_messages, :coupon_id, :integer
   end
 end
 ```
@@ -131,62 +96,131 @@ end
 Then use:
 
 ```ruby
-track extra: {campaign_id: 1}
+class CouponMailer < ApplicationMailer
+  track extra: {coupon_id: 1}
+end
 ```
 
-## Customize
+You can use a proc as well.
 
-### Tracking
+```ruby
+class CouponMailer < ApplicationMailer
+  track extra: -> { {coupon_id: params[:coupon].id} }
+end
+```
 
-Skip tracking of attributes by removing them from your model.  You can safely remove:
+### UTM Tagging
 
-- to
-- mailer
-- subject
-- content
+Automatically add UTM parameters to links.
 
-### Configuration
+```ruby
+class CouponMailer < ApplicationMailer
+  track utm_params: true # use only/except to limit actions
+end
+```
 
-There are 3 places to set options. Here’s the order of precedence.
+The defaults are:
 
-#### Action
+- `utm_medium` - `email`
+- `utm_source` - the mailer name like `coupon_mailer`
+- `utm_campaign` - the mailer action like `offer`
 
-``` ruby
-class UserMailer < ActionMailer::Base
-  def welcome_email(user)
-    # ...
-    track user: user
-    mail to: user.email
+You can customize them with:
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track utm_params: true, utm_campaign: -> { "coupon#{params[:coupon].id}" }
+end
+```
+
+Skip specific links with:
+
+```erb
+<%= link_to "Go", some_url, data: {skip_utm_params: true} %>
+```
+
+### Opens & Clicks
+
+#### Setup
+
+Additional setup is required to track opens and clicks.
+
+Create a migration with:
+
+```ruby
+class AddTokenToAhoyMessages < ActiveRecord::Migration[5.2]
+  def change
+    add_column :ahoy_messages, :token, :string
+    add_column :ahoy_messages, :opened_at, :timestamp
+    add_column :ahoy_messages, :clicked_at, :timestamp
+
+    add_index :ahoy_messages, :token
   end
 end
 ```
 
-#### Mailer
+Create an initializer `config/initializers/ahoy_email.rb` with:
 
 ```ruby
-class UserMailer < ActionMailer::Base
-  track utm_campaign: "boom"
+AhoyEmail.api = true
+```
+
+And add to mailers you want to track:
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track open: true, click: true # use only/except to limit actions
 end
 ```
 
-#### Global
+#### How It Works
 
-```ruby
-AhoyEmail.track open: false
+For opens, an invisible pixel is added right before the `</body>` tag in HTML emails. If the recipient has images enabled in their email client, the pixel is loaded and the open time recorded.
+
+For clicks, a redirect is added to links to track clicks in HTML emails.
+
+```
+https://chartkick.com
 ```
 
-## Events
+becomes
 
-Subscribe to open and click events. Create an initializer `config/initializers/ahoy_email.rb` with:
+```
+https://yoursite.com/ahoy/messages/rAnDoMtOkEn/click?url=https%3A%2F%2Fchartkick.com&signature=...
+```
+
+A signature is added to prevent [open redirects](https://www.owasp.org/index.php/Open_redirect).
+
+Skip specific links with:
+
+```erb
+<%= link_to "Go", some_url, data: {skip_click: true} %>
+```
+
+By default, unsubscribe links are excluded. To change this, use:
+
+```ruby
+AhoyEmail.default_options[:unsubscribe_links] = true
+```
+
+You can specify the domain to use with:
+
+```ruby
+AhoyEmail.default_options[:url_options] = {host: "mydomain.com"}
+```
+
+#### Events
+
+Subscribe to open and click events by adding to the initializer:
 
 ```ruby
 class EmailSubscriber
   def open(event)
-    # any code you want
+    # your code
   end
 
   def click(event)
-    # any code you want
+    # your code
   end
 end
 
@@ -211,48 +245,73 @@ AhoyEmail.subscribers << EmailSubscriber.new
 
 ## Reference
 
-You can use a `Proc` for any option.
+Set global options
 
 ```ruby
-track utm_campaign: proc { |message, mailer| mailer.action_name + Time.now.year }
-```
-
-Disable tracking for an email
-
-```ruby
-track message: false
-```
-
-Or specific actions
-
-```ruby
-track only: [:welcome_email]
-track except: [:welcome_email]
-```
-
-Or by default
-
-```ruby
-AhoyEmail.track message: false
-```
-
-Customize domain
-
-```ruby
-track url_options: {host: "mydomain.com"}
+AhoyEmail.default_options[:user] = -> { params[:admin] }
 ```
 
 Use a different model
 
 ```ruby
-AhoyEmail.message_model = UserMessage
+AhoyEmail.message_model = -> { UserMessage }
+```
+
+Or fully customize how messages are tracked
+
+```ruby
+AhoyEmail.track_method = lambda do |data|
+  # your code
+end
+```
+
+## Mongoid
+
+If you prefer to use Mongoid instead of ActiveRecord, create `app/models/ahoy/message.rb` with:
+
+```ruby
+class Ahoy::Message
+  include Mongoid::Document
+
+  belongs_to :user, polymorphic: true, optional: true, index: true
+
+  field :to, type: String
+  field :mailer, type: String
+  field :subject, type: String
+  field :sent_at, type: Time
+end
 ```
 
 ## Upgrading
 
-### 0.2.3
+### 1.0
 
-Optionally, you can store UTM parameters by adding `utm_source`, `utm_medium`, and `utm_campaign` columns to your message model.
+Breaking changes
+
+- UTM tagging, open tracking, and click tracking are no longer enabled by default. To enable, create an initializer with:
+
+  ```ruby
+  AhoyEmail.api = true
+
+  AhoyEmail.default_options[:open] = true
+  AhoyEmail.default_options[:click] = true
+  AhoyEmail.default_options[:utm_params] = true
+  ```
+
+- Only sent emails are recorded
+- Proc options are now executed in the context of the mailer and take no arguments
+
+  ```ruby
+  # old
+  user: ->(mailer, message) { User.find_by(email: message.to.first) }
+
+  # new
+  user: -> { User.find_by(email: message.to.first) }
+  ```
+
+- Invalid options now throw an `ArgumentError`
+- `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
+- The `heuristic_parse` option was removed and is now the default
 
 ## History
 

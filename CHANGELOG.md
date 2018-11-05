@@ -1,3 +1,46 @@
+## 1.0.3 [unreleased]
+
+- Fixed custom message model
+
+## 1.0.2
+
+- Fixed error with Ruby < 2.5
+- Fixed UTM parameters storage on model
+
+## 1.0.1
+
+- Use observer instead of interceptor
+
+## 1.0.0
+
+- Removed support for Rails < 4.2
+
+Breaking changes
+
+- UTM tagging, open tracking, and click tracking are no longer enabled by default
+- Only sent emails are recorded
+- Proc options are now executed in the context of the mailer and take no arguments
+- Invalid options now throw an `ArgumentError`
+- `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
+- The `heuristic_parse` option was removed and is now the default
+
+## 0.5.2
+
+- Fixed secret token for Rails 5.2
+- Added `heuristic_parse` option
+
+## 0.5.1
+
+- Fixed deprecation warning in Rails 5.2
+- Added `unsubscribe_links` option
+- Allow `message_model` to accept a proc
+- Use `references` in migration
+
+## 0.5.0
+
+- Added support for Rails 5.1
+- Added `invalid_redirect_url`
+
 ## 0.4.0
 
 - Fixed `belongs_to` error in Rails 5

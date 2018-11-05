@@ -1,74 +1,59 @@
 module AhoyEmail
   class Processor
-    attr_reader :message, :mailer, :ahoy_message
+    attr_reader :mailer, :options
 
     UTM_PARAMETERS = %w(utm_source utm_medium utm_term utm_content utm_campaign)
 
-    def initialize(message, mailer = nil)
-      @message = message
+    def initialize(mailer, options)
       @mailer = mailer
+      @options = options
+
+      unknown_keywords = options.keys - AhoyEmail.default_options.keys
+      raise ArgumentError, "unknown keywords: #{unknown_keywords.join(", ")}" if unknown_keywords.any?
     end
 
-    def process
-      Safely.safely do
-        action_name = mailer.action_name.to_sym
-        if options[:message] && (!options[:only] || options[:only].include?(action_name)) && !options[:except].to_a.include?(action_name)
-          @ahoy_message = AhoyEmail.message_model.new
-          ahoy_message.token = generate_token
-          ahoy_message.to = Array(message.to).join(", ") if ahoy_message.respond_to?(:to=)
-          ahoy_message.user = options[:user]
-
-          track_open if options[:open]
-          track_links if options[:utm_params] || options[:click]
-
-          ahoy_message.mailer = options[:mailer] if ahoy_message.respond_to?(:mailer=)
-          ahoy_message.subject = message.subject if ahoy_message.respond_to?(:subject=)
-          ahoy_message.content = message.to_s if ahoy_message.respond_to?(:content=)
-
-          UTM_PARAMETERS.each do |k|
-            ahoy_message.send("#{k}=", options[k.to_sym]) if ahoy_message.respond_to?("#{k}=")
-          end
-
-          ahoy_message.assign_attributes(options[:extra] || {})
-
-          ahoy_message.save!
-          message["Ahoy-Message-Id"] = ahoy_message.id.to_s
-        end
-      end
-    end
-
-    def track_send
-      Safely.safely do
-        if (message_id = message["Ahoy-Message-Id"]) && message.perform_deliveries
-          ahoy_message = AhoyEmail.message_model.where(id: message_id.to_s).first
-          if ahoy_message
-            ahoy_message.sent_at = Time.now
-            ahoy_message.save
-          end
-          message["Ahoy-Message-Id"] = nil
-        end
-      end
+    def perform
+      track_open if options[:open]
+      track_links if options[:utm_params] || options[:click]
+      track_message
     end
 
     protected
 
-    def options
-      @options ||= begin
-        options = AhoyEmail.options.merge(mailer.class.ahoy_options)
-        if mailer.ahoy_options
-          options = options.except(:only, :except).merge(mailer.ahoy_options)
-        end
-        options.each do |k, v|
-          if v.respond_to?(:call)
-            options[k] = v.call(message, mailer)
-          end
-        end
-        options
-      end
+    def message
+      mailer.message
     end
 
-    def generate_token
-      SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+    def token
+      @token ||= SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
+    end
+
+    def track_message
+      data = {
+        mailer: options[:mailer],
+        extra: options[:extra],
+        user: options[:user]
+      }
+
+      # legacy, remove in next major version
+      user = options[:user]
+      if user
+        data[:user_type] = user.model_name.name
+        id = user.id
+        data[:user_id] = id.is_a?(Integer) ? id : id.to_s
+      end
+
+      if options[:open] || options[:click]
+        data[:token] = token
+      end
+
+      if options[:utm_params]
+        UTM_PARAMETERS.map(&:to_sym).each do |k|
+          data[k] = options[k] if options[k]
+        end
+      end
+
+      mailer.message.ahoy_data = data
     end
 
     def track_open
@@ -79,10 +64,10 @@ module AhoyEmail
           url_for(
             controller: "ahoy/messages",
             action: "open",
-            id: ahoy_message.token,
+            id: token,
             format: "gif"
           )
-        pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: nil)
+        pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: "")
 
         # try to add before body tag
         if raw_source.match(regex)
@@ -103,21 +88,23 @@ module AhoyEmail
           next unless trackable?(uri)
           # utm params first
           if options[:utm_params] && !skip_attribute?(link, "utm-params")
-            params = uri.query_values || {}
+            params = uri.query_values(Array) || []
             UTM_PARAMETERS.each do |key|
-              params[key] ||= options[key.to_sym] if options[key.to_sym]
+              next if params.any? { |k, _v| k == key } || !options[key.to_sym]
+              params << [key, options[key.to_sym]]
             end
             uri.query_values = params
             link["href"] = uri.to_s
           end
 
           if options[:click] && !skip_attribute?(link, "click")
-            signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, link["href"])
+            # TODO sign more than just url and transition to HMAC-SHA256
+            signature = OpenSSL::HMAC.hexdigest("SHA1", AhoyEmail.secret_token, link["href"])
             link["href"] =
               url_for(
                 controller: "ahoy/messages",
                 action: "click",
-                id: ahoy_message.token,
+                id: token,
                 url: link["href"],
                 signature: signature
               )
@@ -139,7 +126,7 @@ module AhoyEmail
         # remove it
         link.remove_attribute(attribute)
         true
-      elsif link["href"].to_s =~ /unsubscribe/i
+      elsif link["href"].to_s =~ /unsubscribe/i && !options[:unsubscribe_links]
         # try to avoid unsubscribe links
         true
       else
@@ -156,7 +143,7 @@ module AhoyEmail
     # Return uri if valid, nil otherwise
     def parse_uri(href)
       # to_s prevent to return nil from this method
-      Addressable::URI.parse(href.to_s) rescue nil
+      Addressable::URI.heuristic_parse(href.to_s) rescue nil
     end
 
     def url_for(opt)

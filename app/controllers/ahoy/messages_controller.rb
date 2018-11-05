@@ -1,17 +1,24 @@
 module Ahoy
   class MessagesController < AhoyEmail.message_parent_controller.to_s.constantize
-    if respond_to? :before_action
-      before_action :set_message
+    filters = _process_action_callbacks.map(&:filter) - AhoyEmail.preserve_callbacks
+    if Rails::VERSION::MAJOR >= 5
+      skip_before_action(*filters, raise: false)
+      skip_after_action(*filters, raise: false)
+      skip_around_action(*filters, raise: false)
     else
-      before_filter :set_message
+      skip_action_callback *filters
     end
+
+    before_action :set_message
 
     def open
       if @message && !@message.opened_at
         @message.opened_at = Time.now
         @message.save!
       end
+
       publish :open
+
       send_data Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), type: "image/gif", disposition: "inline"
     end
 
@@ -21,13 +28,20 @@ module Ahoy
         @message.opened_at ||= @message.clicked_at
         @message.save!
       end
+
+      user_signature = params[:signature].to_s
       url = params[:url].to_s
-      signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
-      publish :click, url: params[:url]
-      if secure_compare(params[:signature].to_s, signature)
+
+      # TODO sign more than just url and transition to HMAC-SHA256
+      digest = "SHA1"
+      signature = OpenSSL::HMAC.hexdigest(digest, AhoyEmail.secret_token, url)
+
+      if ActiveSupport::SecurityUtils.secure_compare(user_signature, signature)
+        publish :click, url: params[:url]
+
         redirect_to url
       else
-        redirect_to main_app.root_url
+        redirect_to AhoyEmail.invalid_redirect_url || main_app.root_url
       end
     end
 
@@ -45,18 +59,6 @@ module Ahoy
           subscriber.send name, event
         end
       end
-    end
-
-    # from https://github.com/rails/rails/blob/master/activesupport/lib/active_support/message_verifier.rb
-    # constant-time comparison algorithm to prevent timing attacks
-    def secure_compare(a, b)
-      return false unless a.bytesize == b.bytesize
-
-      l = a.unpack "C#{a.bytesize}"
-
-      res = 0
-      b.each_byte { |byte| res |= byte ^ l.shift }
-      res == 0
     end
   end
 end
