@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable", ">= 2.3.2"
   spec.add_dependency "nokogiri"
   spec.add_dependency "safely_block", ">= 0.1.1"
+  spec.add_dependency "roadie",       "~> 3.4"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

@@ -4,6 +4,7 @@ require "addressable/uri"
 require "nokogiri"
 require "openssl"
 require "safely/core"
+require "roadie"
 
 # modules
 require "ahoy_email/processor"

@@ -111,8 +111,8 @@ module AhoyEmail
           end
         end
 
-        # hacky
-        body.raw_source.sub!(body.raw_source, doc.to_s)
+        # hacky (even more with Roadie ;)
+        body.raw_source.sub!(body.raw_source, Roadie::Document.new(doc.to_s).transform)
       end
     end
 
