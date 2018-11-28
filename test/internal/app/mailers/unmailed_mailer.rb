@@ -1,3 +1,4 @@
-class UnmailedMailer < ActionMailer::Base
-  def hello; end
+class UnmailedMailer < ApplicationMailer
+  def hello
+  end
 end
