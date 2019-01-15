@@ -143,7 +143,7 @@ Skip specific links with:
 
 #### Setup
 
-You can track opens with Google Analytics without the additional the additional configuration below.   
+You can track opens with Google Analytics without the need for web endpoints and local storage with the additional configuration below.   
 
 Add a GA tracking code to your `ahoy_email.rb` initializer:
 
