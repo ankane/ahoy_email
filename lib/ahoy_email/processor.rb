@@ -84,7 +84,7 @@ module AhoyEmail
         raw_source = (message.html_part || message).body.raw_source
         regex = /<\/body>/i
 
-        epath = "/email/#{mailer_name}/#{action_name}"
+        epath = "/email/#{mailer.mailer_name}/#{mailer.action_name}"
 
         tracker = {
           v: 1,
@@ -108,7 +108,7 @@ module AhoyEmail
         end
       end
     end
-    
+
     def track_links
       if html_part?
         body = (message.html_part || message).body

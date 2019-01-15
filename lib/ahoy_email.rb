@@ -33,7 +33,8 @@ module AhoyEmail
     mailer: -> { "#{self.class.name}##{action_name}" },
     url_options: {},
     extra: {},
-    unsubscribe_links: false
+    unsubscribe_links: false,
+    google_analytics_code: nil
   }
 
   self.track_method = lambda do |data|
