@@ -101,18 +101,6 @@ class CouponMailer < ApplicationMailer
 end
 ```
 
-Or in the action:
-
-```ruby
-class CouponMailer < ApplicationMailer
-  def welcome_email
-    ...
-    track extra: {coupon_id: 1}
-    ...
-  end
-end
-```
-
 You can use a proc as well.
 
 ```ruby
@@ -329,13 +317,6 @@ Breaking changes
 
 View the [changelog](https://github.com/ankane/ahoy_email/blob/master/CHANGELOG.md)
 
-## Testing
-
-  ```ruby
-  bundle install
-  bundle exec rake test
-  ```
-
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
@@ -344,3 +325,12 @@ Everyone is encouraged to help improve this project. Here are a few ways you can
 - Fix bugs and [submit pull requests](https://github.com/ankane/ahoy_email/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
+
+To get started with development and testing:
+
+```ruby
+git clone https://github.com/ankane/ahoy_email.git
+cd ahoy_email
+bundle install
+rake test
+```
