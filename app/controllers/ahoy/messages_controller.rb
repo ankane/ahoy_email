@@ -9,13 +9,9 @@ module Ahoy
       skip_action_callback *filters
     end
 
-    before_action :set_message
-
     def open
-      if @message && !@message.opened_at
-        @message.opened_at = Time.now
-        @message.save!
-      end
+
+      message.where(opened_at: nil).update_all(opened_at: now)
 
       publish :open
 
@@ -23,11 +19,10 @@ module Ahoy
     end
 
     def click
-      if @message && !@message.clicked_at
-        @message.clicked_at = Time.now
-        @message.opened_at ||= @message.clicked_at
-        @message.save!
-      end
+
+      message.where(clicked_at: nil)
+             .update_all("clicked_at='#{now}', opened_at=COALESCE(opened_at, '#{now}')")
+            #  .update_all(clicked_at: now, opened_at: "coalesce(updated_at, '#{now}'")
 
       user_signature = params[:signature].to_s
       url = params[:url].to_s
@@ -47,14 +42,18 @@ module Ahoy
 
     protected
 
-    def set_message
-      @message = AhoyEmail.message_model.where(token: params[:id]).first
+    def message
+      @message ||= AhoyEmail.message_model.where(token: params[:id])
+    end
+
+    def now
+      @now ||= Time.now
     end
 
     def publish(name, event = {})
       AhoyEmail.subscribers.each do |subscriber|
         if subscriber.respond_to?(name)
-          event[:message] = @message
+          event[:message] = message.first
           event[:controller] = self
           subscriber.send name, event
         end

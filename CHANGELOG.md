@@ -1,6 +1,9 @@
 ## 1.0.3 [unreleased]
 
 - Fixed custom message model
+- Changed GA tracking to pageview instead of event
+- Reduce DB hits on open, click operations
+- Rubocop fixes
 
 ## 1.0.2
 
