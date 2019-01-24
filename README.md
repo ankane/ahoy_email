@@ -328,7 +328,7 @@ Everyone is encouraged to help improve this project. Here are a few ways you can
 
 To get started with development and testing:
 
-```ruby
+```sh
 git clone https://github.com/ankane/ahoy_email.git
 cd ahoy_email
 bundle install
