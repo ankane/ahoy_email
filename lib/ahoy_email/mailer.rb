@@ -24,10 +24,14 @@ module AhoyEmail
     end
 
     def save_ahoy_options
-      if ahoy_options[:message]
-        Safely.safely do
+      Safely.safely do
+        # do message first for performance
+        message = ahoy_options[:message]
+        message = message.respond_to?(:call) ? instance_exec(&message) : message
+
+        if message
           options = {}
-          ahoy_options.each do |k, v|
+          ahoy_options.except(:message).each do |k, v|
             # execute options in mailer content
             options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
           end
