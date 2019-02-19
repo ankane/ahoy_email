@@ -1,4 +1,4 @@
-## 1.0.3 [unreleased]
+## 1.0.3
 
 - Fixed custom message model
 - Fixed `message` option with proc
