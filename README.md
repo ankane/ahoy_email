@@ -243,6 +243,22 @@ end
 AhoyEmail.subscribers << EmailSubscriber.new
 ```
 
+## Data Protection
+
+Protect the privacy of your users by encrypting the `to` field. [attr_encrypted](https://github.com/attr-encrypted/attr_encrypted) is great for this. Use [blind_index](https://github.com/ankane/blind_index) if you need to query by the `to` field.
+
+Create `app/models/ahoy/message.rb` with:
+
+```ruby
+class Ahoy::Message < ApplicationRecord
+  self.table_name = "ahoy_messages"
+  belongs_to :user, polymorphic: true, optional: true
+
+  attr_encrypted :to, ...
+  blind_index :to, ...
+end
+```
+
 ## Reference
 
 Set global options
