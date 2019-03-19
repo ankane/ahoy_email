@@ -58,7 +58,9 @@ module AhoyEmail
 
     def track_open
       if html_part?
-        raw_source = (message.html_part || message).body.raw_source
+        part = message.html_part || message
+        raw_source = part.body.raw_source
+
         regex = /<\/body>/i
         url =
           url_for(
@@ -71,16 +73,17 @@ module AhoyEmail
 
         # try to add before body tag
         if raw_source.match(regex)
-          raw_source.gsub!(regex, "#{pixel}\\0")
+          part.body = raw_source.gsub(regex, "#{pixel}\\0")
         else
-          raw_source << pixel
+          part.body = raw_source + pixel
         end
       end
     end
 
     def track_links
       if html_part?
-        body = (message.html_part || message).body
+        part = message.html_part || message
+        body = part.body
 
         doc = Nokogiri::HTML(body.raw_source)
         doc.css("a[href]").each do |link|
@@ -111,8 +114,7 @@ module AhoyEmail
           end
         end
 
-        # hacky
-        body.raw_source.sub!(body.raw_source, doc.to_s)
+        part.body = doc.to_s
       end
     end
 
