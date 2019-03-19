@@ -83,9 +83,8 @@ module AhoyEmail
     def track_links
       if html_part?
         part = message.html_part || message
-        body = part.body
 
-        doc = Nokogiri::HTML(body.raw_source)
+        doc = Nokogiri::HTML(part.body.raw_source)
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])
           next unless trackable?(uri)
