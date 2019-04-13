@@ -25,7 +25,7 @@ module Ahoy
     def click
       if @message && !@message.clicked_at
         @message.clicked_at = Time.now
-        @message.opened_at ||= @message.clicked_at
+        @message.opened_at ||= @message.clicked_at if @message.respond_to?(:opened_at=)
         @message.save!
       end
 
