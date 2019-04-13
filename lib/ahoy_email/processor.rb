@@ -100,6 +100,8 @@ module AhoyEmail
           end
 
           if options[:click] && !skip_attribute?(link, "click")
+            raise "Secret token is empty" unless AhoyEmail.secret_token
+
             # TODO sign more than just url and transition to HMAC-SHA256
             signature = OpenSSL::HMAC.hexdigest("SHA1", AhoyEmail.secret_token, link["href"])
             link["href"] =
