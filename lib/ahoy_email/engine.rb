@@ -13,7 +13,9 @@ module AhoyEmail
             app.config
           end
 
-        creds.respond_to?(:secret_key_base) ? creds.secret_key_base : creds.secret_token
+        token = creds.respond_to?(:secret_key_base) ? creds.secret_key_base : creds.secret_token
+        token ||= app.secret_key_base # should come first, but need to maintain backward compatibility
+        token
       end
     end
   end
