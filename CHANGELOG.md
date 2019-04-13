@@ -1,6 +1,7 @@
 ## 1.0.4 [unreleased]
 
-- Make `opened_at` optional with click tracking
+- Made `opened_at` optional with click tracking
+- Fixed secret token for environment variables
 
 ## 1.0.3
 
