@@ -1,3 +1,7 @@
+## 1.0.4 [unreleased]
+
+- Make `opened_at` optional with click tracking
+
 ## 1.0.3
 
 - Fixed custom message model
