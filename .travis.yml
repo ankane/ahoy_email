@@ -1,22 +1,20 @@
+dist: xenial
 language: ruby
-rvm: 2.5.1
-sudo: false
+rvm: 2.6.3
+gemfile:
+  - Gemfile
+  - test/gemfiles/actionmailer51.gemfile
 script: bundle exec rake test
-before_script:
-  - gem install bundler
+matrix:
+  include:
+  - gemfile: test/gemfiles/actionmailer42.gemfile
+    rvm: 2.4.6
+  - gemfile: test/gemfiles/actionmailer50.gemfile
+    rvm: 2.5.5
+  - gemfile: test/gemfiles/mongoid6.gemfile
+    services:
+      - mongodb
 notifications:
   email:
     on_success: never
     on_failure: change
-gemfile:
-  - Gemfile
-  - test/gemfiles/actionmailer51.gemfile
-matrix:
-  include:
-  - gemfile: test/gemfiles/actionmailer42.gemfile
-    rvm: 2.3.7
-  - gemfile: test/gemfiles/actionmailer50.gemfile
-    rvm: 2.4.4
-  - gemfile: test/gemfiles/mongoid6.gemfile
-    services:
-      - mongodb
