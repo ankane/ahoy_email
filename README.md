@@ -53,7 +53,7 @@ AhoyEmail.default_options[:message] = false
 
 Ahoy records the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
 
-By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to.first)` to find the user.
+By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to)` to find the user.
 
 You can pass a specific user with:
 
@@ -319,10 +319,10 @@ Breaking changes
 
   ```ruby
   # old
-  user: ->(mailer, message) { User.find_by(email: message.to.first) }
+  user: ->(mailer, message) { User.find_by(email: message.to) }
 
   # new
-  user: -> { User.find_by(email: message.to.first) }
+  user: -> { User.find_by(email: message.to) }
   ```
 
 - Invalid options now throw an `ArgumentError`
