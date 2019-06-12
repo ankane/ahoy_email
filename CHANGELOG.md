@@ -2,7 +2,7 @@
 
 - Made `opened_at` optional with click tracking
 - Fixed secret token for environment variables
-- Dropped support for Rails 4.2
+- Removed support for Rails 4.2
 
 ## 1.0.3
 
