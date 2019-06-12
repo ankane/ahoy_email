@@ -13,9 +13,9 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["*.{md,txt}", "{app,config,lib}/**/*"]
   spec.require_path  = "lib"
 
-  spec.required_ruby_version = ">= 2.2"
+  spec.required_ruby_version = ">= 2.4"
 
-  spec.add_dependency "actionmailer", ">= 4.2"
+  spec.add_dependency "actionmailer", ">= 5"
   spec.add_dependency "addressable", ">= 2.3.2"
   spec.add_dependency "nokogiri"
   spec.add_dependency "safely_block", ">= 0.1.1"
@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "activerecord"
   spec.add_development_dependency "combustion"
   spec.add_development_dependency "rails"
-  spec.add_development_dependency "sqlite3", "~> 1.3.0"
+  spec.add_development_dependency "sqlite3"
 end

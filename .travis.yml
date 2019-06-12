@@ -3,15 +3,18 @@ language: ruby
 rvm: 2.6.3
 gemfile:
   - Gemfile
-  - test/gemfiles/actionmailer51.gemfile
+  - test/gemfiles/actionmailer52.gemfile
 script: bundle exec rake test
 matrix:
   include:
-  - gemfile: test/gemfiles/actionmailer42.gemfile
-    rvm: 2.4.6
   - gemfile: test/gemfiles/actionmailer50.gemfile
+    rvm: 2.4.6
+  - gemfile: test/gemfiles/actionmailer51.gemfile
     rvm: 2.5.5
   - gemfile: test/gemfiles/mongoid6.gemfile
+    services:
+      - mongodb
+  - gemfile: test/gemfiles/mongoid7.gemfile
     services:
       - mongodb
 notifications:

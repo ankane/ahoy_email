@@ -1,7 +1,8 @@
-## 1.0.4 [unreleased]
+## 1.1.0 [unreleased]
 
 - Made `opened_at` optional with click tracking
 - Fixed secret token for environment variables
+- Dropped support for Rails 4.2
 
 ## 1.0.3
 
