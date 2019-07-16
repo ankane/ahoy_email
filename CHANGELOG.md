@@ -1,4 +1,4 @@
-## 1.1.0 [unreleased]
+## 1.1.0
 
 - Made `opened_at` optional with click tracking
 - Fixed secret token for environment variables
