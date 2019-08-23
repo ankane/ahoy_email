@@ -86,7 +86,7 @@ Record extra attributes on the `Ahoy::Message` model.
 Create a migration to add extra attributes to the `ahoy_messages` table. For example:
 
 ```ruby
-class AddCouponIdToAhoyMessages < ActiveRecord::Migration[5.2]
+class AddCouponIdToAhoyMessages < ActiveRecord::Migration[6.0]
   def change
     add_column :ahoy_messages, :coupon_id, :integer
   end
@@ -148,7 +148,7 @@ Additional setup is required to track opens and clicks.
 Create a migration with:
 
 ```ruby
-class AddTokenToAhoyMessages < ActiveRecord::Migration[5.2]
+class AddTokenToAhoyMessages < ActiveRecord::Migration[6.0]
   def change
     add_column :ahoy_messages, :token, :string
     add_column :ahoy_messages, :opened_at, :timestamp
