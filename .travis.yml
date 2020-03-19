@@ -8,7 +8,7 @@ jobs:
     - rvm: 2.6
       gemfile: test/gemfiles/actionmailer52.gemfile
     - rvm: 2.5
-      gemfile: ttest/gemfiles/actionmailer51.gemfile
+      gemfile: test/gemfiles/actionmailer51.gemfile
     - rvm: 2.4
       gemfile: test/gemfiles/actionmailer50.gemfile
     - rvm: 2.7
