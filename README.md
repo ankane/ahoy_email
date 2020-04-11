@@ -8,8 +8,6 @@ You get:
 - Easy UTM tagging
 - Optional open and click tracking
 
-**Ahoy Email 1.0 was recently released!** See [how to upgrade](#upgrading)
-
 :bullettrain_side: To manage unsubscribes, check out [Mailkick](https://github.com/ankane/mailkick)
 
 :fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy)
@@ -245,7 +243,7 @@ AhoyEmail.subscribers << EmailSubscriber.new
 
 ## Data Protection
 
-Protect the privacy of your users by encrypting the `to` field. [Lockbox](https://github.com/ankane/lockbox) is great for this. Use [Blind Index](https://github.com/ankane/blind_index) if you need to query by the `to` field.
+We recommend encrypting the `to` field (as well as the `subject` if it’s sensitive). [Lockbox](https://github.com/ankane/lockbox) is great for this. Use [Blind Index](https://github.com/ankane/blind_index) if you need to query by the `to` field.
 
 Create `app/models/ahoy/message.rb` with:
 
