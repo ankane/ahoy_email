@@ -49,7 +49,7 @@ AhoyEmail.default_options[:message] = false
 
 ### Users
 
-Ahoy records the user a message is sent to - not just the email address. This gives you a full history of messages for each user, even if he or she changes addresses.
+Ahoy records the user a message is sent to - not just the email address. This gives you a history of messages for each user, even if they change addresses.
 
 By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to)` to find the user.
 
@@ -255,6 +255,14 @@ class Ahoy::Message < ApplicationRecord
   encrypts :to
   blind_index :to
 end
+```
+
+## Data Retention
+
+Delete older data with:
+
+```ruby
+Ahoy::Message.where("created_at < ?", 1.year.ago).in_batches.delete_all
 ```
 
 ## Reference
