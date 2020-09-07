@@ -4,7 +4,7 @@ ActiveRecord::Schema.define do
     t.text :to
     t.string :mailer
     t.text :subject
-    t.timestamp :sent_at
+    t.datetime :sent_at
 
     # extra
     t.integer :coupon_id

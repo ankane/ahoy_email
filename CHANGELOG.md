@@ -1,3 +1,7 @@
+## 1.1.1 (unreleased)
+
+- Use `datetime` type in migration
+
 ## 1.1.0 (2019-07-15)
 
 - Made `opened_at` optional with click tracking

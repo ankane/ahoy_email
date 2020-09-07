@@ -5,7 +5,7 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
       t.text :to
       t.string :mailer
       t.text :subject
-      t.timestamp :sent_at
+      t.datetime :sent_at
     end
   end
 end
