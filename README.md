@@ -41,8 +41,7 @@ class CouponMailer < ApplicationMailer
 end
 ```
 
-Or by default:
-
+Or by default, create an initializer config/initializers/ahoy_email.rb with:
 ```ruby
 AhoyEmail.default_options[:message] = false
 ```
@@ -157,7 +156,7 @@ class AddTokenToAhoyMessages < ActiveRecord::Migration[6.0]
 end
 ```
 
-Create an initializer `config/initializers/ahoy_email.rb` with:
+Update initializer `config/initializers/ahoy_email.rb` with:
 
 ```ruby
 AhoyEmail.api = true
