@@ -12,7 +12,7 @@ You get:
 
 :fire: To track visits and events, check out [Ahoy](https://github.com/ankane/ahoy)
 
-[![Build Status](https://travis-ci.org/ankane/ahoy_email.svg?branch=master)](https://travis-ci.org/ankane/ahoy_email)
+[![Build Status](https://github.com/ankane/ahoy_email/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ahoy_email/actions)
 
 ## Installation
 

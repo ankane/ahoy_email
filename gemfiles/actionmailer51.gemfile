@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gemspec path: "../../"
+gemspec path: ".."
 
 gem "actionmailer", "~> 5.1.0"
 gem "activerecord", "~> 5.1.0"
