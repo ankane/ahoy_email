@@ -10,6 +10,8 @@ jobs:
         include:
         - ruby: 2.7
           gemfile: Gemfile
+        - ruby: 2.7
+          gemfile: gemfiles/actionmailer60.gemfile
         - ruby: 2.6
           gemfile: gemfiles/actionmailer52.gemfile
         - ruby: 2.5
