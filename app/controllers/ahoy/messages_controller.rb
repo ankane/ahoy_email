@@ -44,11 +44,13 @@ module Ahoy
     protected
 
     def set_message
+      @token =  params[:id]
+
       model = AhoyEmail.message_model
 
       return if model.respond_to?(:column_names) && !model.column_names.include?("token")
 
-      @message = model.where(token: params[:id]).first
+      @message = model.where(token: @token).first
     end
 
     def publish(name, event = {})
@@ -57,6 +59,7 @@ module Ahoy
         if subscriber.respond_to?(name)
           event[:message] = @message
           event[:controller] = self
+          event[:token] = @token
           subscriber.send name, event
         end
       end
