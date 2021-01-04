@@ -60,4 +60,16 @@ class Minitest::Test
       AhoyEmail.default_options = previous_options
     end
   end
+
+  def with_subscriber(subscriber)
+    previous_subscribers = AhoyEmail.subscribers
+    begin
+      $open_events = []
+      $click_events = []
+      AhoyEmail.subscribers = [subscriber]
+      yield
+    ensure
+      AhoyEmail.subscribers = previous_subscribers
+    end
+  end
 end
