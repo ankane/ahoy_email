@@ -9,6 +9,10 @@ class ClickMailer < ApplicationMailer
     mail_html('<a href="https://example.org">Test</a>')
   end
 
+  def query_params
+    mail_html('<a href="https://example.org?a=1&b=2">Test</a>')
+  end
+
   def mailto
     mail_html('<a href="mailto:hi@example.org">Test</a>')
   end

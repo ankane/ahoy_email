@@ -15,6 +15,15 @@ class ClickTest < ActionDispatch::IntegrationTest
     assert ahoy_message.clicked_at
   end
 
+  def test_query_params
+    message = ClickMailer.query_params.deliver_now
+    assert_body "click", message
+
+    click_link(message)
+    assert_redirected_to "https://example.org?a=1&b=2"
+    assert ahoy_message.clicked_at
+  end
+
   def test_subscriber
     with_subscriber(EmailSubscriber.new) do
       message = ClickMailer.basic.deliver_now
