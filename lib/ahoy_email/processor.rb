@@ -84,6 +84,7 @@ module AhoyEmail
       if html_part?
         part = message.html_part || message
 
+        # TODO use Nokogiri::HTML::DocumentFragment.parse in 2.0
         doc = Nokogiri::HTML(part.body.raw_source)
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])
@@ -115,6 +116,8 @@ module AhoyEmail
           end
         end
 
+        # ampersands converted to &amp;
+        # https://github.com/sparklemotion/nokogiri/issues/1127
         part.body = doc.to_s
       end
     end
