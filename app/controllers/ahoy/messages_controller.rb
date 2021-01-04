@@ -49,6 +49,7 @@ module Ahoy
 
     def publish(name, event = {})
       AhoyEmail.subscribers.each do |subscriber|
+        subscriber = subscriber.new if subscriber.is_a?(Class) && !subscriber.respond_to?(name)
         if subscriber.respond_to?(name)
           event[:message] = @message
           event[:controller] = self

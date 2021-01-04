@@ -1,5 +1,6 @@
 ## 1.1.1 (unreleased)
 
+- Added support for classes for subscribers
 - Use `datetime` type in migration
 
 ## 1.1.0 (2019-07-15)

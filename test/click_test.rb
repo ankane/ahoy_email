@@ -27,6 +27,18 @@ class ClickTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_subscriber_class
+    with_subscriber(EmailSubscriber) do
+      message = ClickMailer.basic.deliver_now
+      click_link(message)
+
+      assert_equal 1, $click_events.size
+      click_event = $click_events.first
+      assert_equal "https://example.org", click_event[:url]
+      assert_equal ahoy_message, click_event[:message]
+    end
+  end
+
   def test_bad_signature
     message = ClickMailer.basic.deliver_now
     assert_body "click", message
