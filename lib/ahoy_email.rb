@@ -1,7 +1,7 @@
 # dependencies
 require "active_support"
 require "addressable/uri"
-require "nokogiri"
+require "nokogumbo"
 require "openssl"
 require "safely/core"
 
