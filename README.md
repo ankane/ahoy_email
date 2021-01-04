@@ -139,6 +139,8 @@ Skip specific links with:
 
 ### Opens & Clicks
 
+While it’s nice to get feedback on the performance of your emails, we discourage the use of open tracking. If you do decide to use open or click tracking, be sure to get consent from your users and consider a short retention period. Check out [this article](https://www.eff.org/deeplinks/2019/01/stop-tracking-my-emails) for more best practices.
+
 #### Setup
 
 Additional setup is required to track opens and clicks.
