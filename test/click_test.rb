@@ -97,7 +97,11 @@ class ClickTest < ActionDispatch::IntegrationTest
   end
 
   def click_link(message)
-    url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
+    url = /href=\"([^"]+)\"/.match(message.body.decoded)[1]
+
+    # unescape entities like browser does
+    url = CGI.unescapeHTML(url)
+
     get url
   end
 
