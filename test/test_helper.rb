@@ -27,13 +27,9 @@ class EmailSubscriber
   end
 end
 
-AhoyEmail.subscribers << EmailSubscriber.new
-
 class Minitest::Test
   def setup
     Ahoy::Message.delete_all
-    $click_events = []
-    $open_events = []
   end
 
   def ahoy_message

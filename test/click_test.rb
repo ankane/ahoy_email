@@ -9,15 +9,22 @@ class ClickTest < ActionDispatch::IntegrationTest
   def test_basic
     message = ClickMailer.basic.deliver_now
     assert_body "click", message
-    url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
-    get url
+
+    click_link(message)
     assert_redirected_to "https://example.org"
     assert ahoy_message.clicked_at
+  end
 
-    assert_equal 1, $click_events.size
-    click_event = $click_events.first
-    assert_equal "https://example.org", click_event[:url]
-    assert_equal ahoy_message, click_event[:message]
+  def test_subscriber
+    with_subscriber(EmailSubscriber.new) do
+      message = ClickMailer.basic.deliver_now
+      click_link(message)
+
+      assert_equal 1, $click_events.size
+      click_event = $click_events.first
+      assert_equal "https://example.org", click_event[:url]
+      assert_equal ahoy_message, click_event[:message]
+    end
   end
 
   def test_bad_signature
@@ -41,5 +48,22 @@ class ClickTest < ActionDispatch::IntegrationTest
   def test_schemeless
     message = ClickMailer.schemeless.deliver_now
     assert_body "click", message
+  end
+
+  def click_link(message)
+    url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
+    get url
+  end
+
+  def with_subscriber(subscriber)
+    previous_subscribers = AhoyEmail.subscribers
+    begin
+      $open_events = []
+      $click_events = []
+      AhoyEmail.subscribers = [subscriber]
+      yield
+    ensure
+      AhoyEmail.subscribers = previous_subscribers
+    end
   end
 end
