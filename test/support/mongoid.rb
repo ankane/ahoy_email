@@ -23,7 +23,7 @@ class Ahoy::Message
 
   # opens & clicks
   field :token, type: String
-  field :opend_at, type: Time
+  field :opened_at, type: Time
   field :clicked_at, type: Time
 
   # extra
