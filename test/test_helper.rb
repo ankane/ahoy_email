@@ -4,6 +4,8 @@ Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
 
+AhoyEmail.api = true
+
 Combustion.path = "test/internal"
 Combustion.initialize! :active_record, :action_mailer do
   if ActiveRecord::VERSION::MAJOR < 6 && config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer)
@@ -15,9 +17,23 @@ require_relative "support/mongoid" if defined?(Mongoid)
 
 ActionMailer::Base.delivery_method = :test
 
+class EmailSubscriber
+  def open(event)
+    $open_events << event
+  end
+
+  def click(event)
+    $click_events << event
+  end
+end
+
+AhoyEmail.subscribers << EmailSubscriber.new
+
 class Minitest::Test
   def setup
     Ahoy::Message.delete_all
+    $click_events = []
+    $open_events = []
   end
 
   def ahoy_message

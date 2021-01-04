@@ -21,6 +21,11 @@ class Ahoy::Message
   field :subject, type: String
   field :sent_at, type: Time
 
+  # opens & clicks
+  field :token, type: String
+  field :opend_at, type: Time
+  field :clicked_at, type: Time
+
   # extra
   field :coupon_id, type: Integer
 

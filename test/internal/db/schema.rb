@@ -6,6 +6,11 @@ ActiveRecord::Schema.define do
     t.text :subject
     t.datetime :sent_at
 
+    # opens & clicks
+    t.string :token
+    t.datetime :opened_at
+    t.datetime :clicked_at
+
     # extra
     t.integer :coupon_id
 
