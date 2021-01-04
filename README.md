@@ -170,7 +170,23 @@ And add to mailers you want to track:
 
 ```ruby
 class CouponMailer < ApplicationMailer
-  track open: true, click: true # use only/except to limit actions
+  track open: true, click: true
+end
+```
+
+Use only and except to limit actions
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track click: true, only: [:welcome]
+end
+```
+
+Or make it conditional
+
+```ruby
+class CouponMailer < ApplicationMailer
+  track click: -> { params[:user].opted_in? }
 end
 ```
 
