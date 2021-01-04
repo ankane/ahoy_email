@@ -143,8 +143,6 @@ While it’s nice to get feedback on the performance of your emails, we discoura
 
 #### Setup
 
-Additional setup is required to track opens and clicks.
-
 Create a migration with:
 
 ```ruby
@@ -311,37 +309,6 @@ class Ahoy::Message
   field :sent_at, type: Time
 end
 ```
-
-## Upgrading
-
-### 1.0
-
-Breaking changes
-
-- UTM tagging, open tracking, and click tracking are no longer enabled by default. To enable, create an initializer with:
-
-  ```ruby
-  AhoyEmail.api = true
-
-  AhoyEmail.default_options[:open] = true
-  AhoyEmail.default_options[:click] = true
-  AhoyEmail.default_options[:utm_params] = true
-  ```
-
-- Only sent emails are recorded
-- Proc options are now executed in the context of the mailer and take no arguments
-
-  ```ruby
-  # old
-  user: ->(mailer, message) { User.find_by(email: message.to) }
-
-  # new
-  user: -> { User.find_by(email: message.to) }
-  ```
-
-- Invalid options now throw an `ArgumentError`
-- `AhoyEmail.track` was removed in favor of `AhoyEmail.default_options`
-- The `heuristic_parse` option was removed and is now the default
 
 ## History
 
