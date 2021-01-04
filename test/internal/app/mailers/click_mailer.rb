@@ -1,5 +1,6 @@
 class ClickMailer < ApplicationMailer
   track click: true, except: [:welcome]
+  track click: -> { @track }, only: [:conditional]
 
   def welcome
     mail_html('<a href="https://example.org">Test</a>')
@@ -23,5 +24,10 @@ class ClickMailer < ApplicationMailer
 
   def schemeless
     mail_html('<a href="example.org">Test</a>')
+  end
+
+  def conditional(track)
+    @track = track
+    mail_html('<a href="https://example.org">Test</a>')
   end
 end

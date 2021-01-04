@@ -88,6 +88,14 @@ class ClickTest < ActionDispatch::IntegrationTest
     assert_body "click", message
   end
 
+  def test_conditional
+    message = ClickMailer.conditional(false).deliver_now
+    refute_body "click", message
+
+    message = ClickMailer.conditional(true).deliver_now
+    assert_body "click", message
+  end
+
   def click_link(message)
     url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
     get url
