@@ -118,7 +118,9 @@ module AhoyEmail
 
         # ampersands converted to &amp;
         # https://github.com/sparklemotion/nokogiri/issues/1127
-        # this should be fine
+        # not ideal, but should be equivalent in html5
+        # https://stackoverflow.com/questions/15776556/whats-the-difference-between-and-amp-in-html5
+        # escaping technically required before html5
         # https://stackoverflow.com/questions/3705591/do-i-encode-ampersands-in-a-href
         part.body = doc.to_s
       end
