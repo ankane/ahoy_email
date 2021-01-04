@@ -84,7 +84,7 @@ Record extra attributes on the `Ahoy::Message` model.
 Create a migration to add extra attributes to the `ahoy_messages` table. For example:
 
 ```ruby
-class AddCouponIdToAhoyMessages < ActiveRecord::Migration[6.0]
+class AddCouponIdToAhoyMessages < ActiveRecord::Migration[6.1]
   def change
     add_column :ahoy_messages, :coupon_id, :integer
   end
@@ -146,7 +146,7 @@ While it’s nice to get feedback on the performance of your emails, we discoura
 Create a migration with:
 
 ```ruby
-class AddTokenToAhoyMessages < ActiveRecord::Migration[6.0]
+class AddTokenToAhoyMessages < ActiveRecord::Migration[6.1]
   def change
     add_column :ahoy_messages, :token, :string
     add_index :ahoy_messages, :token
@@ -298,7 +298,7 @@ end
 
 ## Mongoid
 
-If you prefer to use Mongoid instead of ActiveRecord, create `app/models/ahoy/message.rb` with:
+If you prefer to use Mongoid instead of Active Record, create `app/models/ahoy/message.rb` with:
 
 ```ruby
 class Ahoy::Message
