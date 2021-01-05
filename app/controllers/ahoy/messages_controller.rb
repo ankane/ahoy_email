@@ -8,6 +8,7 @@ module Ahoy
     before_action :set_message
 
     def open
+      # TODO move to MessageSubscriber in 2.0
       if @message && !@message.opened_at
         @message.opened_at = Time.now
         @message.save!
@@ -19,6 +20,7 @@ module Ahoy
     end
 
     def click
+      # TODO move to MessageSubscriber in 2.0
       if @message && !@message.clicked_at
         @message.clicked_at = Time.now
         @message.opened_at ||= @message.clicked_at if @message.respond_to?(:opened_at=)
@@ -37,6 +39,7 @@ module Ahoy
 
         redirect_to url
       else
+        # TODO show link expired page with link to invalid redirect url in 2.0
         redirect_to AhoyEmail.invalid_redirect_url || main_app.root_url
       end
     end
