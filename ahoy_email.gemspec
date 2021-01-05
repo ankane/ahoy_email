@@ -3,7 +3,7 @@ require_relative "lib/ahoy_email/version"
 Gem::Specification.new do |spec|
   spec.name          = "ahoy_email"
   spec.version       = AhoyEmail::VERSION
-  spec.summary       = "Email analytics for Rails"
+  spec.summary       = "First-party email analytics for Rails"
   spec.homepage      = "https://github.com/ankane/ahoy_email"
   spec.license       = "MIT"
 
