@@ -29,7 +29,7 @@ There are three main features:
 
 - [Message history](#message-history)
 - [UTM tagging](#utm-tagging)
-- [Open & click analytics](#opens--clicks)
+- [Open & click analytics](#open--click-analytics)
 
 ## Message History
 
