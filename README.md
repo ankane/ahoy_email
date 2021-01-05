@@ -33,7 +33,7 @@ There are three main features:
 
 ## Message History
 
-Ahoy creates an `Ahoy::Message` record for each email sent by default. You can disable history for a mailer:
+Ahoy Email creates an `Ahoy::Message` record for each email sent by default. You can disable history for a mailer:
 
 ```ruby
 class CouponMailer < ApplicationMailer
@@ -49,7 +49,7 @@ AhoyEmail.default_options[:message] = false
 
 ### Users
 
-Ahoy records the user a message is sent to - not just the email address. This gives you a history of messages for each user, even if they change addresses.
+Ahoy Email records the user a message is sent to - not just the email address. This gives you a history of messages for each user, even if they change addresses.
 
 By default, Ahoy tries `@user` then `params[:user]` then `User.find_by(email: message.to)` to find the user.
 
@@ -109,7 +109,13 @@ end
 
 ## UTM Tagging
 
-Automatically add UTM parameters to links.
+Use UTM tagging to attribute a conversion (like an order) to an email campaign. If you use [Ahoy](https://github.com/ankane/ahoy) for web analytics:
+
+1. Send an email with UTM parameters
+2. When a user visits the site, Ahoy will create a visit with the UTM parameters
+3. When a user orders, the visit will be associated with the order (if [configured](https://github.com/ankane/ahoy#associated-models))
+
+Add UTM parameters to links with:
 
 ```ruby
 class CouponMailer < ApplicationMailer
