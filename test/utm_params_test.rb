@@ -23,4 +23,10 @@ class UtmParamsTest < Minitest::Test
     message = UtmParamsMailer.array_params.deliver_now
     assert_body "baz%5B%5D=1&amp;baz%5B%5D=2", message
   end
+
+  def test_nested
+    message = UtmParamsMailer.nested.deliver_now
+    assert_body "utm_medium=email", message
+    assert_body '<img src="image.png"></a>', message
+  end
 end

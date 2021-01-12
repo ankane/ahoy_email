@@ -12,4 +12,8 @@ class UtmParamsMailer < ApplicationMailer
   def array_params
     mail_html('<a href="https://example.org?baz[]=1&amp;baz[]=2">Hi<a>')
   end
+
+  def nested
+    mail_html('<a href="https://example.org"><img src="image.png"></a>')
+  end
 end
