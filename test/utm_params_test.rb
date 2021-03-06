@@ -29,4 +29,9 @@ class UtmParamsTest < Minitest::Test
     assert_body "utm_medium=email", message
     assert_body '<img src="image.png"></a>', message
   end
+
+  def test_multiple
+    message = UtmParamsMailer.multiple.deliver_now
+    assert_body "utm_campaign=second", message
+  end
 end

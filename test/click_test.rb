@@ -12,7 +12,6 @@ class ClickTest < ActionDispatch::IntegrationTest
 
     click_link(message)
     assert_redirected_to "https://example.org"
-    assert ahoy_message.clicked_at
   end
 
   def test_query_params
@@ -21,55 +20,29 @@ class ClickTest < ActionDispatch::IntegrationTest
 
     click_link(message)
     assert_redirected_to "https://example.org?a=1&b=2"
-    assert ahoy_message.clicked_at
   end
 
-  def test_subscriber
-    with_subscriber(EmailSubscriber.new) do
-      message = ClickMailer.basic.deliver_now
-      click_link(message)
-
-      assert_equal 1, $click_events.size
-      click_event = $click_events.first
-      assert_equal "https://example.org", click_event[:url]
-      assert_equal ahoy_message, click_event[:message]
-      assert click_event[:token]
-    end
-  end
-
-  def test_subscriber_class
-    with_subscriber(EmailSubscriber) do
-      message = ClickMailer.basic.deliver_now
-      click_link(message)
-
-      assert_equal 1, $click_events.size
-      click_event = $click_events.first
-      assert_equal "https://example.org", click_event[:url]
-      assert_equal ahoy_message, click_event[:message]
-      assert click_event[:token]
-    end
+  def test_campaign
+    ClickMailer.query_params.deliver_now
+    assert_equal "test", ahoy_message.campaign
   end
 
   def test_bad_signature
     message = ClickMailer.basic.deliver_now
     assert_body "click", message
     url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
-    get url.sub("signature=", "signature=bad")
-    assert_redirected_to root_url
+    get url.sub(/\bs=/, "s=bad")
+    assert_response :not_found
+    assert_equal "Link expired", response.body
   end
 
-  def test_missing_message
-    with_subscriber(EmailSubscriber) do
+  def test_invalid_redirect_url
+    with_invalid_redirect_url("https://example.com/not_found") do
       message = ClickMailer.basic.deliver_now
-      token = ahoy_message.token
-      Ahoy::Message.delete_all
-      click_link(message)
-
-      assert_equal 1, $click_events.size
-      click_event = $click_events.first
-      assert_equal "https://example.org", click_event[:url]
-      assert_nil click_event[:message]
-      assert_equal token, click_event[:token]
+      assert_body "click", message
+      url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
+      get url.sub(/\bs=/, "s=bad")
+      assert_redirected_to "https://example.com/not_found"
     end
   end
 
@@ -89,19 +62,27 @@ class ClickTest < ActionDispatch::IntegrationTest
   end
 
   def test_conditional
-    message = ClickMailer.conditional(false).deliver_now
+    message = ClickMailer.with(condition: false).conditional.deliver_now
     refute_body "click", message
 
-    message = ClickMailer.conditional(true).deliver_now
+    message = ClickMailer.with(condition: true).conditional.deliver_now
     assert_body "click", message
   end
 
-  def click_link(message)
-    url = /href=\"([^"]+)\"/.match(message.body.decoded)[1]
+  def test_missing_campaign_keyword
+    error = assert_raises(ArgumentError) do
+      ClickMailer.track_clicks
+    end
+    assert_equal "missing keyword: :campaign", error.message
+  end
 
-    # unescape entities like browser does
-    url = CGI.unescapeHTML(url)
-
-    get url
+  def with_invalid_redirect_url(value)
+    previous_value = AhoyEmail.invalid_redirect_url
+    begin
+      AhoyEmail.invalid_redirect_url = value
+      yield
+    ensure
+      AhoyEmail.invalid_redirect_url = previous_value
+    end
   end
 end

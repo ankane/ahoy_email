@@ -2,37 +2,51 @@
 require "active_support"
 require "addressable/uri"
 require "nokogiri"
-require "openssl"
 require "safely/core"
+
+# stdlib
+require "openssl"
 
 # modules
 require "ahoy_email/processor"
 require "ahoy_email/tracker"
 require "ahoy_email/observer"
 require "ahoy_email/mailer"
+require "ahoy_email/utils"
 require "ahoy_email/version"
+
+# subscribers
+require "ahoy_email/message_subscriber"
+require "ahoy_email/redis_subscriber"
+
+# integrations
 require "ahoy_email/engine" if defined?(Rails)
 
 module AhoyEmail
-  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks
+  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks, :save_token
   mattr_writer :message_model
 
   self.api = false
 
   self.default_options = {
-    message: true,
-    open: false,
-    click: false,
+    # message history
+    message: false,
+    user: -> { (defined?(@user) && @user) || (respond_to?(:params) && params && params[:user]) || (message.to.try(:size) == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
+    mailer: -> { "#{self.class.name}##{action_name}" },
+    extra: {},
+
+    # utm params
     utm_params: false,
     utm_source: -> { mailer_name },
     utm_medium: "email",
     utm_term: nil,
     utm_content: nil,
     utm_campaign: -> { action_name },
-    user: -> { (defined?(@user) && @user) || (respond_to?(:params) && params && params[:user]) || (message.to.try(:size) == 1 ? (User.find_by(email: message.to.first) rescue nil) : nil) },
-    mailer: -> { "#{self.class.name}##{action_name}" },
+
+    # click analytics
+    click: false,
+    campaign: nil,
     url_options: {},
-    extra: {},
     unsubscribe_links: false
   }
 
@@ -52,6 +66,7 @@ module AhoyEmail
     end
 
     ahoy_message.token = data[:token] if ahoy_message.respond_to?(:token=)
+    ahoy_message.campaign = data[:campaign] if ahoy_message.respond_to?(:campaign=)
 
     ahoy_message.assign_attributes(data[:extra] || {})
 
@@ -60,6 +75,8 @@ module AhoyEmail
 
     ahoy_message
   end
+
+  self.save_token = false
 
   self.subscribers = []
 
@@ -72,10 +89,17 @@ module AhoyEmail
     model = model.call if model.respond_to?(:call)
     model
   end
+
+  # shortcut for first subscriber with stats method
+  def self.stats(*args, **options)
+    subscriber = subscribers.find { |s| s.is_a?(Class) ? s.method_defined?(:stats) : s.respond_to?(:stats) }
+    subscriber = subscriber.new if subscriber.is_a?(Class)
+    subscriber.stats(*args, **options) if subscriber
+  end
 end
 
 ActiveSupport.on_load(:action_mailer) do
   include AhoyEmail::Mailer
   register_observer AhoyEmail::Observer
-  Mail::Message.send(:attr_accessor, :ahoy_data, :ahoy_message)
+  Mail::Message.send(:attr_accessor, :ahoy_data, :ahoy_message, :ahoy_options)
 end

@@ -12,8 +12,8 @@ Combustion.initialize! :active_record, :action_mailer do
     config.active_record.sqlite3.represent_boolean_as_integer = true
   end
 
-  logger = ActiveSupport::Logger.new(ENV["VERBOSE"] ? STDOUT : nil)
-  config.logger = logger
+  $logger = ActiveSupport::Logger.new(ENV["VERBOSE"] ? STDOUT : nil)
+  config.logger = $logger
 end
 
 require_relative "support/mongoid" if defined?(Mongoid)
@@ -21,12 +21,22 @@ require_relative "support/mongoid" if defined?(Mongoid)
 ActionMailer::Base.delivery_method = :test
 
 class EmailSubscriber
-  def open(event)
-    $open_events << event
+  def track_send(data)
+    $send_events << data
   end
 
-  def click(event)
-    $click_events << event
+  def track_click(data)
+    $click_events << data
+  end
+
+  def stats
+    {sends: $send_events.size, clicks: $click_events.size}
+  end
+end
+
+class LegacyEmailSubscriber
+  def click(data)
+    $click_events << data
   end
 end
 
@@ -47,10 +57,6 @@ class Minitest::Test
     assert_match str, message.body.decoded
   end
 
-  def params_supported?
-    Rails.version > "5.1.0"
-  end
-
   def with_default(options)
     previous_options = AhoyEmail.default_options.dup
     begin
@@ -61,15 +67,24 @@ class Minitest::Test
     end
   end
 
-  def with_subscriber(subscriber)
-    previous_subscribers = AhoyEmail.subscribers
+  def with_save_token
+    previous_value = AhoyEmail.save_token
     begin
-      $open_events = []
-      $click_events = []
-      AhoyEmail.subscribers = [subscriber]
+      AhoyEmail.save_token = true
       yield
     ensure
-      AhoyEmail.subscribers = previous_subscribers
+      AhoyEmail.save_token = previous_value
     end
+  end
+end
+
+class ActionDispatch::IntegrationTest
+  def click_link(message)
+    url = /href=\"([^"]+)\"/.match(message.body.decoded)[1]
+
+    # unescape entities like browser does
+    url = CGI.unescapeHTML(url)
+
+    get url
   end
 end

@@ -6,13 +6,14 @@ ActiveRecord::Schema.define do
     t.text :subject
     t.datetime :sent_at
 
-    # opens & clicks
-    t.string :token
-    t.datetime :opened_at
-    t.datetime :clicked_at
-
     # extra
     t.integer :coupon_id
+
+    # clicks
+    t.string :token
+    t.boolean :clicked, default: false
+    t.datetime :clicked_at
+    t.string :campaign
 
     # legacy
     t.text :content

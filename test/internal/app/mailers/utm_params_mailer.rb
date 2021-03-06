@@ -1,5 +1,8 @@
 class UtmParamsMailer < ApplicationMailer
-  track utm_params: true, except: [:welcome]
+  utm_params except: [:welcome]
+  utm_params utm_campaign: "first", only: [:multiple]
+  utm_params utm_campaign: "second", only: [:multiple]
+  has_history only: [:welcome, :basic]
 
   def welcome
     mail_html('<a href="https://example.org">Test</a>')
@@ -15,5 +18,9 @@ class UtmParamsMailer < ApplicationMailer
 
   def nested
     mail_html('<a href="https://example.org"><img src="image.png"></a>')
+  end
+
+  def multiple
+    mail_html('<a href="https://example.org">Test</a>')
   end
 end

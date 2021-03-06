@@ -3,10 +3,7 @@ require_relative "test_helper"
 class MessageTest < Minitest::Test
   def test_default
     MessageMailer.welcome.deliver_now
-    assert ahoy_message
-    assert_equal "Hello", ahoy_message.subject
-    assert_match "Hello", ahoy_message.content
-    assert_match "World", ahoy_message.content
+    assert_nil ahoy_message
   end
 
   def test_false
@@ -34,7 +31,8 @@ class MessageTest < Minitest::Test
   end
 
   def test_ahoy_message
-    message = MessageMailer.welcome.deliver_now
+    message = MessageMailer.other2.deliver_now
     assert_equal message.ahoy_message, ahoy_message
+    assert_nil ahoy_message.token
   end
 end

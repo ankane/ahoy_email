@@ -18,7 +18,6 @@ class UserTest < Minitest::Test
   end
 
   def test_user_param
-    skip unless params_supported?
     user = User.create!
     UserMailer.with(user: user).welcome.deliver_now
     assert_equal user, ahoy_message.user

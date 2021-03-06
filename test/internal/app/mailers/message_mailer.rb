@@ -1,6 +1,6 @@
 class MessageMailer < ApplicationMailer
-  track message: false, only: [:other]
-  track message: true, only: [:other2]
+  has_history message: false, only: [:other]
+  has_history only: [:other2]
 
   after_action :prevent_delivery, only: [:no_deliver]
 

@@ -4,6 +4,9 @@ end
 
 AhoyEmail::Engine.routes.draw do
   scope module: "ahoy" do
+    get "click" => "messages#click"
+
+    # legacy
     resources :messages, only: [] do
       get :open, on: :member
       get :click, on: :member

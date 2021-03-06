@@ -1,3 +1,18 @@
+## 2.0.0 (unreleased)
+
+- Made `to` field encrypted by default for new installations
+- Added click analytics for Redis
+- Added send events to subscribers
+- Removed support for Rails < 5.2
+
+Breaking changes
+
+- The `track` method has been broken into `has_history` for message history, `utm_params` for UTM tagging, and `track_clicks` for click analytics
+- Message history is no longer enabled by default
+- Open tracking has been removed
+- `:message` is no longer included in click events
+- Users are shown a link expired page when signature verification fails instead of being redirected to the homepage if `AhoyEmail.invalid_redirect_url` is not set
+
 ## 1.1.1 (2021-03-06)
 
 - Added support for classes for subscribers

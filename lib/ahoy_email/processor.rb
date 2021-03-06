@@ -13,9 +13,9 @@ module AhoyEmail
     end
 
     def perform
-      track_open if options[:open]
       track_links if options[:utm_params] || options[:click]
-      track_message
+      track_message if options[:message]
+      message.ahoy_options = options
     end
 
     protected
@@ -35,16 +35,9 @@ module AhoyEmail
         user: options[:user]
       }
 
-      # legacy, remove in next major version
-      user = options[:user]
-      if user
-        data[:user_type] = user.model_name.name
-        id = user.id
-        data[:user_id] = id.is_a?(Integer) ? id : id.to_s
-      end
-
-      if options[:open] || options[:click]
-        data[:token] = token
+      if options[:click]
+        data[:token] = token if AhoyEmail.save_token
+        data[:campaign] = campaign
       end
 
       if options[:utm_params]
@@ -56,36 +49,11 @@ module AhoyEmail
       mailer.message.ahoy_data = data
     end
 
-    def track_open
-      if html_part?
-        part = message.html_part || message
-        raw_source = part.body.raw_source
-
-        regex = /<\/body>/i
-        url =
-          url_for(
-            controller: "ahoy/messages",
-            action: "open",
-            id: token,
-            format: "gif"
-          )
-        pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: "")
-
-        # try to add before body tag
-        if raw_source.match(regex)
-          part.body = raw_source.gsub(regex, "#{pixel}\\0")
-        else
-          part.body = raw_source + pixel
-        end
-      end
-    end
-
     def track_links
       if html_part?
         part = message.html_part || message
 
-        # TODO use Nokogiri::HTML::DocumentFragment.parse in 2.0
-        doc = Nokogiri::HTML(part.body.raw_source)
+        doc = Nokogiri::HTML::DocumentFragment.parse(part.body.raw_source)
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])
           next unless trackable?(uri)
@@ -101,17 +69,15 @@ module AhoyEmail
           end
 
           if options[:click] && !skip_attribute?(link, "click")
-            raise "Secret token is empty" unless AhoyEmail.secret_token
-
-            # TODO sign more than just url and transition to HMAC-SHA256
-            signature = OpenSSL::HMAC.hexdigest("SHA1", AhoyEmail.secret_token, link["href"])
+            signature = Utils.signature(token: token, campaign: campaign, url: link["href"])
             link["href"] =
               url_for(
                 controller: "ahoy/messages",
                 action: "click",
-                id: token,
-                url: link["href"],
-                signature: signature
+                t: token,
+                c: campaign,
+                u: link["href"],
+                s: signature
               )
           end
         end
@@ -161,6 +127,11 @@ module AhoyEmail
             .merge(options[:url_options])
             .merge(opt)
       AhoyEmail::Engine.routes.url_helpers.url_for(opt)
+    end
+
+    # return nil if false
+    def campaign
+      options[:campaign] || nil
     end
   end
 end

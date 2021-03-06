@@ -14,15 +14,8 @@ jobs:
           gemfile: gemfiles/actionmailer60.gemfile
         - ruby: 2.6
           gemfile: gemfiles/actionmailer52.gemfile
-        - ruby: 2.5
-          gemfile: gemfiles/actionmailer51.gemfile
-        - ruby: 2.4
-          gemfile: gemfiles/actionmailer50.gemfile
         - ruby: 2.7
           gemfile: gemfiles/mongoid7.gemfile
-          mongodb: true
-        - ruby: 2.6
-          gemfile: gemfiles/mongoid6.gemfile
           mongodb: true
     env:
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
@@ -34,4 +27,7 @@ jobs:
         bundler-cache: true
     - if: ${{ matrix.mongodb }}
       uses: ankane/setup-mongodb@v1
+    - run: |
+        sudo apt-get install redis-server
+        sudo systemctl start redis
     - run: bundle exec rake test
