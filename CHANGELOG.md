@@ -1,4 +1,4 @@
-## 2.0.0 (unreleased)
+## 2.0.0 (2021-03-06)
 
 - Made `to` field encrypted by default for new installations
 - Added click analytics for Redis
@@ -11,7 +11,7 @@ Breaking changes
 - Message history is no longer enabled by default
 - Open tracking has been removed
 - `:message` is no longer included in click events
-- Users are shown a link expired page when signature verification fails instead of being redirected to the homepage if `AhoyEmail.invalid_redirect_url` is not set
+- Users are shown a link expired page when signature verification fails instead of being redirected to the homepage when `AhoyEmail.invalid_redirect_url` is not set
 
 ## 1.1.1 (2021-03-06)
 

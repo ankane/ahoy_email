@@ -345,7 +345,7 @@ Ahoy Email 2.0 brings a number of changes. Here are a few to be aware of:
 
   If you use a custom subscriber, `:message` is no longer included in click events. You can use `:token` to query the message if needed.
 
-- Users are shown a link expired page when signature verification fails instead of being redirected to the homepage if `AhoyEmail.invalid_redirect_url` is not set
+- Users are shown a link expired page when signature verification fails instead of being redirected to the homepage when `AhoyEmail.invalid_redirect_url` is not set
 
 ## History
 
