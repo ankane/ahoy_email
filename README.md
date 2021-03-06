@@ -241,7 +241,7 @@ AhoyEmail.subscribers << EmailSubscriber
 AhoyEmail.api = true
 ````
 
-### Setup
+### Usage
 
 Add to mailers you want to track
 
