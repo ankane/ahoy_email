@@ -21,13 +21,14 @@ class Ahoy::Message
   field :subject, type: String
   field :sent_at, type: Time
 
-  # opens & clicks
-  field :token, type: String
-  field :opened_at, type: Time
-  field :clicked_at, type: Time
-
   # extra
   field :coupon_id, type: Integer
+
+  # clicks
+  field :token, type: String
+  field :clicked, type: Boolean
+  field :clicked_at, type: Time
+  field :campaign, type: String
 
   # legacy
   field :content, type: String

@@ -4,19 +4,25 @@ Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
 
+$logger = ActiveSupport::Logger.new(ENV["VERBOSE"] ? STDOUT : nil)
+
 AhoyEmail.api = true
 
 Combustion.path = "test/internal"
-Combustion.initialize! :active_record, :action_mailer do
-  if ActiveRecord::VERSION::MAJOR < 6 && config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer)
-    config.active_record.sqlite3.represent_boolean_as_integer = true
+
+if defined?(Mongoid)
+  Combustion.initialize! :action_mailer, :action_controller do
+    config.logger = $logger
   end
-
-  $logger = ActiveSupport::Logger.new(ENV["VERBOSE"] ? STDOUT : nil)
-  config.logger = $logger
+  require_relative "support/mongoid" if defined?(Mongoid)
+else
+  Combustion.initialize! :action_mailer, :action_controller, :active_record do
+    if ActiveRecord::VERSION::MAJOR < 6 && config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer)
+      config.active_record.sqlite3.represent_boolean_as_integer = true
+    end
+    config.logger = $logger
+  end
 end
-
-require_relative "support/mongoid" if defined?(Mongoid)
 
 ActionMailer::Base.delivery_method = :test
 
