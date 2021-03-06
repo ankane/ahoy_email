@@ -91,10 +91,10 @@ module AhoyEmail
   end
 
   # shortcut for first subscriber with stats method
-  def self.stats(*args, **options)
+  def self.stats(*args)
     subscriber = subscribers.find { |s| s.is_a?(Class) ? s.method_defined?(:stats) : s.respond_to?(:stats) }
     subscriber = subscriber.new if subscriber.is_a?(Class)
-    subscriber.stats(*args, **options) if subscriber
+    subscriber.stats(*args) if subscriber
   end
 end
 
