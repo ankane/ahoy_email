@@ -1,4 +1,4 @@
-## 1.1.1 (unreleased)
+## 1.1.1 (2021-03-06)
 
 - Added support for classes for subscribers
 - Use `datetime` type in migration
