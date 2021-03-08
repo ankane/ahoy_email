@@ -1,6 +1,29 @@
 require_relative "test_helper"
 
 class SubscriberTest < ActionDispatch::IntegrationTest
+  def test_database_subscriber
+    Ahoy::Click.delete_all
+    subscriber = AhoyEmail::DatabaseSubscriber.new
+
+    with_subscriber(subscriber) do
+      message = ClickMailer.history.deliver_now
+      assert_body(/\bc=test/, message)
+
+      click_link(message)
+      click_link(message)
+      click_link(message)
+
+      ClickMailer.history.deliver_now
+
+      expected_stats = {sends: 2, clicks: 3, unique_clicks: 1, ctr: 50}
+
+      assert_equal expected_stats, AhoyEmail.stats("test")
+      assert_nil AhoyEmail.stats("missing")
+
+      assert_equal ["test"], subscriber.campaigns
+    end
+  end
+
   def test_redis_subscriber
     redis = Redis.new(logger: $logger)
     redis.flushdb

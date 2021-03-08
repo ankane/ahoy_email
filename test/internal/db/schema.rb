@@ -24,6 +24,11 @@ ActiveRecord::Schema.define do
     t.string :utm_campaign
   end
 
+  create_table :ahoy_clicks, force: true do |t|
+    t.string :campaign, index: true
+    t.string :token
+  end
+
   create_table :users, force: true do |t|
     t.string :email
   end

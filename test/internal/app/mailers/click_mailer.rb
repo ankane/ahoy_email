@@ -2,13 +2,17 @@ class ClickMailer < ApplicationMailer
   track_clicks campaign: "test", except: [:welcome, :conditional, :campaignless]
   track_clicks campaign: "test", if: -> { params[:condition] }, only: [:conditional]
   track_clicks campaign: false, only: [:campaignless]
-  has_history only: [:campaignless, :query_params]
+  has_history only: [:history, :campaignless, :query_params]
 
   def welcome
     mail_html('<a href="https://example.org">Test</a>')
   end
 
   def basic
+    mail_html('<a href="https://example.org">Test</a>')
+  end
+
+  def history
     mail_html('<a href="https://example.org">Test</a>')
   end
 

@@ -16,6 +16,7 @@ require "ahoy_email/utils"
 require "ahoy_email/version"
 
 # subscribers
+require "ahoy_email/database_subscriber"
 require "ahoy_email/message_subscriber"
 require "ahoy_email/redis_subscriber"
 

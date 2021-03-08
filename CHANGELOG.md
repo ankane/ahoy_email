@@ -1,3 +1,7 @@
+## 2.0.1 (unreleased)
+
+- Added database subscriber
+
 ## 2.0.0 (2021-03-06)
 
 - Made `to` field encrypted by default for new installations

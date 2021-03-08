@@ -3,8 +3,6 @@ require "rails/generators"
 module Ahoy
   module Generators
     class MessagesGenerator < Rails::Generators::Base
-      source_root File.join(__dir__, "templates")
-
       class_option :unencrypted, type: :boolean
 
       def copy_templates

@@ -200,7 +200,23 @@ Skip specific links with:
 
 ## Click Analytics
 
-You can track click-through rate to see how well campaigns are performing. Stats can be stored in any data store, and there’s a built-in integration with Redis.
+You can track click-through rate to see how well campaigns are performing. Stats can be stored in your database, Redis, or any other data store.
+
+#### Database
+
+Run:
+
+```sh
+rails generate ahoy:clicks
+rails db:migrate
+```
+
+And create `config/initializers/ahoy_email.rb` with:
+
+```ruby
+AhoyEmail.subscribers << AhoyEmail::DatabaseSubscriber
+AhoyEmail.api = true
+```
 
 #### Redis
 
@@ -232,7 +248,7 @@ class EmailSubscriber
     # your code
   end
 
-  def stats(campaign = nil)
+  def stats(campaign)
     # optional, for AhoyEmail.stats
   end
 end
@@ -250,6 +266,8 @@ class CouponMailer < ApplicationMailer
   track_clicks campaign: "my-campaign"
 end
 ```
+
+If storing stats in the database, the mailer should also use `has_history`
 
 Use only and except to limit actions
 
@@ -287,13 +305,7 @@ AhoyEmail.default_options[:url_options] = {host: "mydomain.com"}
 
 ### Stats
 
-Get stats for all campaigns
-
-```ruby
-AhoyEmail.stats
-```
-
-Get stats for a specific campaign
+Get stats for a campaign
 
 ```ruby
 AhoyEmail.stats("my-campaign")
