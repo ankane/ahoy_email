@@ -72,7 +72,7 @@ module AhoyEmail
         sends: sends.value.to_i,
         clicks: clicks.value.to_i,
         unique_clicks: unique_clicks.value,
-        ctr: (100.0 * unique_clicks.value / sends.value.to_f).round(1)
+        ctr: 100 * unique_clicks.value / sends.value.to_f
       }
     end
   end
