@@ -38,3 +38,12 @@ class Ahoy::Message
   field :utm_medium, type: String
   field :utm_content, type: String
 end
+
+class Ahoy::Click
+  include Mongoid::Document
+
+  field :campaign, type: String
+  field :token, type: String
+
+  index({campaign: 1})
+end
