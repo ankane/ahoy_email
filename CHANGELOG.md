@@ -1,4 +1,4 @@
-## 2.0.1 (unreleased)
+## 2.0.1 (2021-03-08)
 
 - Added database subscriber
 
