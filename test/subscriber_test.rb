@@ -2,6 +2,8 @@ require_relative "test_helper"
 
 class SubscriberTest < ActionDispatch::IntegrationTest
   def test_database_subscriber
+    skip if mongoid?
+
     Ahoy::Click.delete_all
     subscriber = AhoyEmail::DatabaseSubscriber.new
 

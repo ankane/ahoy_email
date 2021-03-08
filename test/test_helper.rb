@@ -10,11 +10,15 @@ AhoyEmail.api = true
 
 Combustion.path = "test/internal"
 
-if defined?(Mongoid)
+def mongoid?
+  defined?(Mongoid)
+end
+
+if mongoid?
   Combustion.initialize! :action_mailer, :action_controller do
     config.logger = $logger
   end
-  require_relative "support/mongoid" if defined?(Mongoid)
+  require_relative "support/mongoid"
 else
   Combustion.initialize! :action_mailer, :action_controller, :active_record do
     if ActiveRecord::VERSION::MAJOR < 6 && config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer)
