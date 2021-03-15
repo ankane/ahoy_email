@@ -1,4 +1,4 @@
-## 2.0.2 (unreleased)
+## 2.0.2 (2021-03-14)
 
 - Added support for Mongoid to database subscriber
 
