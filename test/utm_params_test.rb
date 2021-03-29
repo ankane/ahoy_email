@@ -34,4 +34,20 @@ class UtmParamsTest < Minitest::Test
     message = UtmParamsMailer.multiple.deliver_now
     assert_body "utm_campaign=second", message
   end
+
+  def test_head_element
+    message = UtmParamsMailer.head_element.deliver_now
+    assert_body '<head>', message
+    assert_body '</head>', message
+  end
+
+  def test_doctype
+    message = UtmParamsMailer.doctype.deliver_now
+    assert_body '<!DOCTYPE html>', message
+  end
+
+  def test_body_style
+    message = UtmParamsMailer.body_style.deliver_now
+    assert_body '<body style="background-color:#ABC123;">', message
+  end
 end

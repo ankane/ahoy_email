@@ -23,4 +23,16 @@ class UtmParamsMailer < ApplicationMailer
   def multiple
     mail_html('<a href="https://example.org">Test</a>')
   end
+
+  def head_element
+    mail_html('<html><head><style>a {color: red;}</style></head></html>')
+  end
+
+  def doctype
+    mail_html('<!DOCTYPE html><html></html>')
+  end
+
+  def body_style
+    mail_html('<html><body style="background-color:#ABC123;"></body></html>')
+  end
 end
