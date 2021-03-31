@@ -1,3 +1,7 @@
+## 2.0.3 (unreleased)
+
+- Fixed `utm_params` and `track_clicks` stripping `<head>` tags from messages
+
 ## 2.0.2 (2021-03-14)
 
 - Added support for Mongoid to database subscriber
