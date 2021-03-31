@@ -1,4 +1,4 @@
-## 2.0.3 (unreleased)
+## 2.0.3 (2021-03-31)
 
 - Fixed `utm_params` and `track_clicks` stripping `<head>` tags from messages
 
