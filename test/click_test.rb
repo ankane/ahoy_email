@@ -69,6 +69,22 @@ class ClickTest < ActionDispatch::IntegrationTest
     assert_body "click", message
   end
 
+  def test_default_url_options
+    previous_value = ActionMailer::Base.default_url_options
+    begin
+      ActionMailer::Base.default_url_options = {host: "example.net"}
+      message = ClickMailer.basic.deliver_now
+      assert_body "example.net", message
+    ensure
+      ActionMailer::Base.default_url_options = previous_value
+    end
+  end
+
+  def test_default_url_options_mailer
+    message = UrlOptionsMailer.basic.deliver_now
+    assert_body "example.net", message
+  end
+
   def test_missing_campaign_keyword
     error = assert_raises(ArgumentError) do
       ClickMailer.track_clicks
