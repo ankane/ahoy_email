@@ -285,6 +285,14 @@ class CouponMailer < ApplicationMailer
 end
 ```
 
+Or with a proc
+
+```ruby
+class ApplicationMailer < ActionMailer::Base
+  track_clicks campaign: -> { "#{controller_path}-#{action_name}" }
+end
+```
+
 Skip specific links with:
 
 ```erb
