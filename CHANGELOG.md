@@ -1,3 +1,7 @@
+## 2.1.0 (unreleased)
+
+- Fixed mailer `default_url_options` not being applied to click links
+
 ## 2.0.3 (2021-03-31)
 
 - Fixed `utm_params` and `track_clicks` stripping `<head>` tags from messages
