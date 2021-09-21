@@ -285,11 +285,11 @@ class CouponMailer < ApplicationMailer
 end
 ```
 
-Or with a proc
+You can also use a proc
 
 ```ruby
-class ApplicationMailer < ActionMailer::Base
-  track_clicks campaign: -> { "#{controller_path}-#{action_name}" }
+class CouponMailer < ApplicationMailer
+  track_clicks campaign: -> { "coupon-#{action_name}" }
 end
 ```
 
