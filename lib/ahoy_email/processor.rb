@@ -123,7 +123,7 @@ module AhoyEmail
     end
 
     def url_for(opt)
-      opt = (ActionMailer::Base.default_url_options || {})
+      opt = (mailer.default_url_options || {})
             .merge(options[:url_options])
             .merge(opt)
       AhoyEmail::Engine.routes.url_helpers.url_for(opt)
