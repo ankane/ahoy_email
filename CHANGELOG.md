@@ -1,4 +1,4 @@
-## 2.1.0 (unreleased)
+## 2.1.0 (2021-09-25)
 
 - Fixed mailer `default_url_options` not being applied to click links
 
