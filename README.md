@@ -157,7 +157,7 @@ Ahoy::Message.where("created_at < ?", 1.year.ago).in_batches.delete_all
 Delete data for a specific user with:
 
 ```ruby
-Ahoy::Message.where(user_id: 1).in_batches.delete_all
+Ahoy::Message.where(user_id: 1, user_type: "User").in_batches.delete_all
 ```
 
 ## UTM Tagging
