@@ -2,7 +2,6 @@ name: build
 on: [push, pull_request]
 jobs:
   build:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -10,6 +9,8 @@ jobs:
         include:
         - ruby: 3.0
           gemfile: Gemfile
+        - ruby: 3.0
+          gemfile: gemfiles/actionmailer70.gemfile
         - ruby: 2.7
           gemfile: gemfiles/actionmailer60.gemfile
         - ruby: 2.6
