@@ -7,15 +7,21 @@ module Ahoy
         include ActiveRecord::Generators::Migration
         source_root File.join(__dir__, "templates")
 
+        class_option :encryption, type: :string
+        # deprecated
         class_option :unencrypted, type: :boolean
 
         def copy_migration
+          encryption # ensure valid
           migration_template "migration.rb", "db/migrate/create_ahoy_messages.rb", migration_version: migration_version
         end
 
         def copy_template
-          if encrypted?
-            template "model_encrypted.rb", "app/models/ahoy/message.rb"
+          case encryption
+          when "lockbox"
+            template "model_lockbox.rb", "app/models/ahoy/message.rb"
+          when "activerecord"
+            template "model_activerecord.rb", "app/models/ahoy/message.rb"
           end
         end
 
@@ -24,15 +30,30 @@ module Ahoy
         end
 
         def to_column
-          if encrypted?
+          case encryption
+          when "lockbox"
             "t.text :to_ciphertext\n      t.string :to_bidx, index: true"
           else
+            # TODO add limit: 510 for Active Record encryption + MySQL?
             "t.string :to, index: true"
           end
         end
 
-        def encrypted?
-          !options[:unencrypted]
+        # TODO remove default
+        def encryption
+          case options[:encryption]
+          when "lockbox", "activerecord", "none"
+            options[:encryption]
+          when nil
+            if options[:unencrypted]
+              # TODO deprecation warning
+              "none"
+            else
+              "lockbox"
+            end
+          else
+            abort "Error: encryption must be lockbox, activerecord, or none"
+          end
         end
       end
     end

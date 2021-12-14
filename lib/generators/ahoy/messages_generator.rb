@@ -3,6 +3,8 @@ require "rails/generators"
 module Ahoy
   module Generators
     class MessagesGenerator < Rails::Generators::Base
+      class_option :encryption, type: :string
+      # deprecated
       class_option :unencrypted, type: :boolean
 
       def copy_templates

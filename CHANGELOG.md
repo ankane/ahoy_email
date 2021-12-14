@@ -1,3 +1,7 @@
+## 2.1.1 (unreleased)
+
+- Added experimental support for Active Record encryption
+
 ## 2.1.0 (2021-09-25)
 
 - Fixed mailer `default_url_options` not being applied to click links

@@ -28,10 +28,17 @@ There are three main features, which can be used independently:
 
 ## Message History
 
-To encrypt email addresses, install [Lockbox](https://github.com/ankane/lockbox) and [Blind Index](https://github.com/ankane/blind_index) and run:
+To encrypt email addresses with Lockbox, install [Lockbox](https://github.com/ankane/lockbox) and [Blind Index](https://github.com/ankane/blind_index) and run:
 
 ```sh
 rails generate ahoy:messages
+rails db:migrate
+```
+
+To use Active Record encryption (Rails 7+, experimental, unreleased), run:
+
+```sh
+rails generate ahoy:messages --encryption=activerecord
 rails db:migrate
 ```
 
