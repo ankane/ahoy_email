@@ -78,12 +78,8 @@ class Minitest::Test
   end
 
   def with_save_token
-    previous_value = AhoyEmail.save_token
-    begin
-      AhoyEmail.save_token = true
+    AhoyEmail.stub(:save_token, true) do
       yield
-    ensure
-      AhoyEmail.save_token = previous_value
     end
   end
 end

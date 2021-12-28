@@ -113,14 +113,10 @@ class SubscriberTest < ActionDispatch::IntegrationTest
   end
 
   def with_subscriber(subscriber)
-    previous_subscribers = AhoyEmail.subscribers
-    begin
-      $send_events = []
-      $click_events = []
-      AhoyEmail.subscribers = [subscriber]
+    $send_events = []
+    $click_events = []
+    AhoyEmail.stub(:subscribers, [subscriber]) do
       yield
-    ensure
-      AhoyEmail.subscribers = previous_subscribers
     end
   end
 end

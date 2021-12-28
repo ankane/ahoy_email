@@ -70,13 +70,9 @@ class ClickTest < ActionDispatch::IntegrationTest
   end
 
   def test_default_url_options
-    previous_value = ActionMailer::Base.default_url_options
-    begin
-      ActionMailer::Base.default_url_options = {host: "example.net"}
+    ActionMailer::Base.stub(:default_url_options, {host: "example.net"}) do
       message = ClickMailer.basic.deliver_now
       assert_body "example.net", message
-    ensure
-      ActionMailer::Base.default_url_options = previous_value
     end
   end
 
@@ -93,12 +89,8 @@ class ClickTest < ActionDispatch::IntegrationTest
   end
 
   def with_invalid_redirect_url(value)
-    previous_value = AhoyEmail.invalid_redirect_url
-    begin
-      AhoyEmail.invalid_redirect_url = value
+    AhoyEmail.stub(:invalid_redirect_url, value) do
       yield
-    ensure
-      AhoyEmail.invalid_redirect_url = previous_value
     end
   end
 end
