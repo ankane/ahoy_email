@@ -1,3 +1,7 @@
+## 2.1.2 (unreleased)
+
+- Fixed external redirects with Rails 7
+
 ## 2.1.1 (2021-12-13)
 
 - Added experimental support for Active Record encryption
