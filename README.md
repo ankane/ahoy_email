@@ -15,7 +15,7 @@ First-party email analytics for Rails
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'ahoy_email'
+gem "ahoy_email"
 ```
 
 ## Getting Started
