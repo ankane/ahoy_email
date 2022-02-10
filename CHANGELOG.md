@@ -1,4 +1,4 @@
-## 2.1.2 (unreleased)
+## 2.1.2 (2022-02-09)
 
 - Fixed external redirects with Rails 7
 
