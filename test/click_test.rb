@@ -46,6 +46,16 @@ class ClickTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_invalid_redirect_current_url
+    with_invalid_redirect_current_url(true) do
+      message = ClickMailer.basic.deliver_now
+      assert_body "click", message
+      url = /a href=\"([^"]+)\"/.match(message.body.decoded)[1]
+      get url.sub(/\bs=/, "s=bad")
+      assert_redirected_to "https://example.org"
+    end
+  end
+
   def test_mailto
     message = ClickMailer.mailto.deliver_now
     assert_body '<a href="mailto:hi@example.org">', message
@@ -90,6 +100,12 @@ class ClickTest < ActionDispatch::IntegrationTest
 
   def with_invalid_redirect_url(value)
     AhoyEmail.stub(:invalid_redirect_url, value) do
+      yield
+    end
+  end
+
+  def with_invalid_redirect_current_url(value)
+    AhoyEmail.stub(:invalid_redirect_current_url, value) do
       yield
     end
   end

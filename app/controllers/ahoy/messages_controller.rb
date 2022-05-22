@@ -40,6 +40,8 @@ module Ahoy
       else
         if AhoyEmail.invalid_redirect_url
           redirect_to AhoyEmail.invalid_redirect_url, **redirect_options
+        elsif AhoyEmail.invalid_redirect_current_url
+          redirect_to url, **redirect_options
         else
           render plain: "Link expired", status: :not_found
         end

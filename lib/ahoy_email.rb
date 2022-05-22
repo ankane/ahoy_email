@@ -24,7 +24,7 @@ require "ahoy_email/redis_subscriber"
 require "ahoy_email/engine" if defined?(Rails)
 
 module AhoyEmail
-  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks, :save_token
+  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :invalid_redirect_current_url, :track_method, :api, :preserve_callbacks, :save_token
   mattr_writer :message_model
 
   self.api = false
