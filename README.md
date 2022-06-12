@@ -2,8 +2,6 @@
 
 First-party email analytics for Rails
 
-**Ahoy Email 2.0 was recently released** - see [how to upgrade](#upgrading)
-
 :fire: For web and native app analytics, check out [Ahoy](https://github.com/ankane/ahoy)
 
 :bullettrain_side: To manage unsubscribes, check out [Mailkick](https://github.com/ankane/mailkick)
