@@ -13,7 +13,7 @@ module Ahoy
         def copy_templates
           case encryption
           when "lockbox"
-            template "mongoid_lockbox.rb", "app/models/ahoy/message.rb"
+            template "mongoid_lockbox.rb", "app/models/ahoy/message.rb", lockbox_method: lockbox_method
           else
             template "mongoid.rb", "app/models/ahoy/message.rb"
           end
@@ -33,6 +33,14 @@ module Ahoy
             end
           else
             abort "Error: encryption must be lockbox or none"
+          end
+        end
+
+        def lockbox_method
+          if defined?(Lockbox::VERSION) && Lockbox::VERSION.to_i < 1
+            "encrypts"
+          else
+            "has_encrypted"
           end
         end
       end

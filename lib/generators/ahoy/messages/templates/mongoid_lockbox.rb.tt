@@ -11,6 +11,6 @@ class Ahoy::Message
 
   index({to_bidx: 1})
 
-  has_encrypted :to
+  <%= lockbox_method %> :to
   blind_index :to
 end

@@ -3,6 +3,6 @@ class Ahoy::Message < ActiveRecord::Base
 
   belongs_to :user, polymorphic: true, optional: true
 
-  has_encrypted :to
+  <%= lockbox_method %> :to
   blind_index :to
 end
