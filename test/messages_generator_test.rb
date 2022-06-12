@@ -11,10 +11,11 @@ class MessagesGeneratorTest < Rails::Generators::TestCase
   def test_encryption_lockbox
     run_generator ["--encryption=lockbox"]
     assert_file "app/models/ahoy/message.rb", /has_encrypted :to/
-    assert_migration "db/migrate/create_ahoy_messages.rb", /t.text :to_ciphertext/
+    assert_migration "db/migrate/create_ahoy_messages.rb", /t.text :to_ciphertext/ unless mongoid?
   end
 
   def test_encryption_activerecord
+    skip if mongoid?
     run_generator ["--encryption=activerecord"]
     assert_file "app/models/ahoy/message.rb", /encrypts :to, deterministic: true/
     assert_migration "db/migrate/create_ahoy_messages.rb", /t.string :to, index: true/
@@ -22,6 +23,10 @@ class MessagesGeneratorTest < Rails::Generators::TestCase
 
   def test_encryption_none
     run_generator ["--encryption=none"]
-    assert_migration "db/migrate/create_ahoy_messages.rb", /t.string :to, index: true/
+    if mongoid?
+      assert_file "app/models/ahoy/message.rb"
+    else
+      assert_migration "db/migrate/create_ahoy_messages.rb", /t.string :to, index: true/
+    end
   end
 end
