@@ -1,3 +1,7 @@
+## 2.1.3 (unreleased)
+
+- Updated messages generator for Lockbox 1.0
+
 ## 2.1.2 (2022-02-09)
 
 - Fixed external redirects with Rails 7
