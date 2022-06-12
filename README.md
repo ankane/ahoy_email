@@ -230,7 +230,7 @@ AhoyEmail.api = true
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'redis'
+gem "redis"
 ```
 
 And create `config/initializers/ahoy_email.rb` with:

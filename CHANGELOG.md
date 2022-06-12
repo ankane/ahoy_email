@@ -1,6 +1,7 @@
 ## 2.1.3 (unreleased)
 
 - Updated messages generator for Lockbox 1.0
+- Fixed deprecation warning with Redis 4.6+
 
 ## 2.1.2 (2022-02-09)
 

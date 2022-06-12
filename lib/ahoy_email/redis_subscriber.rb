@@ -9,17 +9,17 @@ module AhoyEmail
 
     def track_send(event)
       campaign_prefix = campaign_key(event[:campaign])
-      redis.pipelined do
-        redis.incr("#{campaign_prefix}:sends")
-        redis.sadd(campaigns_key, event[:campaign])
+      pipelined do |pipeline|
+        pipeline.incr("#{campaign_prefix}:sends")
+        pipeline.sadd(campaigns_key, event[:campaign])
       end
     end
 
     def track_click(event)
       campaign_prefix = campaign_key(event[:campaign])
-      redis.pipelined do
-        redis.incr("#{campaign_prefix}:clicks")
-        redis.pfadd("#{campaign_prefix}:unique_clicks", event[:token])
+      pipelined do |pipeline|
+        pipeline.incr("#{campaign_prefix}:clicks")
+        pipeline.pfadd("#{campaign_prefix}:unique_clicks", event[:token])
       end
     end
 
@@ -62,10 +62,10 @@ module AhoyEmail
       unique_clicks = nil
 
       campaign_prefix = campaign_key(campaign)
-      redis.pipelined do
-        sends = redis.get("#{campaign_prefix}:sends")
-        clicks = redis.get("#{campaign_prefix}:clicks")
-        unique_clicks = redis.pfcount("#{campaign_prefix}:unique_clicks")
+      pipelined do |pipeline|
+        sends = pipeline.get("#{campaign_prefix}:sends")
+        clicks = pipeline.get("#{campaign_prefix}:clicks")
+        unique_clicks = pipeline.pfcount("#{campaign_prefix}:unique_clicks")
       end
 
       {
@@ -74,6 +74,18 @@ module AhoyEmail
         unique_clicks: unique_clicks.value,
         ctr: 100 * unique_clicks.value / sends.value.to_f
       }
+    end
+
+    def pipelined
+      if Redis::VERSION.to_f >= 4.6
+        redis.pipelined do |pipeline|
+          yield pipeline
+        end
+      else
+        redis.pipelined do
+          yield redis
+        end
+      end
     end
   end
 end
