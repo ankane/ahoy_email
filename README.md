@@ -165,6 +165,12 @@ Delete data for a specific user with:
 Ahoy::Message.where(user_id: 1, user_type: "User").in_batches.delete_all
 ```
 
+Messages will not be created in development environment unless action mailer is set to perform deliveries
+
+```ruby
+config.action_mailer.perform_deliveries = true
+```
+
 ## UTM Tagging
 
 Use UTM tagging to attribute visits or conversions to an email campaign. Add UTM parameters to links with:
