@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gemspec path: ".."
+
+gem "rake"
+gem "minitest"
+gem "mongoid", "~> 8"
+gem "combustion"
+gem "redis"
