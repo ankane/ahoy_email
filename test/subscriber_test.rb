@@ -25,7 +25,7 @@ class SubscriberTest < ActionDispatch::IntegrationTest
   end
 
   def test_redis_subscriber
-    redis = Redis.new(logger: $logger)
+    redis = Redis.new
     redis.flushdb
     subscriber = AhoyEmail::RedisSubscriber.new(redis: redis)
 
