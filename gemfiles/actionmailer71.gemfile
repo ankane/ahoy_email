@@ -1,0 +1,11 @@
+source "https://rubygems.org"
+
+gemspec path: ".."
+
+gem "rake"
+gem "minitest"
+gem "actionmailer", github: "rails/rails"
+gem "activerecord", github: "rails/rails"
+gem "combustion"
+gem "sqlite3"
+gem "redis"
