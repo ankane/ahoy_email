@@ -1,6 +1,7 @@
 class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version %>
   def change
-    create_table :ahoy_clicks do |t|
+    primary_key_type, foreign_key_type = primary_and_foreign_key_types
+    create_table :ahoy_clicks, id: primary_key_type do |t|
       t.string :campaign, index: true
       t.string :token
     end
@@ -8,4 +9,12 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
     add_column :ahoy_messages, :campaign, :string
     add_index :ahoy_messages, :campaign
   end
+  private
+    def primary_and_foreign_key_types
+      config = Rails.configuration.generators
+      setting = config.options[config.orm][:primary_key_type]
+      primary_key_type = setting || :primary_key
+      foreign_key_type = setting || :bigint
+      [primary_key_type, foreign_key_type]
+    end
 end
