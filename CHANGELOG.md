@@ -1,3 +1,7 @@
+## 2.2.0 (unreleased)
+
+- Removed support for Ruby < 3 and Rails < 6.1
+
 ## 2.1.3 (2022-06-12)
 
 - Updated messages generator for Lockbox 1.0
