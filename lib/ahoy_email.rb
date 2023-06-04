@@ -8,20 +8,20 @@ require "safely/core"
 require "openssl"
 
 # modules
-require "ahoy_email/processor"
-require "ahoy_email/tracker"
-require "ahoy_email/observer"
-require "ahoy_email/mailer"
-require "ahoy_email/utils"
-require "ahoy_email/version"
+require_relative "ahoy_email/processor"
+require_relative "ahoy_email/tracker"
+require_relative "ahoy_email/observer"
+require_relative "ahoy_email/mailer"
+require_relative "ahoy_email/utils"
+require_relative "ahoy_email/version"
 
 # subscribers
-require "ahoy_email/database_subscriber"
-require "ahoy_email/message_subscriber"
-require "ahoy_email/redis_subscriber"
+require_relative "ahoy_email/database_subscriber"
+require_relative "ahoy_email/message_subscriber"
+require_relative "ahoy_email/redis_subscriber"
 
 # integrations
-require "ahoy_email/engine" if defined?(Rails)
+require_relative "ahoy_email/engine" if defined?(Rails)
 
 module AhoyEmail
   mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks, :save_token
