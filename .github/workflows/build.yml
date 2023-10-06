@@ -8,9 +8,9 @@ jobs:
       matrix:
         include:
           - ruby: 3.2
-            gemfile: gemfiles/actionmailer71.gemfile
-          - ruby: 3.1
             gemfile: Gemfile
+          - ruby: 3.1
+            gemfile: gemfiles/actionmailer70.gemfile
           - ruby: "3.0"
             gemfile: gemfiles/actionmailer61.gemfile
           - ruby: 3.1

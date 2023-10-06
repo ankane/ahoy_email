@@ -21,4 +21,4 @@ tmp
 *.a
 mkmf.log
 *.log
-*.sqlite
+*.sqlite*
