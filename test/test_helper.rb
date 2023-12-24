@@ -18,14 +18,13 @@ if mongoid?
   require_relative "support/mongoid"
 
   Combustion.initialize! :action_mailer, :action_controller do
+    config.load_defaults Rails::VERSION::STRING.to_f
     config.autoload_paths << File.expand_path("support/mongoid_models", __dir__)
     config.logger = $logger
   end
 else
   Combustion.initialize! :action_mailer, :action_controller, :active_record do
-    if ActiveRecord::VERSION::MAJOR >= 7
-      config.action_controller.raise_on_open_redirects = true
-    end
+    config.load_defaults Rails::VERSION::STRING.to_f
     config.logger = $logger
   end
 end
