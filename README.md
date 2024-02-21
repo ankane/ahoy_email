@@ -4,7 +4,7 @@ First-party email analytics for Rails
 
 :fire: For web and native app analytics, check out [Ahoy](https://github.com/ankane/ahoy)
 
-:bullettrain_side: To manage unsubscribes, check out [Mailkick](https://github.com/ankane/mailkick)
+:bullettrain_side: To manage email subscriptions, check out [Mailkick](https://github.com/ankane/mailkick)
 
 [![Build Status](https://github.com/ankane/ahoy_email/actions/workflows/build.yml/badge.svg)](https://github.com/ankane/ahoy_email/actions)
 
