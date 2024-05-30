@@ -46,6 +46,17 @@ class ClickTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_legacy_signature
+    get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "d77812b6f1406cff37c4ee6fcfc744b986281c5c", url: "https://example.org")
+    assert_redirected_to "https://example.org"
+  end
+
+  def test_legacy_bad_signature
+    get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "bad", url: "https://example.org")
+    assert_response :not_found
+    assert_equal "Link expired", response.body
+  end
+
   def test_mailto
     message = ClickMailer.mailto.deliver_now
     assert_body '<a href="mailto:hi@example.org">', message
