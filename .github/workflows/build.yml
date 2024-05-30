@@ -15,6 +15,9 @@ jobs:
             gemfile: gemfiles/actionmailer70.gemfile
           - ruby: "3.0"
             gemfile: gemfiles/actionmailer61.gemfile
+          - ruby: 3.3
+            gemfile: gemfiles/mongoid9.gemfile
+            mongodb: true
           - ruby: 3.1
             gemfile: gemfiles/mongoid8.gemfile
             mongodb: true
