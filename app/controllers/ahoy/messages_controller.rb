@@ -11,24 +11,23 @@ module Ahoy
     end
 
     def click
-      if params[:id]
-        # legacy
+      legacy = params[:id]
+      if legacy
         token = params[:id].to_s
+        campaign = nil
         url = params[:url].to_s
         signature = params[:signature].to_s
-        expected_signature = OpenSSL::HMAC.hexdigest("SHA1", AhoyEmail::Utils.secret_token, url)
       else
         token = params[:t].to_s
         campaign = params[:c].to_s
         url = params[:u].to_s
         signature = params[:s].to_s
-        expected_signature = AhoyEmail::Utils.signature(token: token, campaign: campaign, url: url)
       end
 
       redirect_options = {}
       redirect_options[:allow_other_host] = true if ActionPack::VERSION::MAJOR >= 7
 
-      if ActiveSupport::SecurityUtils.secure_compare(signature, expected_signature)
+      if AhoyEmail::Utils.signature_verified?(legacy: legacy, token: token, campaign: campaign, url: url, signature: signature)
         data = {}
         data[:campaign] = campaign if campaign
         data[:token] = token

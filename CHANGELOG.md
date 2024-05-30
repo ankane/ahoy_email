@@ -1,3 +1,7 @@
+## 2.3.0 (unreleased)
+
+- Added support for key rotation
+
 ## 2.2.0 (2023-07-02)
 
 - Removed support for Ruby < 3 and Rails < 6.1
