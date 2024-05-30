@@ -8,7 +8,7 @@ module AhoyEmail
 
     class << self
       def signature(token:, campaign:, url:, secret_token: nil)
-        secret_token ||= self.secret_tokens.first
+        secret_token ||= secret_tokens.first
 
         # encode and join with a character outside encoding
         data = [token, campaign, url].map { |v| Base64.strict_encode64(v.to_s) }.join("|")
