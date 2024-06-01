@@ -1,4 +1,4 @@
-## 2.3.0 (unreleased)
+## 2.3.0 (2024-06-01)
 
 - Added support for secret token rotation
 - Improved secret token generation
