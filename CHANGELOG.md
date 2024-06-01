@@ -1,6 +1,6 @@
 ## 2.3.0 (unreleased)
 
-- Added support for key rotation
+- Added support for secret token rotation
 - Improved secret token generation
 
 ## 2.2.0 (2023-07-02)
