@@ -324,54 +324,6 @@ Get stats for a campaign
 AhoyEmail.stats("my-campaign")
 ```
 
-## Upgrading
-
-### 2.0
-
-Ahoy Email 2.0 brings a number of changes. Here are a few to be aware of:
-
-- The `to` field is encrypted by default for new installations. If you’d like to encrypt an existing installation, install [Lockbox](https://github.com/ankane/lockbox) and [Blind Index](https://github.com/ankane/blind_index) and follow the Lockbox instructions for [migrating existing data](https://github.com/ankane/lockbox#migrating-existing-data).
-
-  For the model, create `app/models/ahoy/message.rb` with:
-
-  ```ruby
-  class Ahoy::Message < ActiveRecord::Base
-    self.table_name = "ahoy_messages"
-
-    belongs_to :user, polymorphic: true, optional: true
-
-    encrypts :to, migrating: true
-    blind_index :to, migrating: true
-  end
-  ```
-
-- The `track` method has been broken into:
-
-  - `has_history` for message history
-  - `utm_params` for UTM tagging
-  - `track_clicks` for click analytics
-
-- Message history is no longer enabled by default. Add `has_history` to individual mailers, or create an initializer with:
-
-  ```ruby
-  AhoyEmail.default_options[:message] = true
-  ```
-
-- For privacy, open tracking has been removed.
-
-- For clicks, we encourage you to try [aggregate analytics](#click-analytics) to measure the performance of campaigns. You can use a library like [Rollup](https://github.com/ankane/rollup) to aggregate existing data, then drop the `token` and `clicked_at` columns.
-
-  To keep individual analytics, use `has_history` and `track_clicks campaign: false` and create an initializer with:
-
-  ```ruby
-  AhoyEmail.save_token = true
-  AhoyEmail.subscribers << AhoyEmail::MessageSubscriber
-  ```
-
-  If you use a custom subscriber, `:message` is no longer included in click events. You can use `:token` to query the message if needed.
-
-- Users are shown a link expired page when signature verification fails instead of being redirected to the homepage when `AhoyEmail.invalid_redirect_url` is not set
-
 ## History
 
 View the [changelog](https://github.com/ankane/ahoy_email/blob/master/CHANGELOG.md)
