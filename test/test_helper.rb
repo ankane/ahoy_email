@@ -85,6 +85,12 @@ class Minitest::Test
       yield
     end
   end
+
+  def with_html5
+    AhoyEmail.stub(:html5, true) do
+      yield
+    end
+  end
 end
 
 class ActionDispatch::IntegrationTest
