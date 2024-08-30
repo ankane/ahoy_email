@@ -7,19 +7,22 @@ module AhoyEmail
         tokens = []
         tokens << app.key_generator.generate_key("ahoy_email")
 
-        # TODO remove in 3.0
-        creds =
-          if app.respond_to?(:credentials) && app.credentials.secret_key_base
-            app.credentials
-          elsif app.respond_to?(:secrets)
-            app.secrets
-          else
-            app.config
-          end
+        if app.respond_to?(:secret_key_base) && app.secret_key_base
+          tokens << app.secret_key_base
+        else
+          # TODO remove in 3.0
+          creds =
+            if app.respond_to?(:credentials) && app.credentials.secret_key_base
+              app.credentials
+            elsif app.respond_to?(:secrets)
+              app.secrets
+            else
+              app.config
+            end
 
-        token = creds.respond_to?(:secret_key_base) ? creds.secret_key_base : creds.secret_token
-        token ||= app.secret_key_base # should come first, but need to maintain backward compatibility
-        tokens << token
+          token = creds.respond_to?(:secret_key_base) ? creds.secret_key_base : creds.secret_token
+          tokens << token
+        end
 
         tokens
       end
