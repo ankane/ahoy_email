@@ -1,4 +1,4 @@
-## 2.3.1 (unreleased)
+## 2.3.1 (2024-09-09)
 
 - Fixed deprecation warning with Rails 7.1
 
