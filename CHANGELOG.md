@@ -1,3 +1,7 @@
+## 2.3.1 (unreleased)
+
+- Fixed deprecation warning with Rails 7.1
+
 ## 2.3.0 (2024-06-01)
 
 - Added support for secret token rotation
