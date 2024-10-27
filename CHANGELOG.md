@@ -180,4 +180,14 @@ Breaking changes
 
 ## 0.1.0 (2014-04-29)
 
-- First major release
+- Changed option names
+
+## 0.0.2 (2014-04-29)
+
+- Added open and click tracking
+- Added UTM parameters
+- Rescue errors
+
+## 0.0.1 (2014-04-28)
+
+- First release
