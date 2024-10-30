@@ -53,7 +53,7 @@ module AhoyEmail
       if html_part?
         part = message.html_part || message
 
-        doc = Nokogiri::HTML::Document.parse(part.body.raw_source)
+        doc = parse_message(part.body.raw_source)
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])
           next unless trackable?(uri)
@@ -89,6 +89,14 @@ module AhoyEmail
         # escaping technically required before html5
         # https://stackoverflow.com/questions/3705591/do-i-encode-ampersands-in-a-href
         part.body = doc.to_s
+      end
+    end
+
+    def parse_message(raw_source)
+      if AhoyEmail.html5
+        Nokogiri::HTML5.parse(raw_source)
+      else
+        Nokogiri::HTML::Document.parse(raw_source)
       end
     end
 

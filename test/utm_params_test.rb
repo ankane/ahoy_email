@@ -30,6 +30,23 @@ class UtmParamsTest < Minitest::Test
     assert_body '<img src="image.png"></a>', message
   end
 
+  # When nokogiri parses with html5, it allows an <a> tag to wrap a <table> tag
+  def test_nested_table_html5
+    with_html5 do
+      message = UtmParamsMailer.nested_table.deliver_now
+      assert_body "utm_medium=email", message
+      assert_body '<table></table></a>', message
+    end
+  end
+
+  # When nokogiri parses with html4, it disallows an <a> tag to wrap a <table> tag,
+  # and closes the <a> tag before the <table> tag
+  def test_nested_table_html4
+    message = UtmParamsMailer.nested_table.deliver_now
+    assert_body "utm_medium=email", message
+    assert_body '</a><table></table>', message
+  end
+
   def test_multiple
     message = UtmParamsMailer.multiple.deliver_now
     assert_body "utm_campaign=second", message
