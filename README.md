@@ -106,7 +106,7 @@ user.messages
 Add extra data to messages. Create a migration like:
 
 ```ruby
-class AddCouponIdToAhoyMessages < ActiveRecord::Migration[7.2]
+class AddCouponIdToAhoyMessages < ActiveRecord::Migration[8.0]
   def change
     add_column :ahoy_messages, :coupon_id, :integer
   end
