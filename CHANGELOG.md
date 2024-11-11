@@ -1,3 +1,7 @@
+## 2.3.2 (unreleased)
+
+- Improved generator for Active Record encryption and MySQL
+
 ## 2.3.1 (2024-09-09)
 
 - Fixed deprecation warning with Rails 7.1

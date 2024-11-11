@@ -33,7 +33,7 @@ rails generate ahoy:messages --encryption=lockbox
 rails db:migrate
 ```
 
-To use Active Record encryption (Rails 7+, experimental), run:
+To use Active Record encryption (Rails 7+), run:
 
 ```sh
 rails generate ahoy:messages --encryption=activerecord

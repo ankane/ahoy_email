@@ -34,8 +34,11 @@ module Ahoy
           when "lockbox"
             "t.text :to_ciphertext\n      t.string :to_bidx, index: true"
           else
-            # TODO add limit: 510 for Active Record encryption + MySQL?
-            "t.string :to, index: true"
+            if encryption == "activerecord" && mysql?
+              "t.string :to, limit: 510, index: true"
+            else
+              "t.string :to, index: true"
+            end
           end
         end
 
@@ -62,6 +65,14 @@ module Ahoy
           else
             "has_encrypted"
           end
+        end
+
+        def mysql?
+          adapter =~ /mysql|trilogy/i
+        end
+
+        def adapter
+          ActiveRecord::Base.connection_db_config.adapter.to_s
         end
       end
     end
