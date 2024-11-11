@@ -1,6 +1,8 @@
-## 2.3.2 (unreleased)
+## 2.4.0 (unreleased)
 
 - Improved generator for Active Record encryption and MySQL
+- Removed support for Ruby < 3.1 and Rails < 7
+- Removed support for Mongoid < 8
 
 ## 2.3.1 (2024-09-09)
 
