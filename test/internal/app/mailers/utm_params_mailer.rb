@@ -20,6 +20,10 @@ class UtmParamsMailer < ApplicationMailer
     mail_html('<a href="https://example.org"><img src="image.png"></a>')
   end
 
+  def nested_table
+    mail_html('<a href="https://example.org"><table></table></a>')
+  end
+
   def multiple
     mail_html('<a href="https://example.org">Test</a>')
   end

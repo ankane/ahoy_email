@@ -324,6 +324,16 @@ Get stats for a campaign
 AhoyEmail.stats("my-campaign")
 ```
 
+## HTML5 Parsing
+
+By default, this gem uses Nokogiri's HTML 4 parser to rewrite href attributes for the `utm_params` and `track_clicks` features. This can cause link tags to be prematurely closed if they were wrapping table elements, because doing so violates the HTML 4 spec.
+
+To use HTML5 parsing instead, set this in an initializer:
+
+```ruby
+AhoyEmail.html5 = true
+```
+
 ## History
 
 View the [changelog](https://github.com/ankane/ahoy_email/blob/master/CHANGELOG.md)
