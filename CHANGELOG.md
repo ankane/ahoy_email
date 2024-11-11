@@ -1,4 +1,4 @@
-## 2.4.0 (unreleased)
+## 2.4.0 (2024-11-11)
 
 - Added `html5` option
 - Improved generator for Active Record encryption and MySQL

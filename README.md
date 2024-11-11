@@ -328,7 +328,7 @@ AhoyEmail.stats("my-campaign")
 
 By default, Nokogiri’s default HTML parser is used to rewrite links for UTM tagging and click analytics. This currently uses HTML4, which [only allows inline elements inside links](https://github.com/sparklemotion/nokogiri/issues/1876#issuecomment-468276937).
 
-To use HTML5 parsing, create `config/initializers/ahoy_email.rb` with: [unreleased]
+To use HTML5 parsing, create `config/initializers/ahoy_email.rb` with:
 
 ```ruby
 AhoyEmail.default_options[:html5] = true
