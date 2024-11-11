@@ -63,7 +63,9 @@ module AhoyEmail
       # only call other options if needed
       if options[key]
         AhoyEmail::Utils::OPTION_KEYS[key].each do |k|
+          # make sure html5 only called once
           next if options.key?(k)
+
           v = ahoy_options[k]
           options[k] = v.respond_to?(:call) ? instance_exec(&v) : v
         end
