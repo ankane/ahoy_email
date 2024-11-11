@@ -86,8 +86,8 @@ class Minitest::Test
     end
   end
 
-  def with_html5
-    AhoyEmail.stub(:html5, true) do
+  def with_html5(html5)
+    AhoyEmail.stub(:html5, html5) do
       yield
     end
   end

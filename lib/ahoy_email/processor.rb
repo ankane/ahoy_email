@@ -53,7 +53,7 @@ module AhoyEmail
       if html_part?
         part = message.html_part || message
 
-        doc = parse_message(part.body.raw_source)
+        doc = parser_class.parse(part.body.raw_source)
         doc.css("a[href]").each do |link|
           uri = parse_uri(link["href"])
           next unless trackable?(uri)
@@ -92,11 +92,14 @@ module AhoyEmail
       end
     end
 
-    def parse_message(raw_source)
-      if AhoyEmail.html5
-        Nokogiri::HTML5.parse(raw_source)
+    def parser_class
+      case AhoyEmail.html5
+      when true
+        Nokogiri::HTML5
+      when false
+        Nokogiri::HTML4
       else
-        Nokogiri::HTML::Document.parse(raw_source)
+        Nokogiri::HTML::Document
       end
     end
 

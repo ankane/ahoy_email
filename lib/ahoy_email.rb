@@ -79,7 +79,7 @@ module AhoyEmail
 
   self.save_token = false
 
-  self.html5 = false
+  self.html5 = nil
 
   self.subscribers = []
 

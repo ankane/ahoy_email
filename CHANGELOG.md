@@ -1,5 +1,6 @@
 ## 2.4.0 (unreleased)
 
+- Added `html5` option
 - Improved generator for Active Record encryption and MySQL
 - Removed support for Ruby < 3.1 and Rails < 7
 - Removed support for Mongoid < 8
