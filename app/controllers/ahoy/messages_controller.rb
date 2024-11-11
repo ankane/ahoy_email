@@ -25,7 +25,7 @@ module Ahoy
       end
 
       redirect_options = {}
-      redirect_options[:allow_other_host] = true if ActionPack::VERSION::MAJOR >= 7
+      redirect_options[:allow_other_host] = true
 
       if AhoyEmail::Utils.signature_verified?(legacy: legacy, token: token, campaign: campaign, url: url, signature: signature)
         data = {}
