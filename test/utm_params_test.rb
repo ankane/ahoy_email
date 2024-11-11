@@ -31,7 +31,7 @@ class UtmParamsTest < Minitest::Test
   end
 
   def test_nested_table_html5
-    with_html5(true) do
+    with_default(html5: true) do
       message = UtmParamsMailer.nested_table.deliver_now
       assert_body "utm_medium=email", message
       assert_body "<table></table></a>", message
@@ -39,7 +39,7 @@ class UtmParamsTest < Minitest::Test
   end
 
   def test_nested_table_html4
-    with_html5(false) do
+    with_default(html5: false) do
       message = UtmParamsMailer.nested_table.deliver_now
       assert_body "utm_medium=email", message
       assert_body "</a><table></table>", message

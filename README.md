@@ -328,10 +328,10 @@ AhoyEmail.stats("my-campaign")
 
 By default, this gem uses Nokogiri’s default HTML parser to rewrite `href` attributes for UTM tagging and click analytics. This can cause link tags to be prematurely closed if they wrap `table` elements, because doing so violates the HTML 4 spec.
 
-To use HTML5 parsing, create `config/initializers/ahoy_email.rb` with:
+To use HTML5 parsing, create `config/initializers/ahoy_email.rb` with: [unreleased]
 
 ```ruby
-AhoyEmail.html5 = true
+AhoyEmail.default_options[:html5] = true
 ```
 
 ## History

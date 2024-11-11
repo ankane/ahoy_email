@@ -93,7 +93,7 @@ module AhoyEmail
     end
 
     def parser_class
-      case AhoyEmail.html5
+      case options[:html5]
       when true
         Nokogiri::HTML5
       when false

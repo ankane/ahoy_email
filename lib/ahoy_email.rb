@@ -24,7 +24,7 @@ require_relative "ahoy_email/redis_subscriber"
 require_relative "ahoy_email/engine" if defined?(Rails)
 
 module AhoyEmail
-  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks, :save_token, :html5
+  mattr_accessor :secret_token, :default_options, :subscribers, :invalid_redirect_url, :track_method, :api, :preserve_callbacks, :save_token
   mattr_writer :message_model
 
   self.api = false
@@ -48,7 +48,10 @@ module AhoyEmail
     click: false,
     campaign: nil,
     url_options: {},
-    unsubscribe_links: false
+    unsubscribe_links: false,
+
+    # utm params and click analytics
+    html5: nil
   }
 
   self.track_method = lambda do |data|
@@ -78,8 +81,6 @@ module AhoyEmail
   end
 
   self.save_token = false
-
-  self.html5 = nil
 
   self.subscribers = []
 
