@@ -95,9 +95,9 @@ module AhoyEmail
     def parser_class
       case options[:html5]
       when true
-        Nokogiri::HTML5
+        Nokogiri::HTML5::Document
       when false
-        Nokogiri::HTML4
+        Nokogiri::HTML4::Document
       else
         Nokogiri::HTML::Document
       end
