@@ -35,6 +35,7 @@ class UtmParamsTest < Minitest::Test
       message = UtmParamsMailer.nested_table.deliver_now
       assert_body "utm_medium=email", message
       assert_body "<table></table></a>", message
+      assert_body "<html>", message
     end
   end
 
@@ -43,6 +44,7 @@ class UtmParamsTest < Minitest::Test
       message = UtmParamsMailer.nested_table.deliver_now
       assert_body "utm_medium=email", message
       assert_body "</a><table></table>", message
+      assert_body "HTML 4.0", message
     end
   end
 

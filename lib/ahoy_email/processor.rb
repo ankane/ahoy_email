@@ -92,6 +92,8 @@ module AhoyEmail
       end
     end
 
+    # use document instead of fragment
+    # https://github.com/ankane/ahoy_email/pull/150
     def parser_class
       case options[:html5]
       when true
