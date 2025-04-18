@@ -13,9 +13,9 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["*.{md,txt}", "{app,config,lib}/**/*"]
   spec.require_path  = "lib"
 
-  spec.required_ruby_version = ">= 3.1"
+  spec.required_ruby_version = ">= 3.2"
 
-  spec.add_dependency "actionmailer", ">= 7"
+  spec.add_dependency "actionmailer", ">= 7.1"
   spec.add_dependency "addressable", ">= 2.3.2"
   spec.add_dependency "nokogiri"
   spec.add_dependency "safely_block", ">= 0.4"

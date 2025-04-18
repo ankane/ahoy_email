@@ -11,7 +11,7 @@ module AhoyEmail
         creds =
           if app.respond_to?(:credentials) && app.credentials.secret_key_base
             app.credentials
-          elsif app.respond_to?(:secrets) && (Rails::VERSION::STRING.to_f < 7.1 || app.config.paths["config/secrets"].existent.any?)
+          elsif app.respond_to?(:secrets) && app.config.paths["config/secrets"].existent.any?
             app.secrets
           else
             app.config

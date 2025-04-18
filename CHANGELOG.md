@@ -1,3 +1,7 @@
+## 2.5.0 (unreleased)
+
+- Removed support for Ruby < 3.2 and Rails < 7.1
+
 ## 2.4.0 (2024-11-11)
 
 - Added `html5` option
