@@ -31,6 +31,8 @@ class UtmParamsTest < Minitest::Test
   end
 
   def test_nested_table_html5
+    skip if RUBY_ENGINE == "jruby"
+
     with_default(html5: true) do
       message = UtmParamsMailer.nested_table.deliver_now
       assert_body "utm_medium=email", message
