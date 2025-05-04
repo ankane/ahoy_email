@@ -59,16 +59,16 @@ class UtmParamsTest < Minitest::Test
 
   def test_head_element
     message = UtmParamsMailer.head_element.deliver_now
-    assert_body '<head>', message
-    assert_body '</head>', message
+    assert_body "<head>", message
+    assert_body "</head>", message
   end
 
   def test_doctype
     message = UtmParamsMailer.doctype.deliver_now
     if RUBY_ENGINE == "jruby"
-      assert_body '<!DOCTYPE html >', message
+      assert_body "<!DOCTYPE html >", message
     else
-      assert_body '<!DOCTYPE html>', message
+      assert_body "<!DOCTYPE html>", message
     end
   end
 
