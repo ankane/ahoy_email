@@ -1,4 +1,4 @@
-## 2.5.0 (unreleased)
+## 2.5.0 (2025-05-04)
 
 - Removed support for Ruby < 3.2 and Rails < 7.1
 
