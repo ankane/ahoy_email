@@ -31,6 +31,7 @@ class MessagesGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_primary_key_type
+    skip if mongoid?
     Rails.configuration.generators.stub(:options, {active_record: {primary_key_type: :uuid}}) do
       run_generator ["--encryption=lockbox"]
     end
