@@ -29,4 +29,12 @@ class MessagesGeneratorTest < Rails::Generators::TestCase
       assert_migration "db/migrate/create_ahoy_messages.rb", /t.string :to, index: true/
     end
   end
+
+  def test_primary_key_type
+    Rails.configuration.generators.stub(:options, {active_record: {primary_key_type: :uuid}}) do
+      run_generator ["--encryption=lockbox"]
+    end
+    assert_migration "db/migrate/create_ahoy_messages.rb", /id: :uuid/
+    assert_migration "db/migrate/create_ahoy_messages.rb", /type: :uuid/
+  end
 end

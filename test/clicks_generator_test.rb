@@ -16,4 +16,11 @@ class ClicksGeneratorTest < Rails::Generators::TestCase
       assert_migration "db/migrate/create_ahoy_clicks.rb", /create_table :ahoy_clicks/
     end
   end
+
+  def test_primary_key_type
+    Rails.configuration.generators.stub(:options, {active_record: {primary_key_type: :uuid}}) do
+      run_generator
+    end
+    assert_migration "db/migrate/create_ahoy_clicks.rb", /id: :uuid/
+  end
 end
