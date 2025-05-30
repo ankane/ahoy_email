@@ -9,11 +9,11 @@ module Ahoy
 
         selection =
           if activerecord && mongoid
-            puts <<-MSG
+            puts <<~MSG
 
-Which data store would you like to use?
- 1. Active Record (default)
- 2. Mongoid
+              Which data store would you like to use?
+               1. Active Record (default)
+               2. Mongoid
             MSG
 
             ask(">")
