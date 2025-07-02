@@ -334,6 +334,16 @@ To use HTML5 parsing, create `config/initializers/ahoy_email.rb` with:
 AhoyEmail.default_options[:html5] = true
 ```
 
+## Upgrading
+
+### 3.0 [unreleased]
+
+Links that use click analytics created before version 2.3.0 (released June 2024) will no longer work by default. To restore support, [determine the previous secret token](https://github.com/ankane/ahoy_email/blob/v2.5.0/lib/ahoy_email/engine.rb#L11-L21) and create an initializer with:
+
+```ruby
+AhoyEmail.secret_token = [AhoyEmail.secret_token, previous_secret_token]
+```
+
 ## History
 
 View the [changelog](https://github.com/ankane/ahoy_email/blob/master/CHANGELOG.md)
