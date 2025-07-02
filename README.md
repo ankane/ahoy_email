@@ -2,6 +2,8 @@
 
 First-party email analytics for Rails
 
+**Ahoy Email 3.0 was recently released** - see [how to upgrade](#upgrading)
+
 :fire: For web and native app analytics, check out [Ahoy](https://github.com/ankane/ahoy)
 
 :bullettrain_side: To manage email subscriptions, check out [Mailkick](https://github.com/ankane/mailkick)
@@ -324,24 +326,20 @@ Get stats for a campaign
 AhoyEmail.stats("my-campaign")
 ```
 
-## HTML Parsing
-
-By default, Nokogiri’s default HTML parser is used to rewrite links for UTM tagging and click analytics. This currently uses HTML4, which [only allows inline elements inside links](https://github.com/sparklemotion/nokogiri/issues/1876#issuecomment-468276937).
-
-To use HTML5 parsing, create `config/initializers/ahoy_email.rb` with:
-
-```ruby
-AhoyEmail.default_options[:html5] = true
-```
-
 ## Upgrading
 
-### 3.0 [unreleased]
+### 3.0
 
 Links that use click analytics created before version 2.3.0 (released June 2024) will no longer work by default. To restore support, [determine the previous secret token](https://github.com/ankane/ahoy_email/blob/v2.5.0/lib/ahoy_email/engine.rb#L11-L21) and create an initializer with:
 
 ```ruby
 AhoyEmail.secret_token = [AhoyEmail.secret_token, previous_secret_token]
+```
+
+Also, Nokogiri’s HTML5 parser is now used to rewrite links for UTM tagging and click analytics when available. To use HTML4 parsing, create an initializer with:
+
+```ruby
+AhoyEmail.default_options[:html5] = false
 ```
 
 ## History

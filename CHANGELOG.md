@@ -1,4 +1,6 @@
-## 3.0.0 (unreleased)
+## 3.0.0 (2025-07-02)
+
+See the [upgrade notes](https://github.com/ankane/ahoy_email?tab=readme-ov-file#30)
 
 - Switched to HTML5 parsing by default (when available)
 - Removed support for legacy secret token generation
