@@ -58,19 +58,25 @@ class ClickTest < ActionDispatch::IntegrationTest
   end
 
   def test_legacy_secret_token_signature
-    get AhoyEmail::Engine.routes.url_helpers.click_path(c: "test", s: "ncBvGv-Q804GPmVf1JzHm767cx4CmGLrc1mwR0KFnLY", t: "123", u: "https://example.org")
-    assert_redirected_to "https://example.org"
+    with_secret_token([AhoyEmail.secret_token, "0" * 128]) do
+      get AhoyEmail::Engine.routes.url_helpers.click_path(c: "test", s: "ncBvGv-Q804GPmVf1JzHm767cx4CmGLrc1mwR0KFnLY", t: "123", u: "https://example.org")
+      assert_redirected_to "https://example.org"
+    end
   end
 
   def test_legacy_route_signature
-    get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "d77812b6f1406cff37c4ee6fcfc744b986281c5c", url: "https://example.org")
-    assert_redirected_to "https://example.org"
+    with_secret_token("0" * 128) do
+      get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "d77812b6f1406cff37c4ee6fcfc744b986281c5c", url: "https://example.org")
+      assert_redirected_to "https://example.org"
+    end
   end
 
   def test_legacy_route_bad_signature
-    get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "bad", url: "https://example.org")
-    assert_response :not_found
-    assert_equal "Link expired", response.body
+    with_secret_token("0" * 128) do
+      get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "bad", url: "https://example.org")
+      assert_response :not_found
+      assert_equal "Link expired", response.body
+    end
   end
 
   def test_mailto
@@ -117,6 +123,12 @@ class ClickTest < ActionDispatch::IntegrationTest
 
   def with_invalid_redirect_url(value)
     AhoyEmail.stub(:invalid_redirect_url, value) do
+      yield
+    end
+  end
+
+  def with_secret_token(value)
+    AhoyEmail.stub(:secret_token, value) do
       yield
     end
   end

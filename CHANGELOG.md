@@ -1,3 +1,7 @@
+## 3.0.0 (unreleased)
+
+- Removed support for legacy secret token generation
+
 ## 2.5.0 (2025-05-04)
 
 - Removed support for Ruby < 3.2 and Rails < 7.1
