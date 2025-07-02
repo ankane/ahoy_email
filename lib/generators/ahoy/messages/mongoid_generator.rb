@@ -19,18 +19,10 @@ module Ahoy
           end
         end
 
-        # TODO remove default
         def encryption
           case options[:encryption]
           when "lockbox", "none"
             options[:encryption]
-          when nil
-            if options[:unencrypted]
-              # TODO deprecation warning
-              "none"
-            else
-              "lockbox"
-            end
           else
             abort "Error: encryption must be lockbox or none"
           end
