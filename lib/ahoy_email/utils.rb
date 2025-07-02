@@ -20,6 +20,7 @@ module AhoyEmail
         secret_tokens.any? do |secret_token|
           expected_signature =
             if legacy
+              # TODO remove legacy support in 4.0
               OpenSSL::HMAC.hexdigest("SHA1", secret_token, url)
             else
               signature(token: token, campaign: campaign, url: url, secret_token: secret_token)
