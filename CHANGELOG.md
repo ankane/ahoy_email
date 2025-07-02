@@ -1,5 +1,6 @@
 ## 3.0.0 (unreleased)
 
+- Switched to HTML5 parsing by default (when available)
 - Removed support for legacy secret token generation
 
 ## 2.5.0 (2025-05-04)

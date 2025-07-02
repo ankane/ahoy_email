@@ -101,7 +101,11 @@ module AhoyEmail
       when false
         Nokogiri::HTML4::Document
       else
-        Nokogiri::HTML::Document
+        if defined?(Nokogiri::HTML5::Document)
+          Nokogiri::HTML5::Document
+        else
+          Nokogiri::HTML4::Document
+        end
       end
     end
 
