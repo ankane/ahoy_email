@@ -32,7 +32,7 @@ class MessagesGeneratorTest < Rails::Generators::TestCase
 
   def test_primary_key_type
     skip if mongoid?
-    Rails.configuration.generators.stub(:options, {active_record: {primary_key_type: :uuid}}) do
+    with_value(Rails.configuration.generators, :options, {active_record: {primary_key_type: :uuid}}) do
       run_generator ["--encryption=lockbox"]
     end
     assert_migration "db/migrate/create_ahoy_messages.rb", /id: :uuid/

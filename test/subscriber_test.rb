@@ -115,7 +115,7 @@ class SubscriberTest < ActionDispatch::IntegrationTest
   def with_subscriber(subscriber)
     $send_events = []
     $click_events = []
-    AhoyEmail.stub(:subscribers, [subscriber]) do
+    with_value(AhoyEmail, :subscribers, [subscriber]) do
       yield
     end
   end

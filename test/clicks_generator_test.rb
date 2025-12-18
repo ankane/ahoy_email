@@ -19,7 +19,7 @@ class ClicksGeneratorTest < Rails::Generators::TestCase
 
   def test_primary_key_type
     skip if mongoid?
-    Rails.configuration.generators.stub(:options, {active_record: {primary_key_type: :uuid}}) do
+    with_value(Rails.configuration.generators, :options, {active_record: {primary_key_type: :uuid}}) do
       run_generator
     end
     assert_migration "db/migrate/create_ahoy_clicks.rb", /id: :uuid/

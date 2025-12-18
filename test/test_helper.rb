@@ -80,8 +80,18 @@ class Minitest::Test
   end
 
   def with_save_token
-    AhoyEmail.stub(:save_token, true) do
+    with_value(AhoyEmail, :save_token, true) do
       yield
+    end
+  end
+
+  def with_value(object, method_name, value)
+    previous_value = object.send(method_name)
+    begin
+      object.send("#{method_name}=", value)
+      yield
+    ensure
+      object.send("#{method_name}=", previous_value)
     end
   end
 end
