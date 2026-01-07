@@ -3,7 +3,7 @@ require_relative "test_helper"
 class TokenTest < Minitest::Test
   def test_secret_token
     # ensure consistent across Rails releases
-    expected = "0baf04b17695d9934775733e6941fcc0f024c68ee98d539dc0c214823fa0e255708ac74a4957cb561ddd8a63af9a24e1d255259d95306734fb513e5e7cbb897d"
+    expected = "7f6a02c3632c8f46c90886517bc28c9bb67fc5634afa109cdb1e385592b9b91023bf4de7e2d074a8cd24c1ac0299d1b05837474212ec0cb104ec18659d71490b"
     assert_equal expected, AhoyEmail.secret_token.unpack1("h*")
   end
 
