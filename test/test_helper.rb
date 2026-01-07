@@ -21,12 +21,14 @@ if mongoid?
     config.secret_key_base = "0" * 128
     config.autoload_paths << File.expand_path("support/mongoid_models", __dir__)
     config.logger = $logger
+    config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
   end
 else
   Combustion.initialize! :action_mailer, :action_controller, :active_record do
     config.load_defaults Rails::VERSION::STRING.to_f
     config.secret_key_base = "0" * 128
     config.logger = $logger
+    config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
   end
 end
 

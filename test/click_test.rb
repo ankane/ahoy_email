@@ -47,7 +47,7 @@ class ClickTest < ActionDispatch::IntegrationTest
   end
 
   def test_consistent_signature
-    get AhoyEmail::Engine.routes.url_helpers.click_path(c: "test", s: "1xjjEyEbkRSohoe0RpWUYAeDNthXDDNdaKFtCJp5lyg", t: "123", u: "https://example.org")
+    get AhoyEmail::Engine.routes.url_helpers.click_path(c: "test", s: "AgVw_k8ckEXXHdlG0OZ8raH0OVir3LYAivnV3E0HRZU", t: "123", u: "https://example.org")
     assert_redirected_to "https://example.org"
   end
 
