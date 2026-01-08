@@ -1,3 +1,7 @@
+## 3.1.0 (unreleased)
+
+- Fixed change to key generator hash digest class
+
 ## 3.0.0 (2025-07-02)
 
 See the [upgrade notes](https://github.com/ankane/ahoy_email?tab=readme-ov-file#30)
