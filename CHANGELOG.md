@@ -3,7 +3,7 @@
 See the [upgrade notes](https://github.com/ankane/ahoy_email?tab=readme-ov-file#40)
 
 - Fixed change to key generator hash digest class
-- Removed support for Ruby < 3.3 and Rails < 7.2
+- Dropped support for Ruby < 3.3 and Rails < 7.2
 
 ## 3.0.0 (2025-07-02)
 
@@ -14,14 +14,14 @@ See the [upgrade notes](https://github.com/ankane/ahoy_email/blob/v3.0.0/README.
 
 ## 2.5.0 (2025-05-04)
 
-- Removed support for Ruby < 3.2 and Rails < 7.1
+- Dropped support for Ruby < 3.2 and Rails < 7.1
 
 ## 2.4.0 (2024-11-11)
 
 - Added `html5` option
 - Improved generator for Active Record encryption and MySQL
-- Removed support for Ruby < 3.1 and Rails < 7
-- Removed support for Mongoid < 8
+- Dropped support for Ruby < 3.1 and Rails < 7
+- Dropped support for Mongoid < 8
 
 ## 2.3.1 (2024-09-09)
 
@@ -34,7 +34,7 @@ See the [upgrade notes](https://github.com/ankane/ahoy_email/blob/v3.0.0/README.
 
 ## 2.2.0 (2023-07-02)
 
-- Removed support for Ruby < 3 and Rails < 6.1
+- Dropped support for Ruby < 3 and Rails < 6.1
 
 ## 2.1.3 (2022-06-12)
 
@@ -70,7 +70,7 @@ See the [upgrade notes](https://github.com/ankane/ahoy_email/blob/v3.0.0/README.
 - Made `to` field encrypted by default for new installations
 - Added click analytics for Redis
 - Added send events to subscribers
-- Removed support for Rails < 5.2
+- Dropped support for Rails < 5.2
 
 Breaking changes
 
@@ -89,7 +89,7 @@ Breaking changes
 
 - Made `opened_at` optional with click tracking
 - Fixed secret token for environment variables
-- Removed support for Rails 4.2
+- Dropped support for Rails 4.2
 
 ## 1.0.3 (2019-02-18)
 
@@ -107,7 +107,7 @@ Breaking changes
 
 ## 1.0.0 (2018-09-27)
 
-- Removed support for Rails < 4.2
+- Dropped support for Rails < 4.2
 
 Breaking changes
 
