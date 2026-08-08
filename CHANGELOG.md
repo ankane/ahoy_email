@@ -1,11 +1,13 @@
-## 3.1.0 (unreleased)
+## 4.0.0 (2026-08-08)
+
+See the [upgrade notes](https://github.com/ankane/ahoy_email?tab=readme-ov-file#40)
 
 - Fixed change to key generator hash digest class
 - Removed support for Ruby < 3.3 and Rails < 7.2
 
 ## 3.0.0 (2025-07-02)
 
-See the [upgrade notes](https://github.com/ankane/ahoy_email?tab=readme-ov-file#30)
+See the [upgrade notes](https://github.com/ankane/ahoy_email/blob/v3.0.0/README.md#upgrading)
 
 - Switched to HTML5 parsing by default (when available)
 - Removed support for legacy secret token generation
