@@ -16,9 +16,16 @@ module AhoyEmail
         Base64.urlsafe_encode64(OpenSSL::HMAC.digest("SHA256", secret_token, data), padding: false)
       end
 
-      def signature_verified?(token:, campaign:, url:, signature:)
+      def signature_verified?(legacy:, token:, campaign:, url:, signature:)
         secret_tokens.any? do |secret_token|
-          expected_signature = signature(token: token, campaign: campaign, url: url, secret_token: secret_token)
+          expected_signature =
+            if legacy
+              # TODO remove legacy support in 4.0
+              OpenSSL::HMAC.hexdigest("SHA1", secret_token, url)
+            else
+              signature(token: token, campaign: campaign, url: url, secret_token: secret_token)
+            end
+
           ActiveSupport::SecurityUtils.secure_compare(signature, expected_signature)
         end
       end

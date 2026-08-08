@@ -11,15 +11,23 @@ module Ahoy
     end
 
     def click
-      token = params[:t].to_s
-      campaign = params[:c].to_s
-      url = params[:u].to_s
-      signature = params[:s].to_s
+      legacy = params[:id]
+      if legacy
+        token = params[:id].to_s
+        campaign = nil
+        url = params[:url].to_s
+        signature = params[:signature].to_s
+      else
+        token = params[:t].to_s
+        campaign = params[:c].to_s
+        url = params[:u].to_s
+        signature = params[:s].to_s
+      end
 
       redirect_options = {}
       redirect_options[:allow_other_host] = true
 
-      if AhoyEmail::Utils.signature_verified?(token: token, campaign: campaign, url: url, signature: signature)
+      if AhoyEmail::Utils.signature_verified?(legacy: legacy, token: token, campaign: campaign, url: url, signature: signature)
         data = {}
         data[:campaign] = campaign if campaign
         data[:token] = token

@@ -67,6 +67,13 @@ class ClickTest < ActionDispatch::IntegrationTest
   def test_legacy_route_signature
     with_secret_token("0" * 128) do
       get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "d77812b6f1406cff37c4ee6fcfc744b986281c5c", url: "https://example.org")
+      assert_redirected_to "https://example.org"
+    end
+  end
+
+  def test_legacy_route_bad_signature
+    with_secret_token("0" * 128) do
+      get AhoyEmail::Engine.routes.url_helpers.click_message_path("123", signature: "bad", url: "https://example.org")
       assert_response :not_found
       assert_equal "Link expired", response.body
     end
