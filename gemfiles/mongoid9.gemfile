@@ -7,4 +7,3 @@ gem "minitest"
 gem "mongoid", "~> 9"
 gem "combustion"
 gem "redis"
-gem "ostruct" # for mongoid
